@@ -1,113 +1,103 @@
-import { motion } from "framer-motion";
-import { Beer, Utensils, ArrowRight } from "lucide-react";
+import { ArrowRight, Beer, Utensils } from "lucide-react";
+
+import restauranteImage from "../assets/restaurante-perf.jpg";
 
 export default function ExperienceSplit() {
   return (
     <section
       id="experiencia"
-      className="flex flex-col md:flex-row min-h-[80vh] w-full bg-black"
+      className="flex min-h-[80vh] w-full flex-col bg-black md:flex-row"
     >
-      {/* Zona Bar / Pinchos */}
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+      <div
         id="bar"
-        className="relative w-full md:w-1/2 group overflow-hidden flex flex-col justify-end p-8 md:p-20"
+        className="group relative flex w-full flex-col justify-end overflow-hidden p-8 md:w-1/2 md:p-20"
       >
         <div className="absolute inset-0 z-0">
-          <div className="relative w-full h-full overflow-hidden group">
+          <div className="relative h-full w-full overflow-hidden">
             <img
-              src="https://img05.restaurantguru.com/re29-meals-Bar-El-Portalon-2025-03.jpg?q=80&w=1000&auto=format&fit=crop"
-              alt="La Barra"
-              className="w-full h-full object-cover object-[60%_center] grayscale-[0.2] brightness-60 transition-transform duration-[2000ms] group-hover:scale-110"
+              src="/hero-lcp.jpg"
+              alt="Barra de Bar El Portalón"
+              width={900}
+              height={491}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover object-[60%_center] brightness-60 grayscale-[0.2] transition-transform duration-700 group-hover:scale-105"
             />
-
-            {/* Overlay oscuro para contraste */}
             <div className="absolute inset-0 bg-black/50" />
-
-            {/* Degradado opcional */}
             <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/30 to-black/10" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         </div>
 
         <div className="relative z-10">
-          <div className="w-12 h-12 bg-[#c5a059] flex items-center justify-center mb-6">
-            <Beer size={24} className="text-black" />
+          <div className="mb-6 flex h-12 w-12 items-center justify-center bg-[#c5a059]">
+            <Beer size={24} className="text-black" aria-hidden="true" />
           </div>
-          <h3 className="text-[#c5a059] uppercase tracking-widest text-xs font-bold mb-2">
+          <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#c5a059]">
             Pinchos & Raciones
-          </h3>
-          <h2 className="text-3xl md:text-5xl font-serif text-[#f5f5f1] mb-6 leading-tight">
+          </p>
+          <h2 className="mb-6 font-serif text-3xl leading-tight text-[#f5f5f1] md:text-5xl">
             La Barra como punto de encuentro
           </h2>
-          <p className="text-[#f5f5f1]/80 font-light text-lg mb-8 max-w-md">
+          <p className="mb-8 max-w-md text-lg font-light text-[#f5f5f1]/80">
             Un ambiente informal y social donde el producto local se transforma
             en pequeños bocados de felicidad. Tapeo tradicional elevado a la
             excelencia.
           </p>
-          <div className="flex items-center gap-4 text-[#c5a059] uppercase tracking-widest text-[10px] font-bold">
+          <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-[#c5a059]">
             <span>Social</span>
-            <span className="w-1 h-1 bg-[#c5a059] rounded-full" />
+            <span className="h-1 w-1 rounded-full bg-[#c5a059]" />
             <span>Dinámico</span>
-            <span className="w-1 h-1 bg-[#c5a059] rounded-full" />
+            <span className="h-1 w-1 rounded-full bg-[#c5a059]" />
             <span>Tradición</span>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Zona Restaurante / Especialidades */}
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+      <div
         id="restaurante"
-        className="relative w-full md:w-1/2 group overflow-hidden flex flex-col justify-end p-8 md:p-20 border-t md:border-t-0 md:border-l border-white/10"
+        className="group relative flex w-full flex-col justify-end overflow-hidden border-t border-white/10 p-8 md:w-1/2 md:border-l md:border-t-0 md:p-20"
       >
         <div className="absolute inset-0 z-0">
-          <div className="relative w-full h-full overflow-hidden group">
-            {/* Imagen */}
+          <div className="relative h-full w-full overflow-hidden">
             <img
-              src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/7a/92/9b/caption.jpg?q=80&w=1000&auto=format&fit=crop"
-              alt="El Restaurante"
-              className="w-full h-full object-cover brightness-60 scale-105 transition-transform duration-[2000ms] group-hover:scale-110"
+              src={restauranteImage}
+              alt="Comedor de Bar El Portalón"
+              width={640}
+              height={662}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover brightness-60 transition-transform duration-700 group-hover:scale-105"
             />
-
-            {/* Overlay oscuro */}
             <div className="absolute inset-0 bg-black/60" />
-
-            {/* Degradado extra (mejora contraste en texto superior/inferior) */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/60" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-black/30 to-transparent" />
         </div>
 
         <div className="relative z-10">
-          <div className="w-12 h-12 bg-[#800020] flex items-center justify-center mb-6">
-            <Utensils size={24} className="text-white" />
+          <div className="mb-6 flex h-12 w-12 items-center justify-center bg-[#800020]">
+            <Utensils size={24} className="text-white" aria-hidden="true" />
           </div>
-          <h3 className="text-[#c5a059] uppercase tracking-widest text-xs font-bold mb-2">
+          <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#c5a059]">
             Cocina Elaborada
-          </h3>
-          <h2 className="text-3xl md:text-5xl font-serif text-[#f5f5f1] mb-6 leading-tight">
+          </p>
+          <h2 className="mb-6 font-serif text-3xl leading-tight text-[#f5f5f1] md:text-5xl">
             Platos reconocidos por quienes vuelven
           </h2>
-          <p className="text-[#f5f5f1]/80 font-light text-lg mb-8 max-w-md">
+          <p className="mb-8 max-w-md text-lg font-light text-[#f5f5f1]/80">
             Experiencia gastronómica tranquila. Especialidades en bacalao,
             kokotxas y producto de temporada reinterpretado con respeto y
             técnica.
           </p>
           <a
             href="#especialidades"
-            className="inline-flex items-center gap-2 text-[#c5a059] uppercase tracking-widest text-xs font-bold hover:gap-4 transition-all"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#c5a059] transition-[gap] hover:gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
           >
-            Descubrir especialidades <ArrowRight size={16} />
+            Descubrir especialidades <ArrowRight size={16} aria-hidden="true" />
           </a>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

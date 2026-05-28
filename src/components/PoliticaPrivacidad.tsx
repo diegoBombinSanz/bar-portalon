@@ -1,70 +1,65 @@
 import { ArrowLeft, MapPin } from "lucide-react";
+
 import { restaurantData } from "../data/restaurant";
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-[#f5f5f1] px-6 py-24">
-      <div className="max-w-4xl mx-auto space-y-10">
-        <div className="fixed top-6 left-6 flex items-center gap-2 text-white/70 hover:text-[#c5a059] transition-all duration-300 ease-in-out group">
-          <ArrowLeft
-            size={18}
-            className="transition-transform duration-300 group-hover:-translate-x-1"
-          />
+    <main className="min-h-screen bg-[#0a0a0a] px-6 py-24 text-[#f5f5f1]">
+      <div className="mx-auto max-w-4xl space-y-10">
+        <a
+          href="/"
+          className="fixed left-6 top-6 flex min-h-11 items-center gap-2 text-sm uppercase tracking-widest text-white/80 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
+        >
+          <ArrowLeft size={18} aria-hidden="true" />
+          Volver
+        </a>
 
-          <a
-            href="/"
-            className="text-sm uppercase tracking-widest transition-all duration-300"
-          >
-            Volver
-          </a>
-        </div>
         <header>
-          <h1 className="text-4xl md:text-5xl font-serif mb-4">
+          <h1 className="mb-4 font-serif text-4xl md:text-5xl">
             Política de Privacidad
           </h1>
-          <p className="text-white/60">
+          <p className="text-white/70">
             Información sobre el tratamiento de datos personales.
           </p>
         </header>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-[#c5a059] uppercase tracking-widest">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#c5a059]">
             Responsable del tratamiento
           </h2>
 
-          <p className="text-white/80 leading-relaxed">
+          <p className="leading-relaxed text-white/85">
             <strong>{restaurantData.name}</strong>, con CIF/NIF{" "}
-            <strong>{restaurantData.cif}</strong>, domicilio en{" "}
-            <a
-              href={restaurantData.location.googleMapsUrl}
-              target="_blank"
-              className="flex gap-2 hover:text-[#c5a059] transition-colors"
-            >
-              <MapPin size={16} className="mt-1" />
-
-              <div>
-                <p className="font-semibold">
-                  {restaurantData.location.address}
-                </p>
-                <p className="text-sm text-white/60">
-                  {restaurantData.location.city},{" "}
-                  {restaurantData.location.province}
-                </p>
-              </div>
-            </a>
+            <strong>{restaurantData.cif}</strong>, domicilio en:
           </p>
 
-          <p className="text-white/80">
+          <a
+            href={restaurantData.location.googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex max-w-md gap-2 text-white/85 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
+          >
+            <MapPin size={16} className="mt-1 shrink-0" aria-hidden="true" />
+            <span>
+              <strong className="block">{restaurantData.location.address}</strong>
+              <span className="text-sm text-white/70">
+                {restaurantData.location.city},{" "}
+                {restaurantData.location.province}
+              </span>
+            </span>
+          </a>
+
+          <p className="text-white/85">
             Email de contacto: <strong>{restaurantData.contact.email}</strong>
           </p>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-[#c5a059] uppercase tracking-widest">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#c5a059]">
             Qué datos recogemos
           </h2>
 
-          <p className="text-white/80 leading-relaxed">
+          <p className="leading-relaxed text-white/85">
             Este sitio web no dispone de formularios ni sistemas de registro.
             Únicamente se utilizan los datos que el usuario facilita
             voluntariamente a través de llamada telefónica o contacto directo.
@@ -72,33 +67,33 @@ export default function PrivacyPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-[#c5a059] uppercase tracking-widest">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#c5a059]">
             Finalidad del tratamiento
           </h2>
 
-          <p className="text-white/80 leading-relaxed">
+          <p className="leading-relaxed text-white/85">
             Los datos se utilizan exclusivamente para atender consultas y
             gestionar reservas realizadas por vía telefónica.
           </p>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-[#c5a059] uppercase tracking-widest">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#c5a059]">
             Base legal
           </h2>
 
-          <p className="text-white/80 leading-relaxed">
+          <p className="leading-relaxed text-white/85">
             El tratamiento se basa en el consentimiento del interesado al
             contactar voluntariamente con el establecimiento.
           </p>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-[#c5a059] uppercase tracking-widest">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#c5a059]">
             Conservación de datos
           </h2>
 
-          <p className="text-white/80 leading-relaxed">
+          <p className="leading-relaxed text-white/85">
             Los datos no se almacenan en bases de datos ni sistemas
             automatizados. Se utilizan únicamente durante la gestión de la
             consulta o reserva.
@@ -106,11 +101,11 @@ export default function PrivacyPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-[#c5a059] uppercase tracking-widest">
+          <h2 className="text-xl font-bold uppercase tracking-widest text-[#c5a059]">
             Derechos del usuario
           </h2>
 
-          <p className="text-white/80 leading-relaxed">
+          <p className="leading-relaxed text-white/85">
             El usuario puede ejercer sus derechos de acceso, rectificación y
             supresión contactando directamente al email indicado anteriormente.
           </p>

@@ -6,3 +6,87 @@ body {
   font-display: swap;
 }
 
+.hero-scroll-indicator {
+  animation: hero-scroll-bounce 2s ease-in-out infinite;
+}
+
+@keyframes hero-scroll-bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-indicator {
+    animation: none;
+  }
+}
+
+.mobile-menu-panel {
+  animation: mobile-menu-enter 220ms ease-out both;
+}
+
+.mobile-menu-link {
+  opacity: 0;
+  animation: mobile-menu-link-enter 220ms ease-out both;
+}
+
+.floating-action {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.floating-action:hover {
+  transform: scale(1.06);
+}
+
+.floating-action:active {
+  transform: scale(0.96);
+}
+
+@keyframes mobile-menu-enter {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes mobile-menu-link-enter {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-panel,
+  .mobile-menu-link,
+  .floating-action {
+    animation: none;
+    transition: none;
+  }
+
+  .mobile-menu-link {
+    opacity: 1;
+  }
+
+  .floating-action:hover,
+  .floating-action:active {
+    transform: none;
+  }
+}
