@@ -110,10 +110,10 @@ export default function Footer() {
           © 2026 Bar El Portalón — Todos los derechos reservados
         </p>
         <div className="flex gap-8 text-[10px] uppercase tracking-widest text-[#f5f5f1]/40">
-          <a href="#" className="hover:text-[#f5f5f1] transition-colors">
+          <a href="/aviso" className="hover:text-[#f5f5f1] transition-colors">
             Aviso Legal
           </a>
-          <a href="#" className="hover:text-[#f5f5f1] transition-colors">
+          <a href="/politica" className="hover:text-[#f5f5f1] transition-colors">
             Privacidad
           </a>
         </div>

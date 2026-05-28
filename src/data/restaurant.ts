@@ -1,5 +1,6 @@
 export const restaurantData = {
   name: "Bar El Portalón",
+  cif: "H25305525",
   location: {
     city: "Roa",
     province: "Burgos",
@@ -9,6 +10,7 @@ export const restaurantData = {
   contact: {
     phone: "+34 947 000 000", // Reemplazar por real
     whatsapp: "+34 600 000 000",
+    email: "prueba@purba.com",
     tripadvisor: "https://www.tripadvisor.es/Restaurant_Review-g2137389-d8331828-Reviews-El_Portalon_De_Roa-Roa_Province_of_Burgos_Castile_and_Leon.html",
   },
   // ESTADO DE LAS JORNADAS: 'COMING_SOON', 'ACTIVE', 'PAST'

@@ -9,6 +9,10 @@ import Specialties from "./components/Specialties";
 import Reviews from "./components/Reviews";
 import MapSection from "./components/MapSection";
 import Footer from "./components/Footer";
+import PrivacyPage from "./components/PoliticaPrivacidad";
+import AvisoLegal from "./components/AvisoLegal";
+
+export const dynamic = "force-static";
 
 /* HOME PAGE */
 function Home() {
@@ -45,6 +49,8 @@ export default function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/politica" element={<PrivacyPage />} />
+        <Route path="/aviso" element={<AvisoLegal />} />
       </Routes>
 
       <Toaster />
