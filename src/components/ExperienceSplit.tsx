@@ -51,6 +51,12 @@ export default function ExperienceSplit() {
             <span className="h-1 w-1 rounded-full bg-[#c5a059]" />
             <span>Tradición</span>
           </div>
+          <a
+            href="/barra"
+            className="relative z-20 mt-8 inline-flex min-h-11 items-center gap-2 border border-[#c5a059] bg-[#c5a059] px-6 py-3 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-[#d4b06a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
+          >
+            Ver La Barra <ArrowRight size={14} />
+          </a>
         </div>
       </div>
 

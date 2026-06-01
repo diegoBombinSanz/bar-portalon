@@ -18,9 +18,11 @@
 8. [Jornadas del Bacalao — Sistema Dinámico](#8-jornadas-del-bacalao--sistema-dinámico)
 9. [Navegación y UX Móvil](#9-navegación-y-ux-móvil)
 10. [SEO y Metadatos](#10-seo-y-metadatos)
-11. [Guía de Mantenimiento para el Propietario](#11-guía-de-mantenimiento-para-el-propietario)
-12. [Decisiones de Diseño Clave](#12-decisiones-de-diseño-clave)
-13. [Roadmap / Próximos Pasos](#13-roadmap--próximos-pasos)
+11. [Guía de Instalación y Configuración](#11-guía-de-instalación-y-configuración)
+12. [Guía de Mantenimiento para el Propietario](#12-guía-de-mantenimiento-para-el-propietario)
+13. [Decisiones de Diseño Clave](#13-decisiones-de-diseño-clave)
+14. [Roadmap / Próximos Pasos](#14-roadmap--próximos-pasos)
+15. [Rutas Disponibles](#15-rutas-disponibles)
 
 ---
 
@@ -82,24 +84,45 @@ El negocio tiene dos personalidades que la web trata de forma diferenciada:
 ## 3. Arquitectura del Proyecto
 
 ```
-/apps/web/src/
+/src/
 │
-├── app/
-│   ├── layout.jsx              # Root layout (fuentes, metadatos globales)
-│   └── page.jsx                # Página principal — orquesta todos los componentes
+├── App.tsx                      # Router principal — gestiona rutas y renderizado
+├── main.tsx                     # Punto de entrada
+├── index.css                    # Estilos globales
 │
 ├── components/
-│   ├── Navbar.jsx              # Navegación fija + menú móvil + botones flotantes
-│   ├── Hero.jsx                # Sección de portada (pantalla completa)
-│   ├── ExperienceSplit.jsx     # División Bar vs. Restaurante (dos paneles)
-│   ├── CodDays.jsx             # Jornadas del Bacalao (componente dinámico)
-│   ├── Specialties.jsx         # Especialidades destacadas (grid editorial)
-│   ├── Reviews.jsx             # Reseñas de clientes
-│   ├── MapSection.jsx          # Ubicación + iframe Google Maps + info de contacto
-│   └── Footer.jsx              # Pie de página con columnas de información
+│   ├── Navbar.tsx              # Navegación fija + menú móvil + botones flotantes
+│   ├── Hero.tsx                # Sección de portada (pantalla completa)
+│   ├── ExperienceSplit.tsx     # División Bar vs. Restaurante (dos paneles)
+│   ├── CodDays.tsx             # Jornadas del Bacalao (componente dinámico)
+│   ├── Specialties.tsx         # Especialidades destacadas (grid editorial)
+│   ├── Reviews.tsx             # Reseñas de clientes
+│   ├── MapSection.tsx          # Ubicación + iframe Google Maps + info de contacto
+│   ├── Footer.tsx              # Pie de página con columnas de información
+│   ├── InnerPageLayout.tsx     # Layout compartido para páginas internas
+│   ├── OptimizedImage.tsx      # Componente de imagen optimizada con lazy loading
+│   ├── GaleriaTeaser.tsx       # Vista previa de galería en inicio
+│   ├── Galeria.tsx             # Página completa de galería de fotos
+│   ├── EntrevinosTeaser.tsx    # Vista previa de Entrevinos en inicio
+│   ├── Entrevinos.tsx          # Página de vinos (Entrevinos de Roa)
+│   ├── Barra.tsx               # Página dedicada a la Barra
+│   ├── AntiguosEventos.tsx     # Página de eventos pasados (Jornadas anteriores)
+│   ├── PoliticaPrivacidad.tsx  # Página de Política de Privacidad
+│   ├── AvisoLegal.tsx          # Página de Aviso Legal
+│   └── custom.d.ts             # Definiciones TypeScript personalizadas
 │
-└── data/
-    └── restaurant.js           # ⭐ FUENTE ÚNICA DE VERDAD — toda la configuración
+├── data/
+│   └── restaurant.ts           # ⭐ FUENTE ÚNICA DE VERDAD — toda la configuración
+│
+├── lib/
+│   └── (utilidades y helpers)  # Funciones reutilizables
+│
+├── assets/
+│   └── (imágenes estáticas)    # Activos del proyecto
+│
+├── tailwind.config.js          # Configuración de Tailwind CSS
+├── tsconfig.json               # Configuración de TypeScript
+└── vite.config.ts              # Configuración de Vite
 ```
 
 ### Flujo de datos
@@ -120,17 +143,23 @@ No hay estado global ni llamadas a API — arquitectura estática, rápida y ult
 
 ## 4. Stack Tecnológico
 
-| Tecnología       | Uso                                           |
-|------------------|-----------------------------------------------|
-| **Next.js 14+**  | Framework React con App Router, SSR, SEO      |
-| **React 18+**    | Librería de UI, hooks, componentes            |
-| **Tailwind CSS** | Estilos utilitarios, sistema responsive       |
-| **Framer Motion**| Animaciones declarativas, aparición on-scroll |
-| **Lucide React** | Iconografía limpia y consistente              |
+| Tecnología           | Versión | Uso                                           |
+|----------------------|---------|-----------------------------------------------|
+| **React**            | ^19.2.4 | Librería de UI, hooks, componentes            |
+| **Vite**             | ^8.0.0  | Bundler y servidor de desarrollo              |
+| **TypeScript**       | ~5.9.3  | Tipado estático para mayor seguridad          |
+| **Tailwind CSS**     | ^4.2.1  | Estilos utilitarios, sistema responsive       |
+| **Framer Motion**    | ^12.40.0| Animaciones declarativas, aparición on-scroll |
+| **Lucide React**     | ^0.577.0| Iconografía limpia y consistente              |
+| **ESLint**           | ^9.39.4 | Linting de código                             |
+| **PostCSS**          | ^8.5.8  | Procesamiento de CSS                         |
+| **Sharp**            | ^0.34.5 | Optimización de imágenes                      |
 
 ### Por qué este stack
-- **Next.js**: SSR por defecto (crítico para SEO local), rutas automáticas, rendimiento óptimo
-- **Tailwind**: Mobile-first sin CSS manual, coherencia visual garantizada por el sistema de tokens
+- **Vite**: Desarrollo ultrarrápido con HMR instantáneo, bundling optimizado para producción
+- **React 19**: Hooks modernos, Server Components (si se requiere), mejor rendimiento
+- **TypeScript**: Seguridad de tipos, autocompletado IDE, menos bugs en producción
+- **Tailwind CSS**: Mobile-first sin CSS manual, coherencia visual garantizada por el sistema de tokens
 - **Framer Motion**: Animaciones con `whileInView` (on-scroll) sin escribir Intersection Observer manual
 - **Sin base de datos**: Arquitectura 100% estática. Preparada para conectar CMS en el futuro sin reescribir componentes
 
@@ -296,6 +325,78 @@ Cierre del sitio. Cuatro columnas en desktop, apiladas en móvil.
 
 - Datos de `restaurantData` (location + contact)
 - Copyright con año + enlaces a Aviso Legal y Privacidad
+
+---
+
+### `Barra.tsx`
+Página dedicada a la experiencia de la barra. Detalles de pinchos y ambiente informal.
+
+- Navegación con `InnerPageLayout`
+- Contenido específico del servicio de bar
+- Galería de imágenes de pinchos destacados
+- Horarios y recomendaciones del ambiente
+
+---
+
+### `Galeria.tsx` y `GaleriaTeaser.tsx`
+Galería fotográfica del local y especialidades.
+
+- `GaleriaTeaser.tsx`: Vista previa en la página principal
+- `Galeria.tsx`: Galería completa en página dedicada (`/galeria`)
+- Grid responsivo con lazy loading de imágenes
+- Lightbox para visualización en pantalla completa
+- Clasificación por categorías (local, especialidades, eventos)
+
+---
+
+### `Entrevinos.tsx` y `EntrevinosTeaser.tsx`
+Sección dedicada a los vinos de Ribiera del Duero disponibles.
+
+- `EntrevinosTeaser.tsx`: Vista previa en la página principal
+- `Entrevinos.tsx`: Página completa (`/entrevinos`) con detalles de bodegas y vinos
+- Integración con tienda de vinos locales
+- Recomendaciones de maridajes con especialidades
+
+---
+
+### `AntiguosEventos.tsx`
+Archivo de ediciones pasadas de las Jornadas del Bacalao.
+
+- Galería y fotos de eventos históricos
+- Testimonios y resultados de años anteriores
+- Generación de expectativa para próximas ediciones
+- Acceso desde página de eventos históricos (`/antiguos-eventos`)
+
+---
+
+### `PoliticaPrivacidad.tsx` y `AvisoLegal.tsx`
+Páginas de cumplimiento legal.
+
+- Política de Privacidad (RGPD)
+- Aviso Legal
+- Utilizan `InnerPageLayout` para consistencia visual
+- Accesibles desde el footer
+
+---
+
+### `OptimizedImage.tsx`
+Componente reutilizable de imagen con optimizaciones.
+
+- Lazy loading nativo
+- Fallback en caso de carga fallida
+- Optimización de tamaño según breakpoint
+- Integración con Sharp para generación de variantes
+
+---
+
+### `InnerPageLayout.tsx`
+Layout compartido para todas las páginas internas.
+
+- Navbar
+- Footer
+- Estilos consistentes
+- Navegación de breadcrumbs (opcional)
+- Meta tags por página
 
 ---
 
@@ -471,7 +572,55 @@ Ribera del Duero restaurante        jornadas del bacalao Roa
 
 ---
 
-## 11. Guía de Mantenimiento para el Propietario
+## 11. Guía de Instalación y Configuración
+
+### Requisitos previos
+- **Node.js** versión 18+ (descargar de [nodejs.org](https://nodejs.org))
+- **npm** versión 9+ (incluido con Node.js)
+- **Git** para clonar el repositorio
+
+### Instalación local
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/diegoBombinSanz/bar-portalon.git
+   cd bar-portalon
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Iniciar servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
+   El sitio estará disponible en `http://localhost:5173`
+
+### Construcción para producción
+
+```bash
+npm run build     # Compilar TypeScript y crear bundle optimizado
+npm run preview   # Previsualizar el build de producción en local
+```
+
+### Despliegue
+
+El proyecto está preconfigurado para despliegue en **Vercel**:
+
+```bash
+npm run deploy    # Construir y desplegar a GitHub Pages (si está configurado)
+```
+
+Para otros hosts:
+- Los archivos compilados están en `/dist`
+- Servir con cualquier servidor web estático (Nginx, Apache, AWS S3, etc.)
+- El sitio es totalmente estático (no requiere servidor Node.js)
+
+---
+
+## 12. Guía de Mantenimiento para el Propietario
 
 > Escrita para quien mantiene el sitio sin conocimientos técnicos avanzados.
 
@@ -505,7 +654,7 @@ Ribera del Duero restaurante        jornadas del bacalao Roa
 
 ---
 
-## 12. Decisiones de Diseño Clave
+## 13. Decisiones de Diseño Clave
 
 ### Por qué no hay carta de menú
 El negocio funciona por recomendación y producto del día. Una carta cerrada en la web:
@@ -545,7 +694,7 @@ Con `z-50` quedan tapados por el overlay correctamente y de forma automática.
 
 ---
 
-## 13. Roadmap / Próximos Pasos
+## 14. Roadmap / Próximos Pasos
 
 ### 🔴 Prioridad alta — antes del lanzamiento público
 - [ ] Fotografías reales del local y los platos (reemplazar todos los Unsplash)
@@ -573,37 +722,84 @@ Con `z-50` quedan tapados por el overlay correctamente y de forma automática.
 
 ---
 
+## 15. Rutas Disponibles
+
+La aplicación es una SPA (Single Page Application) con las siguientes rutas:
+
+| Ruta                    | Componente              | Descripción                                      |
+|-------------------------|-------------------------|--------------------------------------------------|
+| `/`                     | App.tsx (home)          | Página principal con todos los componentes       |
+| `/barra`                | Barra.tsx               | Experiencia de la barra y pinchos               |
+| `/galeria`              | Galeria.tsx             | Galería completa de fotos del local             |
+| `/entrevinos`           | Entrevinos.tsx          | Vinos de Ribiera del Duero disponibles          |
+| `/antiguos-eventos`     | AntiguosEventos.tsx     | Ediciones pasadas de Jornadas del Bacalao      |
+| `/politica-privacidad`  | PoliticaPrivacidad.tsx  | Política de Privacidad (RGPD)                  |
+| `/aviso-legal`          | AvisoLegal.tsx          | Aviso Legal                                     |
+
+### Configuración de rutas
+
+Las rutas y sus metadatos SEO se configuran en `App.tsx` en el objeto `routeSeo`:
+
+```typescript
+const routeSeo: Record<string, { title: string; description: string }> = {
+  "/": { title: "...", description: "..." },
+  "/barra": { title: "...", description: "..." },
+  // ... más rutas
+};
+```
+
+---
+
 ## Información adicional
 
 ### Estructura de archivos completa
 ```
-/apps/web/
+/
 ├── src/
-│   ├── app/
-│   │   ├── layout.jsx
-│   │   └── page.jsx
+│   ├── App.tsx                 # Router y configuración de rutas
+│   ├── main.tsx                # Punto de entrada
+│   ├── index.css               # Estilos globales
 │   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── Hero.jsx
-│   │   ├── ExperienceSplit.jsx
-│   │   ├── CodDays.jsx
-│   │   ├── Specialties.jsx
-│   │   ├── Reviews.jsx
-│   │   ├── MapSection.jsx
-│   │   └── Footer.jsx
-│   └── data/
-│       └── restaurant.js       ← editar aquí para cambiar contenido
+│   │   ├── Navbar.tsx
+│   │   ├── Hero.tsx
+│   │   ├── ExperienceSplit.tsx
+│   │   ├── CodDays.tsx
+│   │   ├── Specialties.tsx
+│   │   ├── Reviews.tsx
+│   │   ├── MapSection.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Barra.tsx
+│   │   ├── Galeria.tsx
+│   │   ├── GaleriaTeaser.tsx
+│   │   ├── Entrevinos.tsx
+│   │   ├── EntrevinosTeaser.tsx
+│   │   ├── AntiguosEventos.tsx
+│   │   ├── PoliticaPrivacidad.tsx
+│   │   ├── AvisoLegal.tsx
+│   │   ├── InnerPageLayout.tsx
+│   │   ├── OptimizedImage.tsx
+│   │   └── custom.d.ts
+│   ├── data/
+│   │   └── restaurant.ts       # ← editar aquí para cambiar contenido
+│   ├── lib/
+│   │   └── (utilidades)
+│   └── assets/
 ├── public/
-│   └── (imágenes estáticas si se usan)
+│   └── (archivos estáticos)
 ├── package.json
-└── README.md                   ← este archivo
+├── tailwind.config.js
+├── tsconfig.json
+├── vite.config.ts
+└── README.md                   # ← este archivo
 ```
 
 ### Comandos útiles
 ```bash
-npm run dev       # servidor de desarrollo en localhost:3000
-npm run build     # compilar para producción
-npm run start     # previsualizar el build de producción
+npm run dev       # Servidor de desarrollo en localhost:5173
+npm run build     # Compilar para producción (TypeScript + Vite)
+npm run lint      # Ejecutar ESLint
+npm run preview   # Previsualizar el build de producción
+npm run deploy    # Desplegar a GitHub Pages (configurado)
 ```
 
 ### Navegadores soportados
@@ -612,7 +808,40 @@ npm run start     # previsualizar el build de producción
 - Firefox 88+
 - Edge 90+
 
+### Performance
+- **Imagen Hero**: Optimizada para mobile-first, carga lazy
+- **Componentes**: Code-splitting automático con Vite
+- **CSS**: Tailwind genera solo clases usadas (tree-shaking)
+- **Animaciones**: GPU-accelerated con Framer Motion (`transform` + `opacity`)
+- **Puntuación Lighthouse**: Objetivo 90+ en Performance, Accessibility, Best Practices
+
 ---
 
-*Documento generado el 28 de mayo de 2026*  
-*Proyecto: Bar El Portalón — Sitio Web v1.0*  
+## Información de despliegue
+
+### Configuración actual
+- Hospedado en **Vercel** ([https://bar-portalon-roa.com](https://bar-portalon-roa.com))
+- Domain: `bar-portalon-roa.com`
+- Certificado SSL: Automático (Vercel)
+- CDN global: Sí (Vercel Edge Network)
+
+### Archivo de configuración: `vercel.json`
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite"
+}
+```
+
+### Variables de entorno (si es necesario)
+Actualmente no requiere variables de entorno. Si en el futuro se integran servicios externos:
+- Usar archivo `.env.local` (no committear a Git)
+- Configurar en panel de Vercel bajo "Settings → Environment Variables"
+
+---
+
+*Documento actualizado: {{ fecha_actualización }}*  
+*Proyecto: Bar El Portalón — Sitio Web v2.0*  
+*Desarrollador: Diego Bombín Sanz*  
+*Contacto técnico: Para cambios en el código, contactar al desarrollador*  

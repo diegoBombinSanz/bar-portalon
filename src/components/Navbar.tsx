@@ -3,10 +3,13 @@ import { ChevronRight, MapPin, Menu, Phone, X } from "lucide-react";
 
 const navLinks = [
   { name: "El Portalón", href: "#hero" },
-  { name: "La Barra", href: "#bar" },
+  { name: "La Barra", href: "/barra" },
   { name: "El Restaurante", href: "#restaurante" },
   { name: "Especialidades", href: "#especialidades" },
   { name: "Bacalao", href: "#bacalao" },
+  { name: "Galería", href: "/galeria" },
+  { name: "Eventos", href: "/antiguos-eventos" },
+  { name: "Entrevinos", href: "/entrevinos" },
 ];
 
 const mapsUrl =
@@ -74,10 +77,20 @@ export default function Navbar() {
   }, [isOpen]);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) {
+      setIsOpen(false);
+      return;
+    }
+
     event.preventDefault();
     const id = href.slice(1);
     setIsOpen(false);
     window.dispatchEvent(new Event("load-deferred-sections"));
+
+    if (window.location.pathname !== "/") {
+      window.history.pushState(null, "", `/${href}`);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    }
 
     window.setTimeout(() => {
       document
@@ -102,25 +115,25 @@ export default function Navbar() {
           <a
             href="#hero"
             onClick={(event) => handleNavClick(event, "#hero")}
-            className="select-none font-serif text-2xl tracking-widest text-[#f5f5f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
+            className="select-none whitespace-nowrap font-serif text-xl tracking-widest text-[#f5f5f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] sm:text-2xl"
           >
             EL PORTALÓN
           </a>
 
-          <div className="hidden items-center space-x-8 md:flex">
+          <div className="hidden items-center gap-5 lg:flex xl:gap-8">
             {navLinks.slice(1).map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(event) => handleNavClick(event, link.href)}
-                className="text-xs uppercase tracking-widest text-[#f5f5f1]/80 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
+                className="whitespace-nowrap text-[11px] uppercase tracking-widest text-[#f5f5f1]/80 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] xl:text-xs"
               >
                 {link.name}
               </a>
             ))}
             <a
               href="tel:+34947000000"
-              className="inline-flex min-h-11 items-center border border-[#c5a059] px-6 py-2 text-xs uppercase tracking-widest text-[#c5a059] transition-colors hover:bg-[#c5a059] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
+              className="inline-flex min-h-11 items-center border border-[#c5a059] px-5 py-2 text-[11px] uppercase tracking-widest text-[#c5a059] transition-colors hover:bg-[#c5a059] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] xl:px-6 xl:text-xs"
             >
               Reservar
             </a>
@@ -128,7 +141,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full p-2 text-[#f5f5f1] transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] md:hidden"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full p-2 text-[#f5f5f1] transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] lg:hidden"
             onClick={() => setIsOpen(true)}
             aria-label="Abrir menú"
             aria-expanded={isOpen}

@@ -80,6 +80,15 @@ export default function CodDays() {
                 : "Quiero que me avisen"}
               <ArrowRight size={16} className="ml-4" aria-hidden="true" />
             </a>
+
+            {/* Enlace a ediciones anteriores */}
+            <a
+              href="/antiguos-eventos"
+              className="mt-5 inline-flex items-center gap-2 text-[#f5f5f1]/40 hover:text-[#c5a059] transition-colors text-xs uppercase tracking-widest"
+            >
+              <ArrowRight size={12} />
+              Ver ediciones anteriores
+            </a>
           </div>
         </div>
       </div>
