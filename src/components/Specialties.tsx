@@ -1,6 +1,7 @@
 import bacalado from "../assets/bacalado-taberna-perf.jpg";
 import cocochas from "../assets/cocochas-perf.jpg";
 import gambas from "../assets/gambas-perf.jpg";
+import AllergenBadges, { type AllergenKey } from "./AllergenBadges";
 
 const specialties = [
   {
@@ -11,6 +12,7 @@ const specialties = [
     image: bacalado,
     width: 640,
     height: 650,
+    allergens: ["gluten", "huevos", "lacteos", "soja", "frutos_cascara"] 
   },
   {
     id: 2,
@@ -19,6 +21,7 @@ const specialties = [
     image: cocochas,
     width: 640,
     height: 666,
+    allergens: ["gluten", "huevos", "lacteos", "soja", "frutos_cascara"] 
   },
   {
     id: 3,
@@ -28,6 +31,7 @@ const specialties = [
     image: gambas,
     width: 640,
     height: 640,
+    allergens: ["crustaceos"] 
   },
 ];
 
@@ -67,6 +71,7 @@ export default function Specialties() {
               <p className="font-light leading-relaxed text-[#2A241D]/70">
                 {item.description}
               </p>
+              <AllergenBadges allergens={item.allergens as AllergenKey[]} theme="light" />
             </article>
           ))}
         </div>

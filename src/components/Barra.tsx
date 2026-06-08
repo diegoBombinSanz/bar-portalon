@@ -8,6 +8,8 @@ import OptimizedImage from "./OptimizedImage";
 import { barItems } from "../data/barra";
 import { restaurantData } from "../data/restaurant";
 import pinchos from "../assets/re29-meals-Bar-El-Portalon-2025-03.jpg";
+import type { AllergenKey } from "./AllergenBadges";
+import AllergenBadges from "./AllergenBadges";
 
 
 type BarItem = (typeof barItems)[number];
@@ -134,6 +136,11 @@ export default function BarraPage() {
                 <p className="text-[#2A241D / #5F564C]/45 text-sm font-light leading-relaxed">
                   {item.description}
                 </p>
+                <AllergenBadges
+                  allergens={item.allergens as AllergenKey[]}
+                  size="sm"
+                  theme="dark"
+                />
               </div>
             </motion.div>
           ))}
@@ -217,6 +224,11 @@ export default function BarraPage() {
                 <p className="text-[#2A241D / #5F564C]/55 font-light">
                   {lightbox.description}
                 </p>
+                <AllergenBadges
+                  allergens={lightbox.allergens as AllergenKey[]}
+                  size="sm"
+                  theme="dark"
+                />
               </div>
             </motion.div>
           </motion.div>

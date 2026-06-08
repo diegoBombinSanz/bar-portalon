@@ -16,6 +16,7 @@ export const barItems = [
     image:
       "https://images.pexels.com/photos/5638732/pexels-photo-5638732.jpeg",
     wide: false,
+    allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
   {
     id: 3,
@@ -25,6 +26,7 @@ export const barItems = [
     image:
       "https://images.pexels.com/photos/4552131/pexels-photo-4552131.jpeg",
     wide: false,
+    allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
   {
     id: 4,
@@ -34,6 +36,7 @@ export const barItems = [
     image:
       "https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg",
     wide: false,
+    allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
   {
     id: 5,
@@ -43,5 +46,6 @@ export const barItems = [
     image:
       "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg",
     wide: false,
+    allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
 ];
