@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { ChevronRight, MapPin, Menu, Phone, X } from "lucide-react";
+import { restaurantData } from "../data/restaurant";
 
 const navLinks = [
   { name: "El Portalón", href: "#hero" },
@@ -12,8 +13,7 @@ const navLinks = [
   { name: "Entrevinos", href: "/entrevinos" },
 ];
 
-const mapsUrl =
-  "https://maps.google.com/?q=Bar+El+Portalon+Plaza+Mayor+Roa+Burgos";
+const mapsUrl = restaurantData.location.googleMapsUrl;
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -132,7 +132,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="tel:+34947000000"
+              href={`tel:+34${restaurantData.contact.phone}`}
               className="inline-flex min-h-11 items-center border border-[#c5a059] px-5 py-2 text-[11px] uppercase tracking-widest text-[#c5a059] transition-colors hover:bg-[#c5a059] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] xl:px-6 xl:text-xs"
             >
               Reservar
@@ -192,7 +192,7 @@ export default function Navbar() {
 
           <div className="flex flex-col gap-3 px-6 pb-11 pt-5">
             <a
-              href="tel:+34947000000"
+              href={`tel:+34${restaurantData.contact.phone}`}
               className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#c5a059] p-4 text-xs font-bold uppercase tracking-[0.12em] text-black"
             >
               <Phone size={16} aria-hidden="true" />

@@ -5,63 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Beer, Users, Clock } from "lucide-react";
 import InnerPageLayout from "./InnerPageLayout";
 import OptimizedImage from "./OptimizedImage";
+import { barItems } from "../data/barra";
+import { restaurantData } from "../data/restaurant";
+import pinchos from "../assets/re29-meals-Bar-El-Portalon-2025-03.jpg";
 
-const barItems = [
-  {
-    id: 1,
-    title: "La Barra, el alma del Portalón",
-    description:
-      "Un punto de encuentro donde el tiempo se detiene. La barra de El Portalón es el corazón del bar: bulliciosa a la hora del aperitivo, tranquila entre semana, siempre acogedora. Aquí se forjan conversaciones, se celebran pequeñas victorias y se comparten los mejores pinchos de Roa.",
-    image:
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1200&auto=format&fit=crop",
-    wide: true,
-  },
-  {
-    id: 2,
-    title: "Pinchos de temporada",
-    description:
-      "Pequeños bocados elaborados con producto del día. Cambian según el mercado, siempre sorprenden.",
-    image:
-      "https://images.unsplash.com/photo-1541510912111-99bc45946974?q=80&w=800&auto=format&fit=crop",
-    wide: false,
-  },
-  {
-    id: 3,
-    title: "El aperitivo en la terraza",
-    description:
-      "Con vistas a la Plaza Mayor de Roa. El lugar ideal para empezar bien cualquier día.",
-    image:
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop",
-    wide: false,
-  },
-  {
-    id: 4,
-    title: "Raciones para compartir",
-    description:
-      "Chistorra, jamón ibérico, queso castellano... producto de calidad servido sin complicaciones, para disfrutar en buena compañía.",
-    image:
-      "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=800&auto=format&fit=crop",
-    wide: false,
-  },
-  {
-    id: 5,
-    title: "Ambiente de barra auténtico",
-    description:
-      "Sin pretensiones pero con clase. El ambiente de barra del Portalón es el que fue siempre: cercano, cálido y honesto.",
-    image:
-      "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=800&auto=format&fit=crop",
-    wide: false,
-  },
-  {
-    id: 6,
-    title: "El café de después",
-    description:
-      "El mejor momento para que te cuenten la historia del bar. Siempre hay alguien con ganas de charlar en El Portalón.",
-    image:
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop",
-    wide: false,
-  },
-];
 
 type BarItem = (typeof barItems)[number];
 
@@ -87,7 +34,7 @@ export default function BarraPage() {
       {/* Hero Header */}
       <section className="relative h-[55vh] flex items-end overflow-hidden">
         <OptimizedImage
-          src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1600&auto=format&fit=crop"
+          src={pinchos}
           alt=""
           loading="eager"
           fetchPriority="high"
@@ -221,13 +168,13 @@ export default function BarraPage() {
             className="text-[#2A241D / #5F564C]/50 font-light mb-10 leading-relaxed"
           >
             Sin reserva para la barra. Para el restaurante, te recomendamos
-            llamar con antelación.
+            llamar con antelación. Además llevate tu comida favorita a casa con nuestro servicio de platos para llevar.
           </motion.p>
           <a
-            href="tel:+34947000000"
+            href={`tel:${restaurantData.contact.phone}`}
             className="inline-flex items-center gap-3 px-10 py-4 bg-[#c5a059] text-black text-xs font-bold uppercase tracking-widest hover:bg-[#d4b06a] transition-colors"
           >
-            Reservar Mesa
+            Reserva tu plato para llevar
           </a>
         </div>
       </section>

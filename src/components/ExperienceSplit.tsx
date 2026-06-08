@@ -1,6 +1,7 @@
 import { ArrowRight, Beer, Utensils } from "lucide-react";
 
 import restauranteImage from "../assets/restaurante-perf.jpg";
+import barra from "../assets/re29-meals-Bar-El-Portalon-2025-03.jpg";
 
 export default function ExperienceSplit() {
   return (
@@ -15,18 +16,18 @@ export default function ExperienceSplit() {
         <div className="absolute inset-0 z-0">
           <div className="relative h-full w-full overflow-hidden">
             <img
-              src="/hero-lcp.jpg"
+              src={barra}
               alt="Barra de Bar El Portalón"
               width={900}
               height={491}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover object-[60%_center] brightness-60 grayscale-[0.2] transition-transform duration-700 group-hover:scale-105"
+              className="h-full w-full object-cover object-[60%_center] transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/30 to-black/10" />
+
+            {/* Oscurece únicamente la zona inferior */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
         </div>
 
         <div className="relative z-10">
@@ -73,10 +74,11 @@ export default function ExperienceSplit() {
               height={662}
               loading="lazy"
               decoding="async"
-              className="h-full w-full object-cover brightness-60 transition-transform duration-700 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/60" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/60" />
+
+            {/* Gradiente solo para mejorar la legibilidad del texto */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-black/30 to-transparent" />
         </div>
