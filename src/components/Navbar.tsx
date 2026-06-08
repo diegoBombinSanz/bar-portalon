@@ -107,7 +107,7 @@ export default function Navbar() {
           isOpen ? "z-[90]" : "z-50"
         } ${
           scrolled && !isOpen
-            ? "bg-black/90 py-3 backdrop-blur-md"
+            ? "bg-#1B1815/95 py-3 backdrop-blur-md"
             : "bg-transparent py-6"
         }`}
       >
@@ -155,7 +155,7 @@ export default function Navbar() {
       {isOpen && (
         <div
           id="mobile-menu"
-          className="mobile-menu-panel fixed inset-0 z-[9999] flex flex-col bg-[#0a0a0a]"
+          className="mobile-menu-panel fixed inset-0 z-[9999] flex flex-col bg-[#1B1815]"
           role="dialog"
           aria-modal="true"
           aria-label="Menú de navegación"

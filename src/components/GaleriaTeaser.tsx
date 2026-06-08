@@ -29,7 +29,7 @@ const previews = [
 
 export default function GaleriaTeaser() {
   return (
-    <section id="galeria" className="py-24 bg-[#0a0a0a]">
+    <section id="galeria" className="py-24 bg-[#F7F4EF]">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -47,7 +47,7 @@ export default function GaleriaTeaser() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.08 }}
-              className="text-4xl md:text-5xl font-serif text-[#f5f5f1] leading-tight"
+              className="text-4xl md:text-5xl font-serif text-[#2A241D] leading-tight"
             >
               Galería
             </motion.h2>

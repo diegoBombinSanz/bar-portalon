@@ -6,7 +6,7 @@ import OptimizedImage from "./OptimizedImage";
 
 export default function EntrevinosTeaser() {
   return (
-    <section className="relative overflow-hidden bg-[#0d0d0d] py-0">
+    <section className="relative overflow-hidden bg-[#EFE9DF] py-0">
       <div className="flex flex-col md:flex-row min-h-[70vh]">
         {/* Imagen izquierda — viñedo */}
         <motion.div
@@ -26,8 +26,8 @@ export default function EntrevinosTeaser() {
             widths={[480, 640, 800, 1000, 1200]}
             className="w-full h-full object-cover absolute inset-0"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0d0d0d] hidden md:block" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-transparent md:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#EFE9DF] hidden md:block" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#EFE9DF] via-transparent to-transparent md:hidden" />
 
           {/* Etiqueta sobre imagen */}
           <div className="absolute top-6 left-6 flex items-center gap-2 bg-[#800020]/90 backdrop-blur-sm px-4 py-2">
@@ -54,19 +54,19 @@ export default function EntrevinosTeaser() {
             </span>
           </div>
 
-          <h2 className="text-5xl md:text-6xl font-serif text-[#f5f5f1] leading-none mb-3">
+          <h2 className="text-5xl md:text-6xl font-serif text-[#2A241D] leading-none mb-3">
             Entre<span className="text-[#c5a059]">vinos</span>
           </h2>
-          <p className="text-[#f5f5f1]/50 text-sm uppercase tracking-widest mb-8 font-light">
+          <p className="text-[#2A241D]/50 text-sm uppercase tracking-widest mb-8 font-light">
             de Roa
           </p>
 
-          <p className="text-[#f5f5f1]/65 font-light text-lg leading-relaxed mb-6">
+          <p className="text-[#2A241D]/65 font-light text-lg leading-relaxed mb-6">
             Un proyecto bodeguero nacido en Roa con la vocación de hacer vinos
             que hablen de su lugar de origen. Tempranillo de Ribera del Duero
             elaborado con respeto al terroir y pasión artesanal.
           </p>
-          <p className="text-[#f5f5f1]/45 font-light text-base leading-relaxed mb-12">
+          <p className="text-[#2A241D]/45 font-light text-base leading-relaxed mb-12">
             Disponible en nuestra carta de vinos. Descubre la historia, los
             viñedos y cada una de las etiquetas de la colección.
           </p>
@@ -82,7 +82,7 @@ export default function EntrevinosTeaser() {
                 <span className="text-xl font-serif text-[#c5a059]">
                   {valor}
                 </span>
-                <span className="text-[9px] uppercase tracking-widest text-[#f5f5f1]/30 mt-0.5">
+                <span className="text-[9px] uppercase tracking-widest text-[#2A241D]/30 mt-0.5">
                   {etiqueta}
                 </span>
               </div>
@@ -91,7 +91,7 @@ export default function EntrevinosTeaser() {
 
           <a
             href="/entrevinos"
-            className="inline-flex items-center gap-3 text-[#f5f5f1] text-xs uppercase tracking-widest font-bold hover:text-[#c5a059] transition-colors group"
+            className="inline-flex items-center gap-3 text-[#2A241D] text-xs uppercase tracking-widest font-bold hover:text-[#c5a059] transition-colors group"
           >
             Conocer Entrevinos de Roa
             <ArrowRight

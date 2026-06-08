@@ -6,7 +6,7 @@ export default function Footer() {
   const { location, contact } = restaurantData;
 
   return (
-    <footer className="border-t border-white/5 bg-[#0f0f0f] pb-12 pt-24 text-[#f5f5f1]">
+    <footer className="border-t border-white/5 bg-[#1B1815] pb-12 pt-24 text-[#f5f5f1]">
       <div className="mx-auto mb-20 grid max-w-7xl grid-cols-1 gap-16 px-6 md:grid-cols-4">
         <div>
           <p className="mb-6 font-serif text-3xl tracking-widest">

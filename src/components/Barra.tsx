@@ -126,7 +126,7 @@ export default function BarraPage() {
       </section>
 
       {/* Pillars */}
-      <section className="bg-[#111111] border-b border-white/5 py-10">
+      <section className="bg-[#EFE9DF] border-b border-white/5 py-10">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
           {pillars.map(({ icon: Icon, label, desc }, i) => (
             <motion.div
@@ -140,8 +140,8 @@ export default function BarraPage() {
                 <Icon size={18} color="#c5a059" />
               </div>
               <div>
-                <p className="text-[#f5f5f1] font-semibold text-sm">{label}</p>
-                <p className="text-[#f5f5f1]/45 text-xs mt-0.5">{desc}</p>
+                <p className="text-[#2A241D / #5F564C] font-semibold text-sm">{label}</p>
+                <p className="text-[#2A241D / #5F564C]/45 text-xs mt-0.5">{desc}</p>
               </div>
             </motion.div>
           ))}
@@ -181,10 +181,10 @@ export default function BarraPage() {
               </div>
               {/* Caption below image */}
               <div className="pt-3 pb-6 px-1">
-                <h3 className="text-[#f5f5f1] font-serif text-base mb-1">
+                <h3 className="text-[#2A241D / #5F564C] font-serif text-base mb-1">
                   {item.title}
                 </h3>
-                <p className="text-[#f5f5f1]/45 text-sm font-light leading-relaxed">
+                <p className="text-[#2A241D / #5F564C]/45 text-sm font-light leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -194,7 +194,7 @@ export default function BarraPage() {
       </section>
 
       {/* CTA Reserva */}
-      <section className="py-20 bg-[#111111] border-t border-white/5">
+      <section className="py-20 bg-[#EFE9DF] border-t border-white/5">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -209,7 +209,7 @@ export default function BarraPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.08 }}
-            className="text-3xl md:text-4xl font-serif text-[#f5f5f1] mb-6 leading-tight"
+            className="text-3xl md:text-4xl font-serif text-[#2A241D] mb-6 leading-tight"
           >
             La barra siempre tiene un hueco para ti
           </motion.h2>
@@ -218,7 +218,7 @@ export default function BarraPage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.16 }}
-            className="text-[#f5f5f1]/50 font-light mb-10 leading-relaxed"
+            className="text-[#2A241D / #5F564C]/50 font-light mb-10 leading-relaxed"
           >
             Sin reserva para la barra. Para el restaurante, te recomendamos
             llamar con antelación.
@@ -243,7 +243,7 @@ export default function BarraPage() {
             className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-6"
           >
             <button
-              className="absolute top-6 right-6 text-[#f5f5f1]/60 hover:text-[#c5a059] transition-colors"
+              className="absolute top-6 right-6 text-[#2A241D / #5F564C]/60 hover:text-[#c5a059] transition-colors"
               onClick={() => setLightbox(null)}
             >
               <X size={28} />
@@ -264,10 +264,10 @@ export default function BarraPage() {
                 className="w-full rounded-sm object-cover max-h-[70vh]"
               />
               <div className="mt-5">
-                <h3 className="font-serif text-xl text-[#f5f5f1] mb-2">
+                <h3 className="font-serif text-xl text-[#2A241D / #5F564C] mb-2">
                   {lightbox.title}
                 </h3>
-                <p className="text-[#f5f5f1]/55 font-light">
+                <p className="text-[#2A241D / #5F564C]/55 font-light">
                   {lightbox.description}
                 </p>
               </div>

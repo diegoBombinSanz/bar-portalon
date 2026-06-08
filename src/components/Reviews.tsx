@@ -4,7 +4,7 @@ import { restaurantData } from "../data/restaurant";
 
 export default function Reviews() {
   return (
-    <section className="relative overflow-hidden bg-[#0a0a0a] py-24">
+    <section className="relative overflow-hidden bg-[#EFE9DF] py-24">
       <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#800020]/10 via-transparent to-transparent" />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
@@ -12,7 +12,7 @@ export default function Reviews() {
           <Quote size={32} aria-hidden="true" />
         </div>
 
-        <h2 className="mb-20 font-serif text-3xl text-[#f5f5f1] md:text-5xl">
+        <h2 className="mb-20 font-serif text-3xl text-[#2A241D] md:text-5xl">
           Lo que dicen nuestros clientes
         </h2>
 
@@ -20,7 +20,7 @@ export default function Reviews() {
           {restaurantData.reviews.map((review) => (
             <article
               key={review.user}
-              className="group relative border border-white/10 bg-white/[0.03] p-10"
+              className="group relative border border-white/10 bg-white p-10"
             >
               <div
                 className="mb-6 flex gap-1"
@@ -37,7 +37,7 @@ export default function Reviews() {
                   />
                 ))}
               </div>
-              <p className="mb-8 text-xl font-light italic leading-relaxed text-[#f5f5f1]/80">
+              <p className="mb-8 text-xl font-light italic leading-relaxed text-[#2A241D]/80">
                 "{review.text}"
               </p>
               <div className="flex items-center justify-between">
@@ -51,7 +51,7 @@ export default function Reviews() {
         </div>
 
         <div className="mt-20 flex flex-col items-center">
-          <p className="mb-6 text-xs uppercase tracking-widest text-[#f5f5f1]/70">
+          <p className="mb-6 text-xs uppercase tracking-widest text-[#2A241D]/70">
             Basado en opiniones reales en Google y TripAdvisor
           </p>
           <div className="flex items-center gap-4 text-white/70">

@@ -9,14 +9,14 @@ export default function CodDays() {
   return (
     <section
       id="bacalao"
-      className="relative overflow-hidden border-y border-[#c5a059]/20 bg-[#0f0f0f] py-24"
+      className="relative overflow-hidden border-y border-[#c5a059]/20 bg-[#EFE9DF] py-24"
     >
       <div className="pointer-events-none absolute left-10 top-10 hidden select-none font-serif text-[10rem] text-white/[0.02] lg:block">
         BACALAO
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <div className="flex flex-col items-center gap-12 border border-[#c5a059]/30 bg-[#1a1a1a] p-8 md:flex-row md:p-16">
+        <div className="flex flex-col items-center gap-12 border border-[#c5a059]/30 bg-[#FFFFFF] p-8 md:flex-row md:p-16">
           <div className="relative w-full md:w-1/2">
             <div className="group relative aspect-[4/5] overflow-hidden">
               <img
@@ -43,11 +43,11 @@ export default function CodDays() {
             <span className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#c5a059]">
               <Calendar size={14} aria-hidden="true" /> {codDaysConfig.dates}
             </span>
-            <h2 className="mb-6 font-serif text-3xl leading-tight text-[#f5f5f1] md:text-5xl">
+            <h2 className="mb-6 font-serif text-3xl leading-tight text-[#5F564C] md:text-5xl">
               {codDaysConfig.title}
             </h2>
 
-            <p className="mb-8 text-lg font-light italic leading-relaxed text-[#f5f5f1]/70">
+            <p className="mb-8 text-lg font-light italic leading-relaxed text-[#2A241D]/70">
               {codDaysStatus === "COMING_SOON"
                 ? codDaysConfig.teaser
                 : codDaysStatus === "ACTIVE"
@@ -59,7 +59,7 @@ export default function CodDays() {
               {codDaysConfig.featuredPlates.map((plate) => (
                 <div
                   key={plate}
-                  className="flex items-center gap-3 border-b border-white/5 pb-2 text-sm font-light text-[#f5f5f1]/90"
+                  className="flex items-center gap-3 border-b border-white/5 pb-2 text-sm font-light text-[#5F564C]/90"
                 >
                   <Award
                     size={14}
@@ -84,7 +84,7 @@ export default function CodDays() {
             {/* Enlace a ediciones anteriores */}
             <a
               href="/antiguos-eventos"
-              className="mt-5 inline-flex items-center gap-2 text-[#f5f5f1]/40 hover:text-[#c5a059] transition-colors text-xs uppercase tracking-widest"
+              className="mt-5 inline-flex items-center gap-2 text-[#5F564C]/40 hover:text-[#c5a059] transition-colors text-xs uppercase tracking-widest"
             >
               <ArrowRight size={12} />
               Ver ediciones anteriores

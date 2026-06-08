@@ -17,7 +17,7 @@ export default function InnerPageLayout({
   backHref = "/",
 }: InnerPageLayoutProps) {
   return (
-    <div className="bg-[#0a0a0a] text-[#f5f5f1] min-h-screen">
+    <div className="bg-[#F7F4EF] text-[#2A241D] min-h-screen">
       <Navbar />
 
       {/* Back button — fixed under navbar */}
@@ -25,7 +25,7 @@ export default function InnerPageLayout({
         <div className="max-w-7xl mx-auto px-6">
           <a
             href={backHref}
-            className="pointer-events-auto inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[#f5f5f1]/50 hover:text-[#c5a059] transition-colors py-3 group"
+            className="pointer-events-auto inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-[#2A241D]/50 hover:text-[#c5a059] transition-colors py-3 group"
           >
             <ArrowLeft
               size={14}

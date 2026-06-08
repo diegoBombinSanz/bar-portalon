@@ -62,17 +62,17 @@ export default function MapSection() {
   return (
     <section
       id="contacto"
-      className="bg-[#0d0d0d] pb-0 pt-24"
+      className="bg-[#F7F4EF] pb-0 pt-24"
       aria-label="Ubicación y contacto"
     >
       <div className="mx-auto max-w-7xl px-6 pb-16 text-center">
         <p className="mb-4 text-xs uppercase tracking-[0.3em] text-[#c5a059]">
           Encuéntranos
         </p>
-        <h2 className="mb-6 font-serif text-4xl leading-tight text-[#f5f5f1] md:text-5xl">
+        <h2 className="mb-6 font-serif text-4xl leading-tight text-[#2A241D] md:text-5xl">
           En el corazón de Roa
         </h2>
-        <p className="mx-auto max-w-xl text-base leading-relaxed text-[#f5f5f1]/55">
+        <p className="mx-auto max-w-xl text-base leading-relaxed text-[#2A241D]/55">
           Junto a la histórica Plaza Mayor de Roa, a pasos del Ayuntamiento y
           con vistas al corazón de la Ribera del Duero burgalesa.
         </p>
@@ -85,19 +85,19 @@ export default function MapSection() {
             return (
               <article
                 key={item.label}
-                className="flex flex-col gap-3 rounded-sm border border-white/10 bg-white/[0.025] p-6 transition-colors hover:border-[#c5a059]/30"
+                className="flex flex-col gap-3 rounded-sm border border-white/10 bg-white p-6 transition-colors hover:border-[#c5a059]/30"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c5a059]/30">
                   <Icon size={18} color="#c5a059" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-[#f5f5f1]/70">
+                  <p className="mb-1 text-[10px] uppercase tracking-[0.25em] text-[#2A241D]/70">
                     {item.label}
                   </p>
-                  <p className="font-serif text-lg text-[#f5f5f1]">
+                  <p className="font-serif text-lg text-[#2A241D]">
                     {item.value}
                   </p>
-                  <p className="text-sm text-[#f5f5f1]/50">{item.sub}</p>
+                  <p className="text-sm text-[#2A241D]/50">{item.sub}</p>
                 </div>
                 {item.href && item.linkText && (
                   <a
@@ -116,7 +116,7 @@ export default function MapSection() {
       </div>
 
       <div ref={mapRef} className="relative h-[420px] w-full bg-[#151515]">
-        <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-16 bg-gradient-to-b from-[#0d0d0d] to-transparent" />
+        <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 h-16 bg-gradient-to-b from-[#F7F4EF] to-transparent" />
 
         {shouldLoadMap ? (
           <iframe

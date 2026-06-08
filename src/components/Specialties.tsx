@@ -33,13 +33,13 @@ const specialties = [
 
 export default function Specialties() {
   return (
-    <section id="especialidades" className="overflow-hidden bg-[#f5f5f1] py-24">
+    <section id="especialidades" className="overflow-hidden bg-[#F7F4EF] py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-20 text-center">
           <span className="mb-4 block text-xs font-bold uppercase tracking-[0.3em] text-[#800020]">
             Nuestros Imprescindibles
           </span>
-          <h2 className="font-serif text-4xl text-[#0f0f0f] md:text-6xl">
+          <h2 className="font-serif text-4xl text-[#2A241D] md:text-6xl">
             Sabor y Producto
           </h2>
           <div className="mx-auto mt-8 h-px w-24 bg-[#c5a059]" />
@@ -61,10 +61,10 @@ export default function Specialties() {
                 />
                 <div className="absolute inset-0 bg-black/20 transition-colors duration-300 group-hover:bg-transparent" />
               </div>
-              <h3 className="mb-4 font-serif text-2xl text-[#0f0f0f] transition-colors group-hover:text-[#800020]">
+              <h3 className="mb-4 font-serif text-2xl text-[#2A241D] transition-colors group-hover:text-[#800020]">
                 {item.name}
               </h3>
-              <p className="font-light leading-relaxed text-[#0f0f0f]/70">
+              <p className="font-light leading-relaxed text-[#2A241D]/70">
                 {item.description}
               </p>
             </article>
@@ -72,7 +72,7 @@ export default function Specialties() {
         </div>
 
         <div className="mt-20 text-center">
-          <p className="mx-auto max-w-2xl text-lg font-light italic text-[#0f0f0f]/60">
+          <p className="mx-auto max-w-2xl text-lg font-light italic text-[#2A241D]/60">
             "No tenemos una carta cerrada, preferimos recomendarte lo mejor de
             nuestra cocina según el producto fresco del día."
           </p>
