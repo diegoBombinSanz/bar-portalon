@@ -2,9 +2,14 @@ import { ArrowRight, Award, Calendar } from "lucide-react";
 
 import bacalado from "../assets/feria-bacalado-perf.jpg";
 import { restaurantData } from "../data/restaurant";
+import type { SiteConfig } from "../data/siteConfig";
 
-export default function CodDays() {
-  const { codDaysStatus, codDaysConfig } = restaurantData;
+type CodDaysProps = {
+  config?: SiteConfig;
+};
+
+export default function CodDays({ config }: CodDaysProps) {
+  const { codDaysStatus, codDaysConfig } = config?.jornadas ?? restaurantData;
 
   return (
     <section
@@ -82,13 +87,15 @@ export default function CodDays() {
             </a>
 
             {/* Enlace a ediciones anteriores */}
-            <a
-              href="/antiguos-eventos"
-              className="mt-5 inline-flex items-center gap-2 text-[#5F564C]/40 hover:text-[#c5a059] transition-colors text-xs uppercase tracking-widest"
-            >
-              <ArrowRight size={12} />
-              Ver ediciones anteriores
-            </a>
+            {config?.eventosAnteriores?.eventosAnterioresVisible && (
+              <a
+                href="/antiguos-eventos"
+                className="mt-5 inline-flex items-center gap-2 text-[#5F564C]/40 hover:text-[#c5a059] transition-colors text-xs uppercase tracking-widest"
+              >
+                <ArrowRight size={12} />
+                Ver ediciones anteriores
+              </a>
+            )}
           </div>
         </div>
       </div>

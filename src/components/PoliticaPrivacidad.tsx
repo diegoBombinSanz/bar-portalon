@@ -1,8 +1,15 @@
 import { ArrowLeft, MapPin } from "lucide-react";
 
 import { restaurantData } from "../data/restaurant";
+import type { SiteConfig } from "../data/siteConfig";
 
-export default function PrivacyPage() {
+type PrivacyPageProps = {
+  config?: SiteConfig;
+};
+
+export default function PrivacyPage({ config }: PrivacyPageProps) {
+  const mapsUrl = config?.contact?.googleMapsUrl ?? restaurantData.location.googleMapsUrl;
+
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-24 text-[#f5f5f1]">
       <div className="mx-auto max-w-4xl space-y-10">
@@ -34,7 +41,7 @@ export default function PrivacyPage() {
           </p>
 
           <a
-            href={restaurantData.location.googleMapsUrl}
+            href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex max-w-md gap-2 text-white/85 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"

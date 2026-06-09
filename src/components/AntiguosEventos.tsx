@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, Award } from "lucide-react";
 import InnerPageLayout from "./InnerPageLayout";
 import OptimizedImage from "./OptimizedImage";
+import type { SiteConfig } from "../data/siteConfig";
+
+type AntiguosEventosPageProps = {
+  config?: SiteConfig;
+};
 
 // Datos de ediciones pasadas — añadir nuevas cada año
 const ediciones = [
@@ -114,11 +119,11 @@ const ediciones = [
 
 type Edicion = (typeof ediciones)[number];
 
-export default function AntiguosEventosPage() {
+export default function AntiguosEventosPage({ config }: AntiguosEventosPageProps) {
   const [selected, setSelected] = useState<Edicion | null>(null);
 
   return (
-    <InnerPageLayout backLabel="Volver al inicio">
+    <InnerPageLayout config={config} backLabel="Volver al inicio">
       {/* Header */}
       <section className="pt-12 pb-16 max-w-7xl mx-auto px-6">
         <motion.p

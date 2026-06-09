@@ -10,6 +10,7 @@ import {
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
+import { defaultSiteConfig, type SiteConfig } from "./data/siteConfig";
 
 const ExperienceSplit = lazy(() => import("./components/ExperienceSplit"));
 const CodDays = lazy(() => import("./components/CodDays"));
@@ -24,6 +25,7 @@ const BarraPage = lazy(() => import("./components/Barra"));
 const GaleriaPage = lazy(() => import("./components/Galeria"));
 const EntrevinosPage = lazy(() => import("./components/Entrevinos"));
 const AntiguosEventosPage = lazy(() => import("./components/AntiguosEventos"));
+const AdminPage = lazy(() => import("./ConfigStatusPage"));
 
 const siteUrl = "https://bar-portalon-roa.com";
 
@@ -61,6 +63,10 @@ const routeSeo: Record<string, { title: string; description: string }> = {
     title: "Aviso legal | Bar El Portalón",
     description: "Aviso legal de Bar El Portalón.",
   },
+  "/admin": {
+    title: "Panel de administración | Bar El Portalón",
+    description: "Acceso al panel de administración de Bar El Portalón.",
+  }
 };
 
 type DeferredSectionProps = {
@@ -168,9 +174,11 @@ function setMeta(name: string, content: string, property = false) {
   element.content = content;
 }
 
-function useSeo(pathname: string) {
+function useSeo(pathname: string, config: SiteConfig) {
   useEffect(() => {
     const seo = routeSeo[pathname] ?? routeSeo["/"];
+    const title = pathname === "/" ? config.meta.homeTitle || seo.title : seo.title;
+    const description = pathname === "/" ? config.meta.homeDescription || seo.description : seo.description;
     const canonicalUrl = `${siteUrl}${pathname === "/" ? "/" : pathname}`;
     let canonical = document.head.querySelector<HTMLLinkElement>(
       'link[rel="canonical"]',
@@ -182,15 +190,15 @@ function useSeo(pathname: string) {
       document.head.appendChild(canonical);
     }
 
-    document.title = seo.title;
+    document.title = title;
     canonical.href = canonicalUrl;
-    setMeta("description", seo.description);
-    setMeta("og:title", seo.title, true);
-    setMeta("og:description", seo.description, true);
+    setMeta("description", description);
+    setMeta("og:title", title, true);
+    setMeta("og:description", description, true);
     setMeta("og:url", canonicalUrl, true);
-    setMeta("twitter:title", seo.title);
-    setMeta("twitter:description", seo.description);
-  }, [pathname]);
+    setMeta("twitter:title", title);
+    setMeta("twitter:description", description);
+  }, [pathname, config.meta.homeTitle, config.meta.homeDescription]);
 }
 
 function ExperienceFallback() {
@@ -223,76 +231,93 @@ function PageFallback() {
   return <div className="min-h-screen bg-[#0a0a0a]" aria-hidden="true" />;
 }
 
-function Home() {
+function Home({ config }: { config: SiteConfig }) {
+  const isVisible = (id: string) =>
+    config.sections.find((section) => section.id === id)?.visible ?? true;
+
   return (
     <div className="bg-black text-[#f5f5f1] selection:bg-[#c5a059] selection:text-black">
-      <Navbar />
+      <Navbar config={config} />
 
       <main>
-        <Hero />
+        <Hero banner={config.banner} />
 
-        <DeferredSection
-          fallback={<ExperienceFallback />}
-          rootMargin="1200px 0px"
-        >
-          <ExperienceSplit />
-        </DeferredSection>
+        {isVisible("experienceSplit") && (
+          <DeferredSection
+            fallback={<ExperienceFallback />}
+            rootMargin="1200px 0px"
+          >
+            <ExperienceSplit config={config} />
+          </DeferredSection>
+        )}
 
-        <DeferredSection
-          fallback={
-            <SectionFallback
-              id="bacalao"
-              className="min-h-[640px] bg-[#0f0f0f]"
-            />
-          }
-        >
-          <CodDays />
-        </DeferredSection>
+        {isVisible("codDays") && (
+          <DeferredSection
+            fallback={
+              <SectionFallback
+                id="bacalao"
+                className="min-h-[640px] bg-[#0f0f0f]"
+              />
+            }
+          >
+            <CodDays config={config} />
+          </DeferredSection>
+        )}
 
-        <DeferredSection
-          fallback={
-            <SectionFallback
-              id="especialidades"
-              className="min-h-[960px] bg-[#f5f5f1]"
-            />
-          }
-        >
-          <Specialties />
-        </DeferredSection>
+        {isVisible("specialties") && (
+          <DeferredSection
+            fallback={
+              <SectionFallback
+                id="especialidades"
+                className="min-h-[960px] bg-[#f5f5f1]"
+              />
+            }
+          >
+            <Specialties />
+          </DeferredSection>
+        )}
 
-        <DeferredSection
-          fallback={<SectionFallback className="min-h-[760px] bg-[#0a0a0a]" />}
-        >
-          <Reviews />
-        </DeferredSection>
+        {isVisible("reviews") && (
+          <DeferredSection
+            fallback={<SectionFallback className="min-h-[760px] bg-[#0a0a0a]" />}
+          >
+            <Reviews />
+          </DeferredSection>
+        )}
 
-        <DeferredSection
-          fallback={
-            <SectionFallback
-              id="galeria"
-              className="min-h-[520px] bg-[#0a0a0a]"
-            />
-          }
-        >
-          <GaleriaTeaser />
-        </DeferredSection>
+        {isVisible("galeriaTeaser") && (
+          <DeferredSection
+            fallback={
+              <SectionFallback
+                id="galeria"
+                className="min-h-[520px] bg-[#0a0a0a]"
+              />
+            }
+          >
+            <GaleriaTeaser />
+          </DeferredSection>
+        )}
 
-        {/* Entrevinos de Roa — marca de vino */}
-        <DeferredSection
-          fallback={<SectionFallback className="min-h-[640px] bg-[#0d0d0d]" />}
-        >
-          <EntrevinosTeaser />
-        </DeferredSection>
-        <DeferredSection
-          fallback={
-            <SectionFallback
-              id="contacto"
-              className="min-h-[760px] bg-[#0d0d0d]"
-            />
-          }
-        >
-          <MapSection />
-        </DeferredSection>
+        {isVisible("entrevinosTeaser") && (
+          <DeferredSection
+            fallback={<SectionFallback className="min-h-[640px] bg-[#0d0d0d]" />}
+          >
+            <EntrevinosTeaser />
+          </DeferredSection>
+        )}
+
+        {isVisible("mapSection") && (
+          <DeferredSection
+            fallback={
+              <SectionFallback
+                id="contacto"
+                className="min-h-[760px] bg-[#0d0d0d]"
+              />
+            }
+          >
+            <MapSection />
+          </DeferredSection>
+        )}
       </main>
 
       <Footer />
@@ -302,12 +327,40 @@ function Home() {
 
 export default function App() {
   const pathname = usePathname();
-  useSeo(pathname);
+  const [config, setConfig] = useState<SiteConfig>(defaultSiteConfig);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/site-config")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch site config");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!cancelled && data?.config) {
+          setConfig(data.config);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setConfig(defaultSiteConfig);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useSeo(pathname, config);
 
   if (pathname === "/politica") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <PrivacyPage />
+        <PrivacyPage config={config} />
       </Suspense>
     );
   }
@@ -315,7 +368,7 @@ export default function App() {
   if (pathname === "/aviso") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <AvisoLegal />
+        <AvisoLegal config={config} />
       </Suspense>
     );
   }
@@ -323,7 +376,7 @@ export default function App() {
   if (pathname === "/barra") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <BarraPage />
+        <BarraPage config={config} />
       </Suspense>
     );
   }
@@ -331,7 +384,7 @@ export default function App() {
   if (pathname === "/galeria") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <GaleriaPage />
+        <GaleriaPage config={config} />
       </Suspense>
     );
   }
@@ -339,7 +392,7 @@ export default function App() {
   if (pathname === "/entrevinos") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <EntrevinosPage />
+        <EntrevinosPage config={config} />
       </Suspense>
     );
   }
@@ -347,10 +400,18 @@ export default function App() {
   if (pathname === "/antiguos-eventos") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <AntiguosEventosPage />
+        <AntiguosEventosPage config={config} />
       </Suspense>
     );
   }
 
-  return <Home />;
+  if (pathname === "/admin") {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <AdminPage />
+      </Suspense>
+    );
+  }
+
+  return <Home config={config} />;
 }

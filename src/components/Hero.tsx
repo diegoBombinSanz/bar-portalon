@@ -1,4 +1,13 @@
-export default function Hero() {
+type HeroBanner = {
+  visible: boolean;
+  message: string;
+};
+
+type HeroProps = {
+  banner?: HeroBanner;
+};
+
+export default function Hero({ banner }: HeroProps) {
   return (
     <section
       id="hero"
@@ -18,6 +27,12 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/85" />
 
       <div className="relative z-10 max-w-4xl px-6 text-center">
+        {banner?.visible ? (
+          <div className="mb-6 inline-flex rounded-full border border-[#c5a059]/30 bg-[#1a1a1a]/90 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#c5a059]">
+            {banner.message}
+          </div>
+        ) : null}
+
         <span className="mb-4 block text-xs font-bold uppercase tracking-[0.3em] text-[#c5a059] md:text-sm">
           Roa, Ribera del Duero
         </span>

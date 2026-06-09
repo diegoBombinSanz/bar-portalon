@@ -5,6 +5,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Wine, MapPin, Grape, Star, ArrowRight } from "lucide-react";
 import InnerPageLayout from "./InnerPageLayout";
 import OptimizedImage from "./OptimizedImage";
+import type { SiteConfig } from "../data/siteConfig";
+
+type EntrevinosPageProps = {
+  config?: SiteConfig;
+};
 
 const vinos = [
   {
@@ -72,7 +77,7 @@ const valores = [
   },
 ];
 
-export default function EntrevinosPage() {
+export default function EntrevinosPage({ config }: EntrevinosPageProps) {
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -81,7 +86,7 @@ export default function EntrevinosPage() {
   const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   return (
-    <InnerPageLayout backLabel="Volver al inicio">
+    <InnerPageLayout config={config} backLabel="Volver al inicio">
       {/* ── HERO ─────────────────────────────────────────── */}
       <section
         ref={heroRef}

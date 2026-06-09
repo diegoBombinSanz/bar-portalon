@@ -1,8 +1,16 @@
 import { ArrowLeft, MapPin } from "lucide-react";
 
 import { restaurantData } from "../data/restaurant";
+import type { SiteConfig } from "../data/siteConfig";
 
-export default function LegalPage() {
+type LegalPageProps = {
+  config?: SiteConfig;
+};
+
+export default function LegalPage({ config }: LegalPageProps) {
+  const mapsUrl = config?.contact?.googleMapsUrl ?? restaurantData.location.googleMapsUrl;
+  const phone = config?.contact?.phone ?? restaurantData.contact.phone;
+
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-6 py-24 text-[#f5f5f1]">
       <div className="mx-auto max-w-4xl space-y-10">
@@ -31,7 +39,7 @@ export default function LegalPage() {
           </p>
 
           <a
-            href={restaurantData.location.googleMapsUrl}
+            href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex max-w-md gap-2 text-white/85 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
@@ -47,7 +55,7 @@ export default function LegalPage() {
           </a>
 
           <p className="text-white/85">
-            Teléfono de contacto: <strong>{restaurantData.contact.phone}</strong>
+            Teléfono de contacto: <strong>{phone}</strong>
             <br />
             Email: <strong>{restaurantData.contact.email}</strong>
           </p>

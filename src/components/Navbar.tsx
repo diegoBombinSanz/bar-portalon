@@ -1,25 +1,39 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { ChevronRight, MapPin, Menu, Phone, X } from "lucide-react";
 import { restaurantData } from "../data/restaurant";
+import type { SiteConfig } from "../data/siteConfig";
 
 const navLinks = [
-  { name: "El Portalón", href: "#hero" },
-  { name: "La Barra", href: "/barra" },
-  { name: "El Restaurante", href: "#restaurante" },
-  { name: "Especialidades", href: "#especialidades" },
-  { name: "Bacalao", href: "#bacalao" },
-  { name: "Galería", href: "/galeria" },
-  { name: "Eventos", href: "/antiguos-eventos" },
-  { name: "Entrevinos", href: "/entrevinos" },
+  { label: "El Portalón", href: "#hero", visible: true },
+  { label: "La Barra", href: "/barra", visible: true },
+  { label: "El Restaurante", href: "#restaurante", visible: true },
+  { label: "Especialidades", href: "#especialidades", visible: true },
+  { label: "Bacalao", href: "#bacalao", visible: true },
+  { label: "Galería", href: "/galeria", visible: true },
+  { label: "Eventos", href: "/antiguos-eventos", visible: true },
+  { label: "Entrevinos", href: "/entrevinos", visible: true },
 ];
 
-const mapsUrl = restaurantData.location.googleMapsUrl;
+const defaultMapsUrl = restaurantData.location.googleMapsUrl;
 
-export default function Navbar() {
+type NavbarProps = {
+  config?: SiteConfig;
+};
+
+export default function Navbar({ config }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const scrollYRef = useRef(0);
   const bodyLockedRef = useRef(false);
+
+  const visibleLinks =
+    config?.nav?.links?.filter((link) => link.visible) ?? navLinks;
+  const desktopLinks = visibleLinks.slice(1);
+  const phone = config?.contact?.phone ?? restaurantData.contact.phone;
+  const phoneHref = phone.startsWith("tel:")
+    ? phone
+    : `tel:${phone.replace(/\s+/g, "")}`;
+  const mapsUrl = config?.contact?.googleMapsUrl ?? defaultMapsUrl;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -121,18 +135,18 @@ export default function Navbar() {
           </a>
 
           <div className="hidden items-center gap-5 lg:flex xl:gap-8">
-            {navLinks.slice(1).map((link) => (
+            {desktopLinks.map((link) => (
               <a
-                key={link.name}
+                key={link.label}
                 href={link.href}
                 onClick={(event) => handleNavClick(event, link.href)}
                 className="whitespace-nowrap text-[11px] uppercase tracking-widest text-[#f5f5f1]/80 transition-colors hover:text-[#c5a059] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] xl:text-xs"
               >
-                {link.name}
+                {link.label}
               </a>
             ))}
             <a
-              href={`tel:+34${restaurantData.contact.phone}`}
+              href={phoneHref}
               className="inline-flex min-h-11 items-center border border-[#c5a059] px-5 py-2 text-[11px] uppercase tracking-widest text-[#c5a059] transition-colors hover:bg-[#c5a059] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] xl:px-6 xl:text-xs"
             >
               Reservar
@@ -176,15 +190,15 @@ export default function Navbar() {
           </div>
 
           <div className="flex-1 overflow-y-auto px-6 py-4">
-            {navLinks.map((link, index) => (
+            {visibleLinks.map((link, index) => (
               <a
-                key={link.name}
+                key={link.label}
                 href={link.href}
                 onClick={(event) => handleNavClick(event, link.href)}
                 className="mobile-menu-link flex items-center justify-between border-b border-white/10 py-5 font-serif text-[clamp(1.5rem,7vw,1.75rem)] text-[#f5f5f1] no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
                 style={{ animationDelay: `${60 + index * 45}ms` }}
               >
-                {link.name}
+                {link.label}
                 <ChevronRight size={18} color="#c5a059" aria-hidden="true" />
               </a>
             ))}
@@ -192,7 +206,7 @@ export default function Navbar() {
 
           <div className="flex flex-col gap-3 px-6 pb-11 pt-5">
             <a
-              href={`tel:+34${restaurantData.contact.phone}`}
+              href={phoneHref}
               className="inline-flex min-h-11 items-center justify-center gap-2 bg-[#c5a059] p-4 text-xs font-bold uppercase tracking-[0.12em] text-black"
             >
               <Phone size={16} aria-hidden="true" />

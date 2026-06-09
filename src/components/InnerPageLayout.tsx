@@ -4,21 +4,24 @@ import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import type { SiteConfig } from "../data/siteConfig";
 
 type InnerPageLayoutProps = {
   children: ReactNode;
   backLabel?: string;
   backHref?: string;
+  config?: SiteConfig;
 };
 
 export default function InnerPageLayout({
   children,
   backLabel = "Volver al inicio",
   backHref = "/",
+  config,
 }: InnerPageLayoutProps) {
   return (
     <div className="bg-[#F7F4EF] text-[#2A241D] min-h-screen">
-      <Navbar />
+      <Navbar config={config} />
 
       {/* Back button — fixed under navbar */}
       <div className="fixed top-[76px] left-0 right-0 z-40 pointer-events-none">

@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import InnerPageLayout from "./InnerPageLayout";
 import OptimizedImage from "./OptimizedImage";
+import type { SiteConfig } from "../data/siteConfig";
+
+type GaleriaPageProps = {
+  config?: SiteConfig;
+};
 
 const PAGE_SIZE = 8;
 
@@ -107,7 +112,7 @@ const fotos = [
 
 type Foto = (typeof fotos)[number];
 
-export default function GaleriaPage() {
+export default function GaleriaPage({ config }: GaleriaPageProps) {
   const [catActiva, setCatActiva] = useState<Categoria>("Todo");
   const [lightbox, setLightbox] = useState<Foto | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -135,7 +140,7 @@ export default function GaleriaPage() {
   };
 
   return (
-    <InnerPageLayout backLabel="Volver al inicio">
+    <InnerPageLayout config={config} backLabel="Volver al inicio">
       {/* Header */}
       <section className="pt-12 pb-14 max-w-7xl mx-auto px-6">
         <motion.p

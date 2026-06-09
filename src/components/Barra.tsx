@@ -7,10 +7,14 @@ import InnerPageLayout from "./InnerPageLayout";
 import OptimizedImage from "./OptimizedImage";
 import { barItems } from "../data/barra";
 import { restaurantData } from "../data/restaurant";
+import type { SiteConfig } from "../data/siteConfig";
 import pinchos from "../assets/re29-meals-Bar-El-Portalon-2025-03.jpg";
 import type { AllergenKey } from "./AllergenBadges";
 import AllergenBadges from "./AllergenBadges";
 
+type BarraPageProps = {
+  config?: SiteConfig;
+};
 
 type BarItem = (typeof barItems)[number];
 
@@ -28,11 +32,11 @@ const pillars = [
   },
 ];
 
-export default function BarraPage() {
+export default function BarraPage({ config }: BarraPageProps) {
   const [lightbox, setLightbox] = useState<BarItem | null>(null);
 
   return (
-    <InnerPageLayout backLabel="Volver al inicio">
+    <InnerPageLayout config={config} backLabel="Volver al inicio">
       {/* Hero Header */}
       <section className="relative h-[55vh] flex items-end overflow-hidden">
         <OptimizedImage
