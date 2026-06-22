@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import { defaultSiteConfig, type SiteConfig } from "./data/siteConfig";
+import ConfigEditorPage from "./AdminStatusPage";
 
 const ExperienceSplit = lazy(() => import("./components/ExperienceSplit"));
 const CodDays = lazy(() => import("./components/CodDays"));
@@ -409,6 +410,14 @@ export default function App() {
     return (
       <Suspense fallback={<PageFallback />}>
         <AdminPage />
+      </Suspense>
+    );
+  }
+
+  if (pathname === "/settings") {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <ConfigEditorPage />
       </Suspense>
     );
   }

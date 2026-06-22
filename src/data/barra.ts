@@ -1,3 +1,9 @@
+import pinchos from "../assets/hero-portalon-optimized.jpg"
+import calientes from "../assets/re_pincho_gambas.jpg"
+import fríos from "../assets/re_pincho_navaja.jpg"
+import temporada from "../assets/re_pincho_bacalao.jpg"
+import caseros from "../assets/re_pincho_caviar.jpg"
+
 export const barItems = [
   {
     id: 1,
@@ -5,7 +11,7 @@ export const barItems = [
     description:
       "Nuestra barra es el punto de encuentro de vecinos, visitantes y amantes del buen tapeo. Cada día se llena de pinchos recién elaborados, conversaciones entre amigos y el ambiente auténtico de un bar de siempre. Un lugar donde disfrutar sin prisas de la gastronomía tradicional.",
     image:
-      "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg",
+      pinchos,
     wide: true,
   },
   {
@@ -14,7 +20,7 @@ export const barItems = [
     description:
       "Tortillas jugosas, croquetas caseras, cazuelitas y especialidades recién salidas de cocina. Elaboraciones artesanas que se sirven en su mejor momento para disfrutar de todo su sabor.",
     image:
-      "https://images.pexels.com/photos/5638732/pexels-photo-5638732.jpeg",
+      calientes,
     wide: false,
     allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
@@ -24,7 +30,7 @@ export const barItems = [
     description:
       "Una selección de pinchos preparados diariamente con ingredientes frescos y recetas de siempre. Opciones ligeras, sabrosas y perfectas para acompañar un vino de la Ribera del Duero.",
     image:
-      "https://images.pexels.com/photos/4552131/pexels-photo-4552131.jpeg",
+      fríos,
     wide: false,
     allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
@@ -34,7 +40,7 @@ export const barItems = [
     description:
       "Nuestra barra evoluciona con cada estación. Trabajamos con productos de temporada para ofrecer propuestas diferentes durante todo el año, respetando el sabor y la calidad de cada ingrediente.",
     image:
-      "https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg",
+      temporada,
     wide: false,
     allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },
@@ -44,7 +50,7 @@ export const barItems = [
     description:
       "Detrás de cada pincho hay tiempo, dedicación y cocina de verdad. Apostamos por recetas propias y elaboración diaria para que cada bocado refleje el carácter y la tradición de El Portalón.",
     image:
-      "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg",
+      caseros,
     wide: false,
     allergens: ["gluten", "huevos", "lacteos","soja","frutos_cascara","moluscos"],
   },

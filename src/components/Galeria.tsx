@@ -7,6 +7,17 @@ import InnerPageLayout from "./InnerPageLayout";
 import OptimizedImage from "./OptimizedImage";
 import type { SiteConfig } from "../data/siteConfig";
 
+import bacalado from "../assets/cocochas-perf.jpg";
+import casa1 from "../assets/re_casa_1.jpg";
+import casa2 from "../assets/re_casa_2.jpg";
+import gambas from "../assets/re_gambas.jpg";
+import pincho_bacalao from "../assets/re_pincho_bacalao.jpg";
+import pincho_caviar from "../assets/re_pincho_caviar.jpg";
+import pincho_gambas from "../assets/re_pincho_gambas.jpg";
+import pincho_guindilla from "../assets/re_pincho_guindilla.jpg";
+import pincho_navaja from "../assets/re_pincho_navaja.jpg";
+import zamburiñas from "../assets/re_zamburinas.jpg";
+
 type GaleriaPageProps = {
   config?: SiteConfig;
 };
@@ -19,6 +30,7 @@ const categorias = [
   "La Barra",
   "Especialidades",
   "Ambiente",
+  "Para llevar",
 ];
 
 type Categoria = (typeof categorias)[number];
@@ -26,88 +38,73 @@ type Categoria = (typeof categorias)[number];
 const fotos = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1200&auto=format&fit=crop",
-    alt: "El Portalón de noche",
-    cat: "El Local",
+    src: casa1,
+    alt: "Para llevar",
+    cat: "Para llevar",
+    cols: 2,
+  },{
+    id: 2,
+    src: casa2,
+    alt: "Para llevar",
+    cat: "Para llevar",
     cols: 2,
   },
   {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop",
-    alt: "Terraza Plaza Mayor",
-    cat: "El Local",
+    id: 3,
+    src: gambas,
+    alt: "Gambas frescas",
+    cat: "La Barra",
     cols: 1,
   },
   {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1599481238640-4c1288750d7a?q=80&w=800&auto=format&fit=crop",
+    id: 4,
+    src: bacalado,
     alt: "Bacalao tradicional",
     cat: "Especialidades",
     cols: 1,
   },
   {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1541510912111-99bc45946974?q=80&w=1200&auto=format&fit=crop",
-    alt: "La barra",
-    cat: "La Barra",
-    cols: 2,
-  },
-  {
     id: 5,
-    src: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=800&auto=format&fit=crop",
-    alt: "Kokotxas al pil-pil",
+    src: pincho_bacalao,
+    alt: "Bacalao tradicional",
     cat: "Especialidades",
     cols: 1,
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=800&auto=format&fit=crop",
-    alt: "Ambiente de restaurante",
-    cat: "Ambiente",
-    cols: 1,
-  },
-  {
-    id: 7,
-    src: "https://images.unsplash.com/photo-1559740064-06724f8e5921?q=80&w=800&auto=format&fit=crop",
-    alt: "Gambas frescas",
-    cat: "Especialidades",
-    cols: 1,
-  },
-  {
-    id: 8,
-    src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop",
-    alt: "Sala del restaurante",
-    cat: "El Local",
-    cols: 2,
-  },
-  {
-    id: 9,
-    src: "https://images.unsplash.com/photo-1550966842-2849a2220822?q=80&w=800&auto=format&fit=crop",
-    alt: "Mesa preparada",
-    cat: "Ambiente",
-    cols: 1,
-  },
-  {
-    id: 10,
-    src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop",
-    alt: "Café y sobremesa",
+    src: pincho_caviar,
+    alt: "Caviar de esturión",
     cat: "La Barra",
     cols: 1,
   },
   {
-    id: 11,
-    src: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=800&auto=format&fit=crop",
-    alt: "Detalle de plato",
-    cat: "Especialidades",
+    id: 7,
+    src: pincho_gambas,
+    alt: "Gambas frescas",
+    cat: "La Barra",
     cols: 1,
   },
   {
-    id: 12,
-    src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop",
-    alt: "Plato principal",
-    cat: "Especialidades",
+    id: 8,
+    src: pincho_guindilla,
+    alt: "Pincho de guindilla",
+    cat: "La Barra",
     cols: 1,
   },
+  {
+    id: 9,
+    src: pincho_navaja,
+    alt: "Pincho de navaja",
+    cat: "La Barra",
+    cols: 2,
+  },
+  {
+    id: 10,
+    src: zamburiñas,
+    alt: "Zamburiñas a la plancha",
+    cat: "Especialidades",
+    cols: 1,
+  }
 ];
 
 type Foto = (typeof fotos)[number];
