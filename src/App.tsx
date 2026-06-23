@@ -30,8 +30,6 @@ const AntiguosEventosPage = lazy(() => import("./pages/AntiguosEventos"));
 const AdminPage = lazy(() => import("./ConfigStatusPage"));
 const LoginPage = lazy(() => import("./pages/Login"));
 
-const siteUrl = "https://bar-portalon-roa.com";
-
 const routeSeo: Record<string, { title: string; description: string }> = {
   "/": {
     title: "Bar El Portalón | Restaurante en Roa, Ribera del Duero",
@@ -188,6 +186,7 @@ function setMeta(name: string, content: string, property = false) {
 function useSeo(pathname: string, config: SiteConfig) {
   console.log("useSeo called with pathname:", pathname, "and config:", config);
   useEffect(() => {
+    const siteUrl = config.meta.homeUrl || "https://bar-portalon-roa.com";
     const seo = routeSeo[pathname] ?? routeSeo["/"];
     const title = pathname === "/" ? config.meta.homeTitle || seo.title : seo.title;
     const description = pathname === "/" ? config.meta.homeDescription || seo.description : seo.description;

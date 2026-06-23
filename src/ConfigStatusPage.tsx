@@ -73,6 +73,7 @@ type EditableSiteConfig = {
   meta: {
     homeTitle: string;
     homeDescription: string;
+    homeUrl: string;
     [key: string]: unknown;
   };
 };
@@ -622,6 +623,15 @@ export default function ConfigStatusPage() {
               value={config.meta.homeDescription}
               onChange={(event) =>
                 updateField("meta.homeDescription", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Home Url">
+            <textarea
+              className={`${inputClass} min-h-28 resize-y`}
+              value={config.meta.homeUrl}
+              onChange={(event) =>
+                updateField("meta.homeUrl", event.target.value)
               }
             />
           </Field>
