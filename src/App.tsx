@@ -10,7 +10,8 @@ import {
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
-import { defaultSiteConfig, type SiteConfig } from "./data/siteConfig";
+import { type SiteConfig } from "./data/siteConfig";
+import { getSiteConfig } from "./app/api/site-config/route";
 import ConfigEditorPage from "./AdminStatusPage";
 
 const ExperienceSplit = lazy(() => import("./components/ExperienceSplit"));
@@ -176,6 +177,7 @@ function setMeta(name: string, content: string, property = false) {
 }
 
 function useSeo(pathname: string, config: SiteConfig) {
+  console.log("useSeo called with pathname:", pathname, "and config:", config);
   useEffect(() => {
     const seo = routeSeo[pathname] ?? routeSeo["/"];
     const title = pathname === "/" ? config.meta.homeTitle || seo.title : seo.title;
@@ -328,7 +330,7 @@ function Home({ config }: { config: SiteConfig }) {
 
 export default function App() {
   const pathname = usePathname();
-  const [config, setConfig] = useState<SiteConfig>(defaultSiteConfig);
+  const [config, setConfig] = useState<SiteConfig>(getSiteConfig());
 
   useEffect(() => {
     let cancelled = false;
@@ -347,7 +349,7 @@ export default function App() {
       })
       .catch(() => {
         if (!cancelled) {
-          setConfig(defaultSiteConfig);
+          setConfig(getSiteConfig);
         }
       });
 

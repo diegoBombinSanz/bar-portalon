@@ -11,7 +11,8 @@ import {
   RefreshCw,
   Phone,
 } from "lucide-react";
-import { defaultSiteConfig, type SiteConfig } from "./data/siteConfig";
+import { type SiteConfig } from "./data/siteConfig";
+import { getSiteConfig } from "./app/api/site-config/route";
 
 /* =========================
    🔧 NORMALIZACIÓN SEGURA
@@ -22,7 +23,8 @@ function isObject(value: any) {
 }
 
 function normalizeConfig(raw: any): SiteConfig {
-  const base = defaultSiteConfig;
+  const base = getSiteConfig();
+  console.log("normalizeConfig called with raw:", raw, "and base:", base);
 
   return {
     ...base,
