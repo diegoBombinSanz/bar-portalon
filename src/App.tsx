@@ -21,12 +21,12 @@ const Reviews = lazy(() => import("./components/Reviews"));
 const MapSection = lazy(() => import("./components/MapSection"));
 const GaleriaTeaser = lazy(() => import("./components/GaleriaTeaser"));
 const EntrevinosTeaser = lazy(() => import("./components/EntrevinosTeaser"));
-const PrivacyPage = lazy(() => import("./components/PoliticaPrivacidad"));
-const AvisoLegal = lazy(() => import("./components/AvisoLegal"));
+const PrivacyPage = lazy(() => import("./pages/PoliticaPrivacidad"));
+const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const BarraPage = lazy(() => import("./components/Barra"));
-const GaleriaPage = lazy(() => import("./components/Galeria"));
-const EntrevinosPage = lazy(() => import("./components/Entrevinos"));
-const AntiguosEventosPage = lazy(() => import("./components/AntiguosEventos"));
+const GaleriaPage = lazy(() => import("./pages/Galeria"));
+const EntrevinosPage = lazy(() => import("./pages/Entrevinos"));
+const AntiguosEventosPage = lazy(() => import("./pages/AntiguosEventos"));
 const AdminPage = lazy(() => import("./ConfigStatusPage"));
 const LoginPage = lazy(() => import("./pages/Login"));
 

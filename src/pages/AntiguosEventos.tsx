@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, Award } from "lucide-react";
-import InnerPageLayout from "./InnerPageLayout";
-import OptimizedImage from "./OptimizedImage";
+import InnerPageLayout from "../components/InnerPageLayout";
+import OptimizedImage from "../components/OptimizedImage";
 import type { SiteConfig } from "../data/siteConfig";
 
 type AntiguosEventosPageProps = {

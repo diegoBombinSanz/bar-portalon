@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Wine, MapPin, Grape, Star, ArrowRight } from "lucide-react";
-import InnerPageLayout from "./InnerPageLayout";
-import OptimizedImage from "./OptimizedImage";
+import InnerPageLayout from "../components/InnerPageLayout";
+import OptimizedImage from "../components/OptimizedImage";
 import type { SiteConfig } from "../data/siteConfig";
 
 type EntrevinosPageProps = {

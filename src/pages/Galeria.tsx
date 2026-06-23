@@ -3,8 +3,8 @@
 import { useState, type MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import InnerPageLayout from "./InnerPageLayout";
-import OptimizedImage from "./OptimizedImage";
+import InnerPageLayout from "../components/InnerPageLayout";
+import OptimizedImage from "../components/OptimizedImage";
 import type { SiteConfig } from "../data/siteConfig";
 
 import { categorias } from "../data/gallery";
@@ -64,7 +64,7 @@ export default function GaleriaPage({ config }: GaleriaPageProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08 }}
-          className="text-5xl md:text-7xl font-serif text-[#f5f5f1] leading-tight mb-6"
+          className="text-5xl md:text-7xl font-serif text-[#c5a059] leading-tight mb-6"
         >
           Galería
         </motion.h1>
@@ -72,7 +72,7 @@ export default function GaleriaPage({ config }: GaleriaPageProps) {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.16 }}
-          className="text-[#f5f5f1]/50 max-w-xl font-light text-lg"
+          className="text-[#c5a059]/50 max-w-xl font-light text-lg"
         >
           Un vistazo a los rincones, los platos y el ambiente que hacen único al
           Portalón.
@@ -91,7 +91,7 @@ export default function GaleriaPage({ config }: GaleriaPageProps) {
               className={`px-5 py-2 text-[10px] uppercase tracking-widest font-bold border transition-all duration-200 rounded-full ${
                 catActiva === cat
                   ? "bg-[#c5a059] text-black border-[#c5a059]"
-                  : "border-white/15 text-[#f5f5f1]/50 hover:border-[#c5a059]/50 hover:text-[#f5f5f1]"
+                  : "border-white/15 text-[#c5a059]/50 hover:border-[#c5a059]/50 hover:text-[#c5a059]"
               }`}
             >
               {cat}
