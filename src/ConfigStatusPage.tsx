@@ -4,16 +4,12 @@ import { useEffect, useState } from "react";
 import type { ComponentType, ReactNode } from "react";
 import { supabase } from "./lib/supabaseClient";
 import {
-  LayoutDashboard,
   Globe,
   Navigation,
-  Phone,
-  Calendar,
-  Megaphone,
-  RefreshCw,
   AlertTriangle,
   FileText,
-  Link2,
+  RefreshCw,
+  Phone,
 } from "lucide-react";
 import { defaultSiteConfig, type SiteConfig } from "./data/siteConfig";
 
@@ -123,7 +119,6 @@ export default function ConfigStatusPage() {
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
 
   const loadConfig = async () => {
     setLoading(true);
@@ -141,13 +136,7 @@ export default function ConfigStatusPage() {
 
       setConfig(normalized);
 
-      setUpdatedAt(
-        new Date().toLocaleString("es-ES", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })
-      );
+      
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
       setConfig(null);
@@ -192,12 +181,12 @@ export default function ConfigStatusPage() {
 
   const contactEntries = config.contact ? Object.entries(config.contact) : [];
 
-  const jornada = {
-    status: (config.jornadas as any)?.status ?? "PAST",
-    title: (config.jornadas as any)?.title ?? "No definido",
-    dates: (config.jornadas as any)?.dates ?? "No definido",
-    featuredPlates: (config.jornadas as any)?.featuredPlates ?? [],
-  };
+  // const jornada = {
+  //   status: (config.jornadas as any)?.status ?? "PAST",
+  //   title: (config.jornadas as any)?.title ?? "No definido",
+  //   dates: (config.jornadas as any)?.dates ?? "No definido",
+  //   featuredPlates: (config.jornadas as any)?.featuredPlates ?? [],
+  // };
 
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#2A241D]">
