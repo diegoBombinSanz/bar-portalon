@@ -2,72 +2,157 @@
 
 import { useEffect, useState } from "react";
 import type { ComponentType, ReactNode } from "react";
+import {
+  AlertTriangle,
+  Calendar,
+  CheckCircle2,
+  Eye,
+  FileText,
+  Globe,
+  LogOut,
+  Megaphone,
+  Navigation,
+  Phone,
+  Plus,
+  RefreshCw,
+  Save,
+  Trash2,
+} from "lucide-react";
+import { defaultSiteConfig } from "./data/siteConfig";
 import { supabase } from "./lib/supabaseClient";
 import { useAuth } from "./lib/useAuth";
-import {
-  Globe,
-  Navigation,
-  AlertTriangle,
-  FileText,
-  RefreshCw,
-  Phone,
-  LogOut,
-} from "lucide-react";
-import { type SiteConfig } from "./data/siteConfig";
-import { getSiteConfig } from "./app/api/site-config/route";
 
-/* =========================
-   🔧 NORMALIZACIÓN SEGURA
-========================= */
+type SectionConfig = {
+  id: string;
+  label: string;
+  visible: boolean;
+};
 
-function isObject(value: any) {
-  return value && typeof value === "object" && !Array.isArray(value);
+type NavLinkConfig = {
+  label: string;
+  href: string;
+  visible: boolean;
+  isPage?: boolean;
+};
+
+type JornadasConfig = {
+  codDaysStatus: string;
+  codDaysConfig: {
+    title: string;
+    dates: string;
+    teaser?: string;
+    activeMessage?: string;
+    pastMessage?: string;
+    featuredPlates?: string[];
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
+type EditableSiteConfig = {
+  id?: string | number;
+  sections: SectionConfig[];
+  nav: {
+    links: NavLinkConfig[];
+  };
+  contact: {
+    phone: string;
+    googleMapsUrl: string;
+    [key: string]: unknown;
+  };
+  banner: {
+    visible: boolean;
+    message: string;
+    [key: string]: unknown;
+  };
+  jornadas: JornadasConfig;
+  eventosAnteriores: {
+    eventosAnterioresVisible: boolean;
+    [key: string]: unknown;
+  };
+  meta: {
+    homeTitle: string;
+    homeDescription: string;
+    [key: string]: unknown;
+  };
+};
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function normalizeConfig(raw: any): SiteConfig {
-  const base = getSiteConfig();
-  console.log("normalizeConfig called with raw:", raw, "and base:", base);
+function safeConfig(raw: unknown): EditableSiteConfig {
+  const base = structuredClone(defaultSiteConfig) as unknown as EditableSiteConfig;
+  const source = isObject(raw) ? raw : {};
+  const nav = isObject(source.nav) ? source.nav : {};
+  const contact = isObject(source.contact) ? source.contact : {};
+  const banner = isObject(source.banner) ? source.banner : {};
+  const jornadas = isObject(source.jornadas) ? source.jornadas : {};
+  const rawEventos = source.eventosAnteriores ?? source.eventos_anteriores;
+  const eventosAnteriores = isObject(rawEventos) ? rawEventos : {};
+  const meta = isObject(source.meta) ? source.meta : {};
+  const codDaysConfig = isObject(jornadas.codDaysConfig)
+    ? jornadas.codDaysConfig
+    : {};
 
   return {
     ...base,
-    ...raw,
-
-    sections: Array.isArray(raw?.sections)
-      ? raw.sections
-      : Array.isArray(raw?.home?.sections)
-      ? raw.home.sections
-      : [],
-
+    ...source,
+    id:
+      typeof source.id === "string" || typeof source.id === "number"
+        ? source.id
+        : undefined,
+    sections: Array.isArray(source.sections)
+      ? (source.sections as SectionConfig[])
+      : base.sections,
     nav: {
       ...base.nav,
-      ...raw?.nav,
-      links: Array.isArray(raw?.nav?.links) ? raw.nav.links : [],
+      ...nav,
+      links: Array.isArray(nav.links)
+        ? (nav.links as NavLinkConfig[])
+        : base.nav.links,
     },
-
-    contact: isObject(raw?.contact) ? raw.contact : {},
-
-    banner: isObject(raw?.banner) ? raw.banner : {},
-
-    jornadas: isObject(raw?.jornadas) ? raw.jornadas : {},
-
-    eventosAnteriores: isObject(raw?.eventos_anteriores)
-      ? raw.eventos_anteriores
-      : {},
-
-    meta: isObject(raw?.meta) ? raw.meta : {},
+    contact: {
+      ...base.contact,
+      ...contact,
+    },
+    banner: {
+      ...base.banner,
+      ...banner,
+    },
+    jornadas: {
+      ...base.jornadas,
+      ...jornadas,
+      codDaysStatus:
+        typeof jornadas.codDaysStatus === "string"
+          ? jornadas.codDaysStatus
+          : base.jornadas.codDaysStatus,
+      codDaysConfig: {
+        ...base.jornadas.codDaysConfig,
+        ...codDaysConfig,
+      },
+    },
+    eventosAnteriores: {
+      ...base.eventosAnteriores,
+      ...eventosAnteriores,
+    },
+    meta: {
+      ...base.meta,
+      ...meta,
+    },
   };
 }
 
-/* =========================
-   UI COMPONENTS (igual)
-========================= */
-
-function Badge({ label, color }: { label: string; color: string }) {
-  return (
-    <span className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${color}`}>
-      {label}
-    </span>
-  );
+function toSupabasePayload(config: EditableSiteConfig) {
+  return {
+    sections: config.sections,
+    nav: config.nav,
+    contact: config.contact,
+    banner: config.banner,
+    jornadas: config.jornadas,
+    eventos_anteriores: config.eventosAnteriores,
+    meta: config.meta,
+  };
 }
 
 function SectionCard({
@@ -80,59 +165,73 @@ function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-3xl border border-[#EFE9DF] bg-white shadow-sm shadow-black/5 overflow-hidden">
-      <div className="flex items-center gap-3 px-6 py-4 bg-[#F7F4EF] border-b border-[#EFE9DF]">
+    <section className="overflow-hidden rounded-2xl border border-[#EFE9DF] bg-white shadow-sm shadow-black/5">
+      <div className="flex items-center gap-3 border-b border-[#EFE9DF] bg-[#F7F4EF] px-6 py-4">
         <Icon size={18} className="text-[#C5A059]" />
         <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#2A241D]">
           {title}
         </h2>
       </div>
-      <div className="p-6">{children}</div>
+      <div className="space-y-4 p-6">{children}</div>
     </section>
   );
 }
 
-function ConfigRow({ label, value }: { label: string; value: ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
   return (
-    <div className="flex justify-between gap-4 border-b border-[#F2EDE5] py-3 last:border-none">
+    <label className="block space-y-2">
       <span className="text-sm font-medium text-[#5F564C]">{label}</span>
-      <span className="max-w-[55%] text-sm text-[#2A241D] break-words">
-        {value}
-      </span>
-    </div>
+      {children}
+    </label>
   );
 }
 
-function SectionFlag({ label, visible }: { label: string; visible: boolean }) {
+function ToggleButton({
+  active,
+  onClick,
+  activeLabel = "Visible",
+  inactiveLabel = "Oculta",
+}: {
+  active: boolean;
+  onClick: () => void;
+  activeLabel?: string;
+  inactiveLabel?: string;
+}) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#EFE9DF] bg-[#F7F4EF] px-4 py-3">
-      <p className="text-sm font-medium text-[#2A241D]">{label}</p>
-      <Badge
-        label={visible ? "Visible" : "Oculta"}
-        color={visible ? "bg-green-100 text-green-800" : "bg-[#EFE9DF] text-[#5F564C]"}
-      />
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+        active ? "bg-green-100 text-green-800" : "bg-[#EFE9DF] text-[#5F564C]"
+      }`}
+    >
+      {active ? activeLabel : inactiveLabel}
+    </button>
   );
 }
 
-/* =========================
-   PAGE
-========================= */
+const inputClass =
+  "w-full rounded-xl border border-[#EFE9DF] px-3 py-2 text-sm outline-none transition focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20";
 
 export default function ConfigStatusPage() {
   const { user } = useAuth();
-  const [config, setConfig] = useState<SiteConfig | null>(null);
+  const [config, setConfig] = useState<EditableSiteConfig | null>(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    window.location.href = "/login";
-  };
+  const [success, setSuccess] = useState(false);
 
   const loadConfig = async () => {
     setLoading(true);
     setError(null);
+    setSuccess(false);
 
     try {
       const { data, error } = await supabase
@@ -142,14 +241,11 @@ export default function ConfigStatusPage() {
 
       if (error) throw error;
 
-      const normalized = normalizeConfig(data);
-
-      setConfig(normalized);
-
-      
+      setConfig(safeConfig(data));
+      setDirty(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
-      setConfig(null);
+      setConfig(safeConfig(null));
     } finally {
       setLoading(false);
     }
@@ -159,111 +255,377 @@ export default function ConfigStatusPage() {
     loadConfig();
   }, []);
 
+  const updateField = (path: string, value: unknown) => {
+    setConfig((prev) => {
+      if (!prev) return prev;
+
+      const clone = structuredClone(prev) as Record<string, any>;
+      const keys = path.split(".");
+      let ref = clone;
+
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+
+        if (!isObject(ref[key]) && !Array.isArray(ref[key])) {
+          ref[key] = /^\d+$/.test(keys[i + 1]) ? [] : {};
+        }
+
+        ref = ref[key];
+      }
+
+      ref[keys[keys.length - 1]] = value;
+      return clone as EditableSiteConfig;
+    });
+
+    setDirty(true);
+    setSuccess(false);
+  };
+
+  const saveConfig = async () => {
+    if (!config) return;
+
+    setSaving(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const payload = toSupabasePayload(config);
+      const request = config.id
+        ? supabase.from("site_config").update(payload).eq("id", config.id)
+        : supabase.from("site_config").upsert(payload);
+
+      const { error } = await request;
+
+      if (error) throw error;
+
+      setDirty(false);
+      setSuccess(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "No se pudo guardar la configuracion",
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <RefreshCw className="animate-spin" />
+      <div className="flex min-h-screen items-center justify-center bg-[#F7F4EF]">
+        <RefreshCw className="animate-spin text-[#C5A059]" size={32} />
       </div>
     );
   }
 
-  if (error || !config) {
+  if (!config) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div>
-          <AlertTriangle />
-          <p>{error}</p>
-          <button onClick={loadConfig}>Reintentar</button>
+      <div className="flex min-h-screen items-center justify-center bg-[#F7F4EF] px-4 text-[#2A241D]">
+        <div className="space-y-4 rounded-2xl border border-red-200 bg-white p-6 text-center">
+          <AlertTriangle className="mx-auto text-red-700" />
+          <p className="text-sm text-red-700">{error ?? "Error desconocido"}</p>
+          <button
+            className="rounded-xl bg-[#2A241D] px-4 py-2 text-sm font-semibold text-white"
+            onClick={loadConfig}
+          >
+            Reintentar
+          </button>
         </div>
       </div>
     );
   }
-
-  /* =========================
-     SAFE ACCESS
-  ========================= */
-
-  const sections = Array.isArray(config.sections) ? config.sections : [];
-
-  const navLinks = Array.isArray(config.nav?.links)
-    ? config.nav.links
-    : [];
-
-  const contactEntries = config.contact ? Object.entries(config.contact) : [];
-
-  // const jornada = {
-  //   status: (config.jornadas as any)?.status ?? "PAST",
-  //   title: (config.jornadas as any)?.title ?? "No definido",
-  //   dates: (config.jornadas as any)?.dates ?? "No definido",
-  //   featuredPlates: (config.jornadas as any)?.featuredPlates ?? [],
-  // };
 
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#2A241D]">
+      <header className="sticky top-0 z-20 border-b border-[#EFE9DF] bg-white/95 px-6 py-4 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-lg font-bold uppercase tracking-[0.18em]">
+              Editor de configuracion
+            </h1>
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#5F564C]">
+              {user?.email && <span>{user.email}</span>}
+              {dirty && (
+                <span className="font-semibold text-[#9A6B00]">
+                  Cambios sin guardar
+                </span>
+              )}
+              {success && (
+                <span className="inline-flex items-center gap-1 font-semibold text-green-700">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Guardado
+                </span>
+              )}
+            </div>
+          </div>
 
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-[#EFE9DF] bg-white px-6 py-4">
-        <div>
-          <h1 className="text-lg font-bold">siteConfig Visual</h1>
-          {user?.email && (
-            <p className="text-xs text-[#5F564C]">{user.email}</p>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            className="inline-flex items-center gap-2 rounded-xl border border-[#EFE9DF] px-3 py-2 text-sm font-semibold text-[#2A241D] transition hover:bg-[#F7F4EF]"
-            onClick={loadConfig}
-          >
-            <RefreshCw className="h-4 w-4" />
-            Refrescar
-          </button>
-          <button
-            className="inline-flex items-center gap-2 rounded-xl bg-[#2A241D] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#3A332B]"
-            onClick={handleLogout}
-          >
-            <LogOut className="h-4 w-4" />
-            Salir
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              className="inline-flex items-center gap-2 rounded-xl border border-[#EFE9DF] px-3 py-2 text-sm font-semibold transition hover:bg-[#F7F4EF]"
+              onClick={loadConfig}
+              type="button"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Refrescar
+            </button>
+            <button
+              className="inline-flex items-center gap-2 rounded-xl bg-[#C5A059] px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#d4b06a] disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={saving || !dirty}
+              onClick={saveConfig}
+              type="button"
+            >
+              {saving ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+              {saving ? "Guardando..." : "Guardar"}
+            </button>
+            <button
+              className="inline-flex items-center gap-2 rounded-xl bg-[#2A241D] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#3A332B]"
+              onClick={handleLogout}
+              type="button"
+            >
+              <LogOut className="h-4 w-4" />
+              Salir
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="p-6 space-y-6">
+      <main className="mx-auto max-w-6xl space-y-6 p-6">
+        {error && (
+          <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <p>{error}</p>
+          </div>
+        )}
 
-        {/* SECCIONES */}
-        <SectionCard icon={Globe} title="Secciones">
-          {sections.length > 0 ? (
-            sections.map((s: any) => (
-              <SectionFlag
-                key={s.id ?? s.label}
-                label={s.label ?? "Sin nombre"}
-                visible={!!s.visible}
-              />
-            ))
-          ) : (
-            <p>No hay secciones</p>
-          )}
-        </SectionCard>
-
-        {/* NAV */}
-        <SectionCard icon={Navigation} title="Menú">
-          {navLinks.map((l: any) => (
-            <ConfigRow key={l.href} label={l.label} value={l.href} />
+        <SectionCard icon={Eye} title="Secciones visibles">
+          {config.sections.map((section, index) => (
+            <div
+              key={section.id}
+              className="grid gap-3 rounded-xl border border-[#EFE9DF] bg-[#F7F4EF] p-4 md:grid-cols-[1fr_1fr_auto]"
+            >
+              <Field label="Etiqueta">
+                <input
+                  className={inputClass}
+                  value={section.label}
+                  onChange={(event) =>
+                    updateField(`sections.${index}.label`, event.target.value)
+                  }
+                />
+              </Field>
+              <Field label="ID">
+                <input className={inputClass} value={section.id} readOnly />
+              </Field>
+              <div className="flex items-end">
+                <ToggleButton
+                  active={section.visible}
+                  onClick={() =>
+                    updateField(`sections.${index}.visible`, !section.visible)
+                  }
+                />
+              </div>
+            </div>
           ))}
         </SectionCard>
 
-        {/* CONTACTO */}
+        <SectionCard icon={Navigation} title="Navegacion">
+          {config.nav.links.map((link, index) => (
+            <div
+              key={`${link.href}-${index}`}
+              className="space-y-3 rounded-xl border border-[#EFE9DF] p-4"
+            >
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field label="Label">
+                  <input
+                    className={inputClass}
+                    value={link.label}
+                    onChange={(event) =>
+                      updateField(`nav.links.${index}.label`, event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Href">
+                  <input
+                    className={inputClass}
+                    value={link.href}
+                    onChange={(event) =>
+                      updateField(`nav.links.${index}.href`, event.target.value)
+                    }
+                  />
+                </Field>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <ToggleButton
+                  active={link.visible}
+                  activeLabel="Visible"
+                  inactiveLabel="No visible"
+                  onClick={() =>
+                    updateField(`nav.links.${index}.visible`, !link.visible)
+                  }
+                />
+                <button
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-red-700"
+                  onClick={() => {
+                    const nextLinks = [...config.nav.links];
+                    nextLinks.splice(index, 1);
+                    updateField("nav.links", nextLinks);
+                  }}
+                  type="button"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <button
+            className="inline-flex items-center gap-2 rounded-xl bg-[#C5A059] px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#d4b06a]"
+            onClick={() =>
+              updateField("nav.links", [
+                ...config.nav.links,
+                { label: "Nuevo", href: "/", visible: true, isPage: false },
+              ])
+            }
+            type="button"
+          >
+            <Plus className="h-4 w-4" />
+            Anadir enlace
+          </button>
+        </SectionCard>
+
         <SectionCard icon={Phone} title="Contacto">
-          {contactEntries.map(([k, v]) => (
-            <ConfigRow key={k} label={k} value={String(v)} />
-          ))}
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Telefono">
+              <input
+                className={inputClass}
+                value={config.contact.phone}
+                onChange={(event) =>
+                  updateField("contact.phone", event.target.value)
+                }
+              />
+            </Field>
+            <Field label="Google Maps URL">
+              <input
+                className={inputClass}
+                value={config.contact.googleMapsUrl}
+                onChange={(event) =>
+                  updateField("contact.googleMapsUrl", event.target.value)
+                }
+              />
+            </Field>
+          </div>
         </SectionCard>
 
-        {/* JSON DEBUG */}
-        <SectionCard icon={FileText} title="Raw">
-          <pre className="text-xs overflow-auto">
-            {JSON.stringify(config, null, 2)}
-          </pre>
+        <SectionCard icon={Megaphone} title="Banner">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-sm font-medium text-[#5F564C]">Estado</span>
+            <ToggleButton
+              active={config.banner.visible}
+              onClick={() =>
+                updateField("banner.visible", !config.banner.visible)
+              }
+            />
+          </div>
+          <Field label="Mensaje">
+            <textarea
+              className={`${inputClass} min-h-24 resize-y`}
+              value={config.banner.message}
+              onChange={(event) =>
+                updateField("banner.message", event.target.value)
+              }
+            />
+          </Field>
         </SectionCard>
 
+        <SectionCard icon={Calendar} title="Jornadas">
+          <div className="grid gap-4 md:grid-cols-3">
+            <Field label="Status">
+              <select
+                className={inputClass}
+                value={config.jornadas.codDaysStatus}
+                onChange={(event) =>
+                  updateField("jornadas.codDaysStatus", event.target.value)
+                }
+              >
+                <option value="COMING_SOON">COMING_SOON</option>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="PAST">PAST</option>
+              </select>
+            </Field>
+            <Field label="Titulo">
+              <input
+                className={inputClass}
+                value={config.jornadas.codDaysConfig.title}
+                onChange={(event) =>
+                  updateField(
+                    "jornadas.codDaysConfig.title",
+                    event.target.value,
+                  )
+                }
+              />
+            </Field>
+            <Field label="Fechas">
+              <input
+                className={inputClass}
+                value={config.jornadas.codDaysConfig.dates}
+                onChange={(event) =>
+                  updateField(
+                    "jornadas.codDaysConfig.dates",
+                    event.target.value,
+                  )
+                }
+              />
+            </Field>
+          </div>
+        </SectionCard>
+
+        <SectionCard icon={Globe} title="Eventos anteriores">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-sm font-medium text-[#5F564C]">
+              Mostrar enlace a ediciones anteriores
+            </span>
+            <ToggleButton
+              active={config.eventosAnteriores.eventosAnterioresVisible}
+              onClick={() =>
+                updateField(
+                  "eventosAnteriores.eventosAnterioresVisible",
+                  !config.eventosAnteriores.eventosAnterioresVisible,
+                )
+              }
+            />
+          </div>
+        </SectionCard>
+
+        <SectionCard icon={FileText} title="Meta">
+          <Field label="Home title">
+            <input
+              className={inputClass}
+              value={config.meta.homeTitle}
+              onChange={(event) =>
+                updateField("meta.homeTitle", event.target.value)
+              }
+            />
+          </Field>
+          <Field label="Home description">
+            <textarea
+              className={`${inputClass} min-h-28 resize-y`}
+              value={config.meta.homeDescription}
+              onChange={(event) =>
+                updateField("meta.homeDescription", event.target.value)
+              }
+            />
+          </Field>
+        </SectionCard>
       </main>
     </div>
   );
