@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import { type SiteConfig } from "./data/siteConfig";
 import { getSiteConfig } from "./app/api/site-config/route";
 import ConfigEditorPage from "./AdminStatusPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const ExperienceSplit = lazy(() => import("./components/ExperienceSplit"));
 const CodDays = lazy(() => import("./components/CodDays"));
@@ -28,6 +29,7 @@ const GaleriaPage = lazy(() => import("./components/Galeria"));
 const EntrevinosPage = lazy(() => import("./components/Entrevinos"));
 const AntiguosEventosPage = lazy(() => import("./components/AntiguosEventos"));
 const AdminPage = lazy(() => import("./ConfigStatusPage"));
+const LoginPage = lazy(() => import("./pages/Login"));
 
 const siteUrl = "https://bar-portalon-roa.com";
 
@@ -68,7 +70,15 @@ const routeSeo: Record<string, { title: string; description: string }> = {
   "/admin": {
     title: "Panel de administración | Bar El Portalón",
     description: "Acceso al panel de administración de Bar El Portalón.",
-  }
+  },
+  "/admin/config": {
+    title: "Panel de configuracion | Bar El Portalon",
+    description: "Panel protegido de configuracion de Bar El Portalon.",
+  },
+  "/login": {
+    title: "Acceso admin | Bar El Portalon",
+    description: "Login para el panel de administracion de Bar El Portalon.",
+  },
 };
 
 type DeferredSectionProps = {
@@ -408,10 +418,20 @@ export default function App() {
     );
   }
 
-  if (pathname === "/admin") {
+  if (pathname === "/login") {
     return (
       <Suspense fallback={<PageFallback />}>
-        <AdminPage />
+        <LoginPage />
+      </Suspense>
+    );
+  }
+
+  if (pathname === "/admin" || pathname === "/admin/config") {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <ProtectedRoute>
+          <AdminPage />
+        </ProtectedRoute>
       </Suspense>
     );
   }

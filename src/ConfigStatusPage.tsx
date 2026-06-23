@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { ComponentType, ReactNode } from "react";
 import { supabase } from "./lib/supabaseClient";
+import { useAuth } from "./lib/useAuth";
 import {
   Globe,
   Navigation,
@@ -10,6 +11,7 @@ import {
   FileText,
   RefreshCw,
   Phone,
+  LogOut,
 } from "lucide-react";
 import { type SiteConfig } from "./data/siteConfig";
 import { getSiteConfig } from "./app/api/site-config/route";
@@ -118,9 +120,15 @@ function SectionFlag({ label, visible }: { label: string; visible: boolean }) {
 ========================= */
 
 export default function ConfigStatusPage() {
+  const { user } = useAuth();
   const [config, setConfig] = useState<SiteConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  };
 
   const loadConfig = async () => {
     setLoading(true);
@@ -193,9 +201,29 @@ export default function ConfigStatusPage() {
   return (
     <div className="min-h-screen bg-[#F7F4EF] text-[#2A241D]">
 
-      <header className="p-4 border-b">
-        <h1 className="text-lg font-bold">siteConfig Visual</h1>
-        <button onClick={loadConfig}>Refrescar</button>
+      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-[#EFE9DF] bg-white px-6 py-4">
+        <div>
+          <h1 className="text-lg font-bold">siteConfig Visual</h1>
+          {user?.email && (
+            <p className="text-xs text-[#5F564C]">{user.email}</p>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            className="inline-flex items-center gap-2 rounded-xl border border-[#EFE9DF] px-3 py-2 text-sm font-semibold text-[#2A241D] transition hover:bg-[#F7F4EF]"
+            onClick={loadConfig}
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refrescar
+          </button>
+          <button
+            className="inline-flex items-center gap-2 rounded-xl bg-[#2A241D] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#3A332B]"
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4" />
+            Salir
+          </button>
+        </div>
       </header>
 
       <main className="p-6 space-y-6">
