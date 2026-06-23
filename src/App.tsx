@@ -12,7 +12,6 @@ import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import { type SiteConfig } from "./data/siteConfig";
 import { getSiteConfig } from "./app/api/site-config/route";
-import ConfigEditorPage from "./AdminStatusPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const ExperienceSplit = lazy(() => import("./components/ExperienceSplit"));
@@ -432,14 +431,6 @@ export default function App() {
         <ProtectedRoute>
           <AdminPage />
         </ProtectedRoute>
-      </Suspense>
-    );
-  }
-
-  if (pathname === "/settings") {
-    return (
-      <Suspense fallback={<PageFallback />}>
-        <ConfigEditorPage />
       </Suspense>
     );
   }
