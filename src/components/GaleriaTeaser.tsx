@@ -4,28 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Images } from "lucide-react";
 import OptimizedImage from "./OptimizedImage";
 
-const previews = [
-  {
-    src: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop",
-    alt: "El Portalón de noche",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600&auto=format&fit=crop",
-    alt: "Terraza",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1599481238640-4c1288750d7a?q=80&w=600&auto=format&fit=crop",
-    alt: "Bacalao",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1541510912111-99bc45946974?q=80&w=600&auto=format&fit=crop",
-    alt: "La Barra",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop",
-    alt: "Ambiente",
-  },
-];
+import { fotos } from "../data/gallery";
 
 export default function GaleriaTeaser() {
   return (
@@ -66,7 +45,8 @@ export default function GaleriaTeaser() {
 
         {/* Strip de imágenes */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-          {previews.map((foto, i) => (
+          {fotos.map((foto, i) => (
+            foto.preview != null && foto.preview === true && (
             <motion.a
               key={foto.alt}
               href="/galeria"
@@ -90,7 +70,7 @@ export default function GaleriaTeaser() {
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
             </motion.a>
-          ))}
+          )))}
         </div>
 
         {/* Mobile CTA */}
