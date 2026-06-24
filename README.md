@@ -1,56 +1,275 @@
-# Bar El Portalón — Documentación del Proyecto Web
+# 🍷 Bar El Portalón — Sitio Web Oficial
 
-> Sitio web oficial de **Bar El Portalón**, ubicado en la Plaza Mayor de Roa (Burgos).  
-> Diseñado y desarrollado como una experiencia digital premium que refleja la identidad  
-> del negocio: cocina castellana elaborada, producto de calidad y trato cercano.
+**[bar-portalon-roa.com](https://bar-portalon-roa.com)** | Roa, Burgos 🇪🇸
 
----
+Sitio web premium de Bar El Portalón. React 19 + TypeScript + Vite — SPA estática optimizada para experiencia móvil, con arquitectura preparada para CMS.
 
-## Índice
-
-1. [Visión del Proyecto](#1-visión-del-proyecto)
-2. [Identidad de Marca](#2-identidad-de-marca)
-3. [Arquitectura del Proyecto](#3-arquitectura-del-proyecto)
-4. [Stack Tecnológico](#4-stack-tecnológico)
-5. [Sistema de Diseño](#5-sistema-de-diseño)
-6. [Componentes](#6-componentes)
-7. [Sistema de Configuración (CMS-Ready)](#7-sistema-de-configuración-cms-ready)
-8. [Jornadas del Bacalao — Sistema Dinámico](#8-jornadas-del-bacalao--sistema-dinámico)
-9. [Navegación y UX Móvil](#9-navegación-y-ux-móvil)
-10. [SEO y Metadatos](#10-seo-y-metadatos)
-11. [Guía de Instalación y Configuración](#11-guía-de-instalación-y-configuración)
-12. [Guía de Mantenimiento para el Propietario](#12-guía-de-mantenimiento-para-el-propietario)
-13. [Decisiones de Diseño Clave](#13-decisiones-de-diseño-clave)
-14. [Roadmap / Próximos Pasos](#14-roadmap--próximos-pasos)
-15. [Rutas Disponibles](#15-rutas-disponibles)
+**Características**:
+- ⚡ Vite HMR instantáneo + bundling optimizado
+- 📱 Mobile-first Tailwind CSS con animaciones Framer Motion
+- 🏗️ Datos centralizados (sin necesidad de base de datos)
+- 🎯 SEO local listo para restaurantes
+- 🚀 Deploying en Vercel (Rewrite SPA)
+- 📦 TypeScript 5.9 + ESLint plano
 
 ---
 
-## 1. Visión del Proyecto
+## 📋 Tabla de Contenidos
 
-### Objetivo principal
-Crear una presencia digital que no parezca una plantilla genérica de restaurante, sino una
-experiencia diseñada por un estudio profesional de branding gastronómico. La web transmite:
+### 🚀 Comienza Aquí
+1. [Quick Start](#-quick-start) — Setup en <5 minutos
+2. [Variables de Entorno](#-variables-de-entorno)
+3. [Estructura de Proyecto](#-estructura-de-proyecto)
 
-- **Autenticidad** — no pretencioso, sino cercano y real
-- **Calidad gastronómica** — producto de primera, cocina elaborada
-- **Confianza** — referente local consolidado en Roa
-- **Dinamismo controlado** — microinteracciones elegantes, no invasivas
+### 👨‍💻 Para Desarrolladores
+4. [Scripts Disponibles](#-scripts-disponibles)
+5. [Conceptos Clave](#-conceptos-clave-arquitectura)
+6. [Componentes](#-componentes)
+7. [Troubleshooting](#-troubleshooting)
 
-### Filosofía UX
-> "La experiencia de usuario es MÁS IMPORTANTE que meter muchas secciones."
+### 🏗️ Para Arquitecto / Avanzado
+8. [Sistema de Configuración (CMS-Ready)](#-sistema-de-configuración-cms-ready)
+9. [Jornadas del Bacalao — Sistema Dinámico](#-jornadas-del-bacalao--sistema-dinámico)
+10. [Decisiones de Diseño Clave](#-decisiones-de-diseño-clave)
+11. [SEO y Metadatos](#-seo-y-metadatos)
 
-La web evita la estructura típica de restaurante (carta completa, fotos genéricas, formulario standard).
-En su lugar apuesta por:
+### 🍽️ Para Propietario / Mantenimiento
+12. [Identidad de Marca](#-identidad-de-marca)
+13. [Guía de Mantenimiento](#-guía-de-mantenimiento-para-el-propietario)
 
-- **Recomendación sobre carta** — no existe menú cerrado, se destacan especialidades y producto del día
-- **Dos experiencias diferenciadas** — Bar/Pinchos vs. Restaurante/Especialidades
-- **Contenido estacional** — las Jornadas del Bacalao como evento protagonista recurrente
-- **Mobile-first absoluto** — diseñada para ser consultada con una mano en la Plaza Mayor
+### 📚 Referencia
+14. [Deploy en Vercel](#-deploy-en-vercel)
+15. [Rutas Disponibles](#-rutas-disponibles)
+16. [Roadmap](#-roadmap--próximos-pasos)
 
 ---
 
-## 2. Identidad de Marca
+## 🚀 Quick Start
+
+Nuevo en el proyecto? Sigue estos 5 pasos para tener todo corriendo localmente:
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/diegoBombinSanz/bar-portalon.git
+cd bar-portalon
+```
+
+### 2. Instalar dependencias
+```bash
+npm install
+```
+
+### 3. Configurar variables de entorno
+```bash
+cp .env.example .env.local
+# Edita .env.local con tus credenciales de Supabase
+nano .env.local  # o usa tu editor favorito
+```
+
+### 4. Iniciar servidor de desarrollo
+```bash
+npm run dev
+```
+
+### 5. Abrir en navegador
+Visita **[http://localhost:5173](http://localhost:5173)**
+
+✅ **Listo**. Ya tienes la web corriendo localmente.
+
+---
+
+## 🌍 Variables de Entorno
+
+El proyecto requiere variables de Supabase (autenticación y datos). Copia `.env.example` a `.env.local` y rellena los valores:
+
+### Configuración Obligatoria
+
+| Variable | Descripción | Dónde obtenerla |
+|----------|-------------|-----------------|
+| `VITE_SUPABASE_URL` | URL pública del proyecto Supabase | Dashboard Supabase → Settings → API |
+| `VITE_SUPABASE_ANON_KEY` | Clave anónima (pública, safe) | Dashboard Supabase → Settings → API |
+
+### Ejemplo de .env.local
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+⚠️ **Importante**: 
+- Nunca commites `.env.local` a Git (está en `.gitignore`)
+- Nunca expongas variables privadas sin prefijo `VITE_` en el código frontend
+- Para Vercel, configura estas variables en Dashboard → Settings → Environment Variables
+
+---
+
+## 📁 Estructura de Proyecto
+
+```
+bar-portalon/
+├── src/
+│   ├── App.tsx                      # Router SPA principal
+│   ├── main.tsx                     # Punto de entrada React
+│   ├── index.css                    # Estilos globales
+│   │
+│   ├── components/                  # Componentes reutilizables
+│   │   ├── Navbar.tsx              # Navegación + menú móvil + FABs
+│   │   ├── Hero.tsx                # Sección portada (100vh)
+│   │   ├── ExperienceSplit.tsx     # Split Bar vs. Restaurante
+│   │   ├── CodDays.tsx             # Jornadas del Bacalao (dinámico)
+│   │   ├── Specialties.tsx         # Grid de especialidades
+│   │   ├── Reviews.tsx             # Testimonios clientes
+│   │   ├── MapSection.tsx          # Ubicación + Google Maps
+│   │   ├── Footer.tsx              # Pie de página
+│   │   ├── OptimizedImage.tsx      # Imagen con lazy loading
+│   │   ├── InnerPageLayout.tsx     # Layout páginas internas
+│   │   ├── GaleriaTeaser.tsx       # Preview galería (home)
+│   │   ├── Galeria.tsx             # Página galería completa
+│   │   ├── EntrevinosTeaser.tsx    # Preview vinos (home)
+│   │   ├── Entrevinos.tsx          # Página vinos dedicada
+│   │   ├── Barra.tsx               # Página barra/pinchos
+│   │   ├── AntiguosEventos.tsx     # Eventos históricos
+│   │   ├── PoliticaPrivacidad.tsx  # Política de Privacidad
+│   │   └── AvisoLegal.tsx          # Aviso Legal
+│   │
+│   ├── data/                        # ⭐ FUENTE ÚNICA DE VERDAD
+│   │   ├── restaurant.ts           # Config negocio, especialidades, reviews
+│   │   ├── specialties.ts          # Especialidades permanentes
+│   │   ├── gallery.ts              # Galería de imágenes
+│   │   ├── allergens.ts            # Información de alérgenos
+│   │   ├── barra.ts                # Datos de la barra
+│   │   └── siteConfig.ts           # Configuración global
+│   │
+│   ├── lib/                         # Utilidades y helpers
+│   │   ├── seo.ts                  # Helpers metadatos dinámicos
+│   │   ├── supabaseClient.ts       # Cliente Supabase
+│   │   ├── useAuth.ts              # Hook autenticación
+│   │   └── usePathname.ts          # Hook pathname personalizado
+│   │
+│   ├── assets/                      # Imágenes estáticas (optimizadas)
+│   ├── app/
+│   │   └── api/
+│   │       └── site-config/        # Rutas API (Vercel)
+│   │
+│   ├── custom.d.ts                 # Tipos TypeScript personalizados
+│   └── vite-env.d.ts               # Tipos Vite
+│
+├── public/                          # Archivos estáticos servidos directamente
+│   ├── robots.txt
+│   └── sitemap.xml
+│
+├── scripts/
+│   └── optimize-images.mjs          # Script optimización imágenes (sharp)
+│
+├── .env.example                     # ← Template de variables (copiar a .env.local)
+├── .gitignore
+├── eslint.config.js
+├── package.json
+├── postcss.config.cjs
+├── tailwind.config.js
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+├── vite.config.ts                   # Alias @, plugins, base /
+├── vercel.json                      # Rewrite SPA para Vercel
+└── README.md                        # ← Este archivo
+```
+
+### Patrón de Datos
+```
+restaurant.ts (datos)
+     ↓
+components (importan datos directamente)
+     ↓
+Renderizado (sin estado global)
+```
+
+---
+
+## 📦 Scripts Disponibles
+
+| Comando | Descripción | Audiencia |
+|---------|-------------|-----------|
+| `npm run dev` | Inicia servidor dev en http://localhost:5173 (HMR instantáneo) | 👨‍💻 Dev |
+| `npm run build` | Compila TypeScript + Vite → `/dist` (producción) | 👨‍💻 Dev |
+| `npm run lint` | Ejecuta ESLint, reporta errores de código | 👨‍💻 Dev |
+| `npm run preview` | Previsualiza build de producción local (antes de subir) | 👨‍💻 Dev |
+| `npm run optimize-images` | Comprime imágenes con sharp (src/assets) | 👨‍💻 Dev |
+| `npm run deploy` | Build + deploy a GitHub Pages (si está configurado) | 👨‍💻 Dev |
+
+### Flujo típico de desarrollo
+```bash
+npm run dev              # 1. Edita y ve cambios en tiempo real
+npm run lint             # 2. Verifica código antes de commit
+npm run build            # 3. Compila para producción
+npm run preview          # 4. Prueba el build compilado
+# Push a GitHub → Vercel auto-deploya
+```
+
+---
+
+## 🏗️ Conceptos Clave — Arquitectura
+
+### 👨‍💻 Datos Centralizados (No Hay Base de Datos)
+
+Todo el contenido está en **`src/data/restaurant.ts`** — archivo JavaScript puro.
+
+```typescript
+export const restaurantData = {
+  name: "Bar El Portalón",
+  location: { ... },
+  contact: { phone: "+34 947 000 000", ... },
+  codDaysStatus: 'ACTIVE',  // Jornadas estado
+  specialties: [ ... ],      // Platos destacados
+  reviews: [ ... ]           // Testimonios
+};
+```
+
+**Ventajas**:
+- ✅ Cero latencia (datos locales)
+- ✅ Fácil de actualizar (editar JSON)
+- ✅ Preparado para migrar a CMS (Sanity, Contentful) sin reescribir componentes
+- ✅ Version control de cambios (Git history)
+
+### 👨‍💻 Enrutamiento SPA (Sin React Router)
+
+La aplicación gestiona rutas manualmente en **`App.tsx`** usando `usePathname`:
+
+```typescript
+if (pathname === '/barra') return <Barra />;
+if (pathname === '/galeria') return <Galeria />;
+// ...
+```
+
+**Ventajas**:
+- ✅ Lightweight (sin dependencias)
+- ✅ Control total del flujo
+- ✅ SEO optimizado (metadatos dinámicos por ruta)
+
+### 👨‍💻 Componentes Presentacionales
+
+Los componentes NO tienen lógica de negocio — solo reciben datos y renderean:
+
+```typescript
+export function Specialties() {
+  const specialties = restaurantData.specialties;
+  return (
+    <section>
+      {specialties.map(s => (
+        <div key={s.id}>{s.name}</div>
+      ))}
+    </section>
+  );
+}
+```
+
+**Ventajas**:
+- ✅ Fácil de testear
+- ✅ Reutilizables
+- ✅ Documentación clara (input = props, output = JSX)
+
+---
+
+## 🎨 Componentes
 
 ### El negocio
 | Campo            | Valor                                         |
@@ -328,122 +547,232 @@ Cierre del sitio. Cuatro columnas en desktop, apiladas en móvil.
 
 ---
 
-### `Barra.tsx`
-Página dedicada a la experiencia de la barra. Detalles de pinchos y ambiente informal.
+---
 
-- Navegación con `InnerPageLayout`
-- Contenido específico del servicio de bar
-- Galería de imágenes de pinchos destacados
-- Horarios y recomendaciones del ambiente
+## 🛠️ Troubleshooting
+
+### ❌ "Error: `VITE_SUPABASE_URL` not found"
+**Solución**: Copia `.env.example` a `.env.local` y rellena los valores de Supabase.
+```bash
+cp .env.example .env.local
+# Edita con tus credenciales
+```
+
+### ❌ "Port 5173 already in use"
+**Solución**: El puerto ya está en uso. Opciones:
+```bash
+# Opción 1: Cambiar puerto
+npm run dev -- --port 3000
+
+# Opción 2: Matar el proceso en el puerto
+# Windows (PowerShell):
+Get-Process | Where-Object {$_.Id -eq (Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue | Select-Object OwningProcess).OwningProcess} | Stop-Process
+
+# Mac/Linux:
+lsof -ti:5173 | xargs kill -9
+```
+
+### ❌ "Tailwind styles no aplica / CSS roto después de build"
+**Solución**: Bug ocasional de Tailwind. Limpia y reconstruye:
+```bash
+rm -rf node_modules
+npm install
+npm run dev
+```
+
+### ❌ "Imágenes no cargan en build"
+**Solución**: Ejecuta el script de optimización:
+```bash
+npm run optimize-images
+npm run build
+```
+
+### ❌ "Cambios en `data/restaurant.ts` no aparecen"
+**Solución**: Hard refresh del navegador (Ctrl+Shift+R en Windows/Linux, Cmd+Shift+R en Mac)
+o limpia cache del navegador.
+
+### ❌ "Componentes no renderean en la página"
+**Solución**: Verifica que la ruta en `App.tsx` y el pathname coincidan:
+```bash
+# En browser, abre DevTools (F12)
+# Console tab → escribe: window.location.pathname
+# Debe coincidir con una ruta en App.tsx
+```
+
+### ❌ "TypeError: restaurantData is undefined"
+**Solución**: El import de `restaurant.ts` falta. Verifica en el componente:
+```typescript
+import { restaurantData } from '@/data/restaurant';
+```
 
 ---
 
-### `Galeria.tsx` y `GaleriaTeaser.tsx`
-Galería fotográfica del local y especialidades.
+## 🍽️ Identidad de Marca
 
-- `GaleriaTeaser.tsx`: Vista previa en la página principal
-- `Galeria.tsx`: Galería completa en página dedicada (`/galeria`)
-- Grid responsivo con lazy loading de imágenes
-- Lightbox para visualización en pantalla completa
-- Clasificación por categorías (local, especialidades, eventos)
+### El Negocio
 
----
+| Campo | Valor |
+|-------|-------|
+| **Nombre** | Bar El Portalón |
+| **Tipo** | Bar / Restaurante tradicional |
+| **Ubicación** | Plaza Mayor, 14 — Roa, Burgos 09300 |
+| **Especialidad** | Bacalao, Kokotxas, Gambas, Pulpo |
+| **Ambiente** | Acogedor, tranquilo, trato cercano |
+| **Zona** | Ribera del Duero burgalesa |
 
-### `Entrevinos.tsx` y `EntrevinosTeaser.tsx`
-Sección dedicada a los vinos de Ribiera del Duero disponibles.
+### Tono de Comunicación
+- **Cercano** pero **elegante**
+- **Honesto** (sin promesas vacías)
+- **Emocional** en titulares (evocar experiencia)
+- **Concreto** en CTAs (reservar, llamar, llegar)
 
-- `EntrevinosTeaser.tsx`: Vista previa en la página principal
-- `Entrevinos.tsx`: Página completa (`/entrevinos`) con detalles de bodegas y vinos
-- Integración con tienda de vinos locales
-- Recomendaciones de maridajes con especialidades
+### Dualidad: Bar vs. Restaurante
 
----
+|  | La Barra | El Restaurante |
+|---|----------|-----------------|
+| **Ambiente** | Informal, social, dinámico | Tranquilo, gastronómico, elaborado |
+| **Producto** | Pinchos, raciones, tapeo | Bacalao, kokotxas, gambas, pulpo |
+| **Visual** | Imágenes cálidas, bloques compactos | Espacios amplios, fotografía editorial |
+| **Tono** | "El sabor del tapeo tradicional" | "Especialidades de producto de calidad" |
+| **Color Acento** | Dorado `#c5a059` | Granate `#800020` |
 
-### `AntiguosEventos.tsx`
-Archivo de ediciones pasadas de las Jornadas del Bacalao.
+### Paleta de Colores
 
-- Galería y fotos de eventos históricos
-- Testimonios y resultados de años anteriores
-- Generación de expectativa para próximas ediciones
-- Acceso desde página de eventos históricos (`/antiguos-eventos`)
+| Nombre | Hex | Uso |
+|--------|-----|-----|
+| Dorado Ribera | `#c5a059` | Acento principal, CTAs, iconos |
+| Dorado hover | `#d4b06a` | Hover del dorado |
+| Granate Portalón | `#800020` | Acento restaurante, badges evento |
+| Negro profundo | `#0a0a0a` | Fondo principal oscuro |
+| Crema principal | `#f5f5f1` | Texto sobre fondos oscuros |
 
----
+### Tipografía
 
-### `PoliticaPrivacidad.tsx` y `AvisoLegal.tsx`
-Páginas de cumplimiento legal.
-
-- Política de Privacidad (RGPD)
-- Aviso Legal
-- Utilizan `InnerPageLayout` para consistencia visual
-- Accesibles desde el footer
-
----
-
-### `OptimizedImage.tsx`
-Componente reutilizable de imagen con optimizaciones.
-
-- Lazy loading nativo
-- Fallback en caso de carga fallida
-- Optimización de tamaño según breakpoint
-- Integración con Sharp para generación de variantes
-
----
-
-### `InnerPageLayout.tsx`
-Layout compartido para todas las páginas internas.
-
-- Navbar
-- Footer
-- Estilos consistentes
-- Navegación de breadcrumbs (opcional)
-- Meta tags por página
+| Elemento | Fuente | Peso | Aplicación |
+|----------|--------|------|------------|
+| H1, H2 titulares | Georgia / serif | 400–700 | Elegancia editorial |
+| Etiquetas | Sans-serif sistema | 700 Bold | Uppercase + tracking ancho |
+| Cuerpo texto | Sans-serif sistema | 300 Light | Legibilidad párrafos |
+| CTAs/botones | Sans-serif sistema | 700 Bold | Uppercase + tracking |
 
 ---
 
-## 7. Sistema de Configuración (CMS-Ready)
+## 🖥️ Deploy en Vercel
 
-El archivo `/apps/web/src/data/restaurant.js` es la **fuente única de verdad**.
-Cualquier cambio de contenido se hace aquí, sin necesidad de tocar los componentes.
+### Configuración Actual
+- **Host**: Vercel ([vercel.com](https://vercel.com))
+- **Domain**: `bar-portalon-roa.com`
+- **SSL**: Automático (Vercel)
+- **CDN**: Vercel Edge Network global
 
-```js
+### Archivo de Configuración: `vercel.json`
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
+```
+
+### Rewrite SPA
+El rewrite universal `/(.*) → /` es esencial para que todas las rutas SPA funcionen. Sin esto, las subrutas (ej: `/galeria`) devuelven 404.
+
+### Cómo deployar
+**Opción 1: Automático (Recomendado)**
+- Push a GitHub → Vercel detecta y auto-deploya
+- Ver progreso en Vercel Dashboard
+
+**Opción 2: Manual**
+```bash
+# Instala Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel
+# Sigue el wizard interactivo
+```
+
+### Variables de Entorno en Vercel
+1. Ve a Vercel Dashboard → Tu Proyecto
+2. Settings → Environment Variables
+3. Agrega `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`
+4. Haz re-deploy
+
+---
+
+## 📍 Rutas Disponibles
+
+| Ruta | Componente | Descripción |
+|------|-----------|-------------|
+| `/` | App.tsx (home) | Página principal |
+| `/barra` | Barra.tsx | Experiencia barra/pinchos |
+| `/galeria` | Galeria.tsx | Galería de fotos |
+| `/entrevinos` | Entrevinos.tsx | Vinos Ribiera Duero |
+| `/antiguos-eventos` | AntiguosEventos.tsx | Ediciones pasadas Jornadas |
+| `/politica-privacidad` | PoliticaPrivacidad.tsx | Política Privacidad (RGPD) |
+| `/aviso-legal` | AvisoLegal.tsx | Aviso Legal |
+
+### Cómo agregar nuevas rutas
+En `App.tsx`, añade entrada en `routeSeo` y la lógica condicional:
+```typescript
+const routeSeo = {
+  "/": { title: "...", description: "..." },
+  "/nueva-ruta": { title: "Nueva", description: "..." }
+};
+
+// En el render:
+if (pathname === '/nueva-ruta') return <NuevoComponente />;
+```
+
+---
+
+## 🏗️ Sistema de Configuración (CMS-Ready)
+
+El archivo **`src/data/restaurant.ts`** es la **fuente única de verdad**.
+Cualquier cambio de contenido se hace aquí, sin tocar los componentes.
+
+```typescript
 export const restaurantData = {
   name: "Bar El Portalón",
-
+  
   location: {
     city: "Roa",
     province: "Burgos",
     address: "Plaza Mayor, 14",
-    googleMapsUrl: "https://maps.google.com/?q=..."   // ← actualizar con URL real
+    googleMapsUrl: "https://maps.google.com/?q=..."  // ← actualizar
   },
-
+  
   contact: {
-    phone: "+34 947 000 000",      // ← actualizar con número real
-    whatsapp: "+34 600 000 000",   // ← actualizar con número real
-    instagram: "@elportalonroa"    // ← actualizar si existe cuenta
+    phone: "+34 947 000 000",        // ← actualizar con número real
+    whatsapp: "+34 600 000 000",
+    instagram: "@elportalonroa"
   },
-
-  // ⭐ CAMBIAR AQUÍ EL ESTADO DE LAS JORNADAS
-  codDaysStatus: 'ACTIVE',         // 'COMING_SOON' | 'ACTIVE' | 'PAST'
-
+  
+  // ⭐ Cambiar AQUÍ el estado de las Jornadas
+  codDaysStatus: 'ACTIVE',           // 'COMING_SOON' | 'ACTIVE' | 'PAST'
+  
   codDaysConfig: {
     dates: "Del 15 de Mayo al 2 de Junio",
     title: "Jornadas del Bacalao 2026",
-    teaser: "...",           // texto para estado COMING_SOON
-    activeMessage: "...",    // texto para estado ACTIVE
-    pastMessage: "...",      // texto para estado PAST
+    teaser: "...",
+    activeMessage: "...",
+    pastMessage: "...",
     featuredPlates: [
       "Bacalao al Club Ranero",
       "Kokotxas de Bacalao al Pil-Pil",
       "Carpaccio de Bacalao Ahumado"
     ]
   },
-
+  
   specialties: [
     { id: 1, name: "Bacalao Tradicional", description: "...", image: "URL" },
     { id: 2, name: "Kokotxas de Calidad", description: "...", image: "URL" },
-    { id: 3, name: "Gambas de Lonja",     description: "...", image: "URL" }
+    { id: 3, name: "Gambas de Lonja", description: "...", image: "URL" }
   ],
-
+  
   reviews: [
     { user: "Carmen M.", text: "...", rating: 5 },
     { user: "Javier R.", text: "...", rating: 5 }
@@ -451,45 +780,44 @@ export const restaurantData = {
 };
 ```
 
-### Campos que DEBEN actualizarse con datos reales antes del lanzamiento
-- [ ] `contact.phone` — teléfono real del bar
-- [ ] `contact.whatsapp` — WhatsApp si se usa
-- [ ] `contact.instagram` — handle real si existe
-- [ ] `location.googleMapsUrl` — URL de Google Maps verificada
-- [ ] `specialties[].image` — fotografías reales de los platos
-- [ ] `reviews[]` — reseñas reales de Google o TripAdvisor
+### ✅ Antes de Lanzar — Campos a Actualizar
 
-> **Nota**: el número de teléfono también aparece hardcodeado en los `href="tel:..."` dentro de
-> `Navbar.jsx` y `Footer.jsx`. Actualizarlos en esos archivos también.
+- [ ] `contact.phone` — teléfono real
+- [ ] `contact.whatsapp` — WhatsApp si se usa
+- [ ] `contact.instagram` — handle real
+- [ ] `location.googleMapsUrl` — URL verificada
+- [ ] `specialties[].image` — fotos reales de platos
+- [ ] `reviews[]` — reseñas reales de Google/TripAdvisor
+
+> **Nota**: El número de teléfono también está en `href="tel:..."` dentro de `Navbar.tsx` y `Footer.tsx`. Actualizar en esos archivos también.
 
 ---
 
-## 8. Jornadas del Bacalao — Sistema Dinámico
+## ⏰ Jornadas del Bacalao — Sistema Dinámico
 
-Las Jornadas del Bacalao son un evento **estacional y recurrente**. El sistema permite cambiar
-el estado de la web con una sola línea de código.
+Las Jornadas del Bacalao son un **evento estacional y recurrente**. Sistema de un click para cambiar estado:
 
-### Cómo cambiar el estado
+### Cambiar Estado
 
-En `/apps/web/src/data/restaurant.js`:
+En `src/data/restaurant.ts`:
 
-```js
+```typescript
 // Anunciar que se acercan:
 codDaysStatus: 'COMING_SOON'
 
 // Cuando están en marcha:
 codDaysStatus: 'ACTIVE'
 
-// Cuando terminaron (mostrar resumen/galería):
+// Cuando terminaron:
 codDaysStatus: 'PAST'
 ```
 
-### Actualizar para una nueva edición
+### Actualizar para Nueva Edición
 
-```js
+```typescript
 codDaysConfig: {
-  dates: "Del 20 de Abril al 5 de Mayo 2027",   // ← nueva fecha
-  title: "Jornadas del Bacalao 2027",            // ← nuevo año
+  dates: "Del 20 de Abril al 5 de Mayo 2027",  // ← nueva fecha
+  title: "Jornadas del Bacalao 2027",           // ← nuevo año
   featuredPlates: [
     "Nuevo plato estrella",
     "Bacalao de temporada",
@@ -498,350 +826,230 @@ codDaysConfig: {
 }
 ```
 
-### Calendario recomendado por año
+### Calendario Recomendado por Año
+
 ```
-Noviembre       →  'PAST'          Mostrar resumen de la edición pasada
-Enero/Febrero   →  'COMING_SOON'   Generar expectativa con teaser
-Al comenzar     →  'ACTIVE'        Urgencia y CTAs de reserva activos
-Al terminar     →  'PAST'          Galería, testimonios, nostalgia
+Noviembre       →  'PAST'          Mostrar resumen edición pasada
+Enero/Febrero   →  'COMING_SOON'   Generar expectativa
+Al comenzar     →  'ACTIVE'        Urgencia + CTAs reserva
+Al terminar     →  'PAST'          Galería + testimonios + nostalgia
 ```
 
 ---
 
-## 9. Navegación y UX Móvil
+## 🎨 Decisiones de Diseño Clave
 
-### Problemas resueltos en el menú móvil
+### ❓ Por qué no hay carta de menú
+El negocio funciona por **recomendación y producto del día**. Una carta cerrada en web:
+- Queda desactualizada rápidamente
+- No refleja filosofía real del negocio
+- Puede defraudar expectativas si plato no está disponible
 
-**Problema 1 — Links no respondían al tap**
-- *Causa*: El overlay tenía `z-40` (clase Tailwind) pero Framer Motion crea un stacking context
-  propio que ignoraba la clase CSS aplicada desde fuera
-- *Solución*: Usar `style={{ zIndex: 9999 }}` directamente como prop de estilo inline en el
-  elemento `motion.div` del overlay. Los estilos inline siempre tienen mayor especificidad
+**Solución**: Destacar especialidades permanentes + comunicar que recomendación es parte de la experiencia.
 
-**Problema 2 — Botón X no aparecía**
-- *Causa*: La `<nav>` fija tenía `z-50` y tapaba el overlay aunque éste tuviera z mayor
-- *Solución*: La `<nav>` reduce su z-index dinámicamente cuando el menú está abierto:
-  ```jsx
-  style={{ zIndex: isOpen ? 90 : 50 }}
-  ```
-  El overlay siempre es `9999`, así el orden es correcto en ambos estados
-
-**Problema 3 — Scroll del body causaba bugs visuales**
-- *Causa*: `overflow: hidden` en el body no detiene el scroll en iOS Safari.
-  Además el listener de scroll seguía actualizando el estado `scrolled` de la navbar
-  aunque la página no se moviera realmente
-- *Solución triple*:
-  1. Técnica `position: fixed + top: -${scrollY}px` (estándar para iOS)
-  2. El listener de scroll ignora eventos cuando `isOpen === true`
-  3. Al cerrar, `window.scrollTo(0, scrollYRef.current)` restaura la posición exacta sin salto
-
-### Botones flotantes (FABs)
-- Siempre visibles en esquina inferior derecha (`position: fixed, z-50`)
-- Aparecen con animación spring tras la carga de la página
-- **En móvil**: solo icono (tamaño mínimo táctil 44px Apple HIG)
-- **En desktop**: se expanden con etiqueta de texto al hover
-- Quedan tapados por el menú móvil (z-9999) de forma correcta
-
----
-
-## 10. SEO y Metadatos
-
-### Implementado en `page.jsx`
-```html
-<title>Bar El Portalón | Restaurante en Roa (Burgos) - Especialidad en Bacalao</title>
-<meta name="description"
-  content="Descubre Bar El Portalón en Roa, Burgos. Cocina tradicional castellana,
-  especialidades en bacalao, kokotxas y los mejores pinchos en la Plaza Mayor." />
-```
-
-### Palabras clave objetivo (SEO Local)
-```
-restaurante en Roa                  dónde comer en Roa Burgos
-pinchos en Roa                      bacalao en Roa
-restaurante Plaza Mayor Roa         restaurante en Burgos con bacalao
-tapeo Roa                           cocina castellana Roa
-Ribera del Duero restaurante        jornadas del bacalao Roa
-```
-
-### Mejoras SEO pendientes
-- [ ] Schema.org `Restaurant` structured data (JSON-LD)
-- [ ] Open Graph image para compartir en redes sociales
-- [ ] `sitemap.xml` y `robots.txt`
-- [ ] Google Business Profile verificado y enlazado
-- [ ] URL de Google Maps real del negocio en todos los enlaces
-
----
-
-## 11. Guía de Instalación y Configuración
-
-### Requisitos previos
-- **Node.js** versión 18+ (descargar de [nodejs.org](https://nodejs.org))
-- **npm** versión 9+ (incluido con Node.js)
-- **Git** para clonar el repositorio
-
-### Instalación local
-
-1. **Clonar el repositorio**
-   ```bash
-   git clone https://github.com/diegoBombinSanz/bar-portalon.git
-   cd bar-portalon
-   ```
-
-2. **Instalar dependencias**
-   ```bash
-   npm install
-   ```
-
-3. **Iniciar servidor de desarrollo**
-   ```bash
-   npm run dev
-   ```
-   El sitio estará disponible en `http://localhost:5173`
-
-### Construcción para producción
-
-```bash
-npm run build     # Compilar TypeScript y crear bundle optimizado
-npm run preview   # Previsualizar el build de producción en local
-```
-
-### Despliegue
-
-El proyecto está preconfigurado para despliegue en **Vercel**:
-
-```bash
-npm run deploy    # Construir y desplegar a GitHub Pages (si está configurado)
-```
-
-Para otros hosts:
-- Los archivos compilados están en `/dist`
-- Servir con cualquier servidor web estático (Nginx, Apache, AWS S3, etc.)
-- El sitio es totalmente estático (no requiere servidor Node.js)
-
----
-
-## 12. Guía de Mantenimiento para el Propietario
-
-> Escrita para quien mantiene el sitio sin conocimientos técnicos avanzados.
-
-### ✅ Cambios seguros — solo editar `restaurant.js`
-
-| Qué cambiar                         | Campo en `restaurant.js`              |
-|-------------------------------------|---------------------------------------|
-| Teléfono de reservas                | `contact.phone`                       |
-| Estado de las Jornadas del Bacalao  | `codDaysStatus`                       |
-| Fechas de las Jornadas              | `codDaysConfig.dates`                 |
-| Platos destacados en las Jornadas   | `codDaysConfig.featuredPlates`        |
-| Título del año de las Jornadas      | `codDaysConfig.title`                 |
-| Especialidades permanentes          | `specialties[]`                       |
-| Reseñas de clientes                 | `reviews[]`                           |
-
-### 📸 Cómo actualizar las imágenes
-
-1. Subir la foto a un hosting de imágenes (Cloudinary, Google Drive público, Uploadcare)
-2. Copiar la URL pública de la imagen
-3. Pegar esa URL en el campo `image` del objeto correspondiente en `restaurant.js`
-
-**Tamaños recomendados**:
-- Hero principal: `2000 × 1200 px` mínimo (landscape)
-- Especialidades: `800 × 1067 px` (portrait 3:4)
-- Jornadas del Bacalao: `800 × 1000 px` (portrait 4:5)
-
-### ⚠️ Cosas que NO tocar sin ayuda técnica
-- Los archivos `.jsx` de los componentes
-- El archivo `layout.jsx`
-- Archivos de configuración (`.json`, `.config.js`, `package.json`)
-
----
-
-## 13. Decisiones de Diseño Clave
-
-### Por qué no hay carta de menú
-El negocio funciona por recomendación y producto del día. Una carta cerrada en la web:
-- Queda desactualizada rápidamente y genera trabajo de mantenimiento continuo
-- No refleja la filosofía real del negocio
-- Puede defraudar expectativas si un plato no está disponible
-  
-En su lugar se destacan **especialidades permanentes** y se comunica explícitamente
-que la recomendación según el producto fresco es parte de la experiencia.
-
-### Por qué el overlay usa estilos inline en lugar de clases Tailwind
-Framer Motion genera su propio stacking context al animar elementos con `transform`.
-Las clases de Tailwind con `z-index` a veces quedan subordinadas a ese contexto.
-Los estilos inline con `style={{ zIndex: 9999 }}` siempre tienen prioridad absoluta
-y son predecibles en todos los navegadores y versiones.
-
-### Por qué `position: fixed` para bloquear scroll (no solo `overflow: hidden`)
-`overflow: hidden` en el body funciona en Chrome/desktop pero en iOS Safari el usuario
-puede seguir haciendo scroll por el momentum táctil. La técnica industry-standard es:
-```js
-document.body.style.position = "fixed";
-document.body.style.top = `-${window.scrollY}px`;
-```
-Esto congela la página sin perder la posición, que se restaura al cerrar el menú.
-
-### Por qué la sección de Especialidades tiene fondo crema
-Toda la web es oscura (negros y grafitos). La sección de Especialidades rompe
-intencionalmente con `#f5f5f1`. Esto:
-- Crea ritmo visual y evita la fatiga de pantallas oscuras largas
-- Hace que las fotografías de comida luzcan mejor sobre fondo claro
-- Señaliza visualmente el cambio de "ambiente" a "gastronomía"
-
-### Por qué los botones flotantes tienen `z-50` y no `z-9999`
-Los FABs de teléfono y Maps deben quedar **por debajo** del menú móvil (`z-9999`)
-cuando éste está abierto, para no bloquear la navegación con botones encima.
-Con `z-50` quedan tapados por el overlay correctamente y de forma automática.
-
----
-
-## 14. Roadmap / Próximos Pasos
-
-### 🔴 Prioridad alta — antes del lanzamiento público
-- [ ] Fotografías reales del local y los platos (reemplazar todos los Unsplash)
-- [ ] Número de teléfono real en `restaurant.js`, `Navbar.jsx` y `Footer.jsx`
-- [ ] URL exacta de Google Maps verificada
-- [ ] Handle real de Instagram (o eliminar el enlace si no existe)
-- [ ] Horarios revisados y confirmados por el propietario
-- [ ] Páginas de Aviso Legal y Política de Privacidad
-
-### 🟡 Prioridad media — mejoras de negocio (1-3 meses)
-- [ ] Sistema de reservas integrado (Covermanager, TheFork o formulario simple)
-- [ ] Galería de fotos del local y eventos
-- [ ] Sección "Plato del día" actualizable fácilmente
-- [ ] Integración real con la API de Google Reviews
-- [ ] Enlace a WhatsApp Business para reservas rápidas
-- [ ] Schema.org `Restaurant` JSON-LD para SEO avanzado
-
-### 🟢 Prioridad baja — evolución del proyecto (6-12 meses)
-- [ ] Panel de administración visual (Sanity CMS o Contentful)
-- [ ] Versión bilingüe español/inglés para turismo
-- [ ] Newsletter para las Jornadas del Bacalao
-- [ ] Galería fotográfica con lightbox para las Jornadas
-- [ ] PWA (Progressive Web App) instalable en móvil
-- [ ] Analytics de comportamiento (Plausible o GA4)
-
----
-
-## 15. Rutas Disponibles
-
-La aplicación es una SPA (Single Page Application) con las siguientes rutas:
-
-| Ruta                    | Componente              | Descripción                                      |
-|-------------------------|-------------------------|--------------------------------------------------|
-| `/`                     | App.tsx (home)          | Página principal con todos los componentes       |
-| `/barra`                | Barra.tsx               | Experiencia de la barra y pinchos               |
-| `/galeria`              | Galeria.tsx             | Galería completa de fotos del local             |
-| `/entrevinos`           | Entrevinos.tsx          | Vinos de Ribiera del Duero disponibles          |
-| `/antiguos-eventos`     | AntiguosEventos.tsx     | Ediciones pasadas de Jornadas del Bacalao      |
-| `/politica-privacidad`  | PoliticaPrivacidad.tsx  | Política de Privacidad (RGPD)                  |
-| `/aviso-legal`          | AvisoLegal.tsx          | Aviso Legal                                     |
-
-### Configuración de rutas
-
-Las rutas y sus metadatos SEO se configuran en `App.tsx` en el objeto `routeSeo`:
+### ❓ Por qué overlay usa estilos inline (no clases Tailwind)
+Framer Motion crea su propio stacking context. Las clases Tailwind con `z-index` quedan subordinadas.
+Los estilos inline con `style={{ zIndex: 9999 }}` siempre tienen prioridad absoluta.
 
 ```typescript
-const routeSeo: Record<string, { title: string; description: string }> = {
-  "/": { title: "...", description: "..." },
-  "/barra": { title: "...", description: "..." },
-  // ... más rutas
-};
+<motion.div style={{ zIndex: 9999 }}>
+  {/* Overlay con z-index garantizado */}
+</motion.div>
 ```
+
+### ❓ Por qué `position: fixed` para bloquear scroll (no solo `overflow: hidden`)
+`overflow: hidden` falla en iOS Safari por momentum táctil. Solución industry-standard:
+
+```javascript
+// Bloquear scroll
+document.body.style.position = "fixed";
+document.body.style.top = `-${window.scrollY}px`;
+
+// Restaurar scroll
+document.body.style.position = "static";
+document.body.style.top = "0";
+window.scrollTo(0, scrollYRef.current);
+```
+
+### ❓ Por qué sección de Especialidades tiene fondo crema
+- Rompe la monotonía oscura (evita fatiga visual)
+- Fotografías de comida lucen mejor sobre claro
+- Señaliza cambio visual: "ambiente" → "gastronomía"
+
+### ❓ Por qué FABs (botones flotantes) tienen `z-50` y no `z-9999`
+Los FABs deben quedar **por debajo** del menú móvil (`z-9999`) para no bloquear navegación.
+Con `z-50` quedan tapados automáticamente cuando menú está abierto.
 
 ---
 
-## Información adicional
+## 🔍 SEO y Metadatos
 
-### Estructura de archivos completa
-```
-/
-├── src/
-│   ├── App.tsx                 # Router y configuración de rutas
-│   ├── main.tsx                # Punto de entrada
-│   ├── index.css               # Estilos globales
-│   ├── components/
-│   │   ├── Navbar.tsx
-│   │   ├── Hero.tsx
-│   │   ├── ExperienceSplit.tsx
-│   │   ├── CodDays.tsx
-│   │   ├── Specialties.tsx
-│   │   ├── Reviews.tsx
-│   │   ├── MapSection.tsx
-│   │   ├── Footer.tsx
-│   │   ├── Barra.tsx
-│   │   ├── Galeria.tsx
-│   │   ├── GaleriaTeaser.tsx
-│   │   ├── Entrevinos.tsx
-│   │   ├── EntrevinosTeaser.tsx
-│   │   ├── AntiguosEventos.tsx
-│   │   ├── PoliticaPrivacidad.tsx
-│   │   ├── AvisoLegal.tsx
-│   │   ├── InnerPageLayout.tsx
-│   │   ├── OptimizedImage.tsx
-│   │   └── custom.d.ts
-│   ├── data/
-│   │   └── restaurant.ts       # ← editar aquí para cambiar contenido
-│   ├── lib/
-│   │   └── (utilidades)
-│   └── assets/
-├── public/
-│   └── (archivos estáticos)
-├── package.json
-├── tailwind.config.js
-├── tsconfig.json
-├── vite.config.ts
-└── README.md                   # ← este archivo
+### Implementado en App.tsx
+
+```html
+<title>Bar El Portalón | Restaurante en Roa (Burgos) - Especialidad en Bacalao</title>
+<meta name="description" 
+  content="Descubre Bar El Portalón. Cocina tradicional castellana, 
+  especialidades en bacalao, kokotxas, pinchos en Plaza Mayor Roa Burgos." />
 ```
 
-### Comandos útiles
-```bash
-npm run dev       # Servidor de desarrollo en localhost:5173
-npm run build     # Compilar para producción (TypeScript + Vite)
-npm run lint      # Ejecutar ESLint
-npm run preview   # Previsualizar el build de producción
-npm run deploy    # Desplegar a GitHub Pages (configurado)
+### Palabras Clave Objetivo (SEO Local)
+
+```
+restaurante en Roa, Burgos
+pinchos en Roa
+bacalao en Roa
+dónde comer en Roa Burgos
+tapeo Roa
+restaurante Plaza Mayor Roa
+cocina castellana Roa
+Ribera del Duero restaurante
+jornadas del bacalao Roa
 ```
 
-### Navegadores soportados
-- Chrome 90+ (desktop y Android)
-- Safari 14+ (iOS y macOS) — especialmente optimizado
-- Firefox 88+
-- Edge 90+
+### Pendiente de Implementar
 
-### Performance
-- **Imagen Hero**: Optimizada para mobile-first, carga lazy
-- **Componentes**: Code-splitting automático con Vite
-- **CSS**: Tailwind genera solo clases usadas (tree-shaking)
-- **Animaciones**: GPU-accelerated con Framer Motion (`transform` + `opacity`)
-- **Puntuación Lighthouse**: Objetivo 90+ en Performance, Accessibility, Best Practices
+- [ ] Schema.org `Restaurant` JSON-LD
+- [ ] Open Graph image para compartir en redes
+- [ ] `sitemap.xml` y `robots.txt` (ya existen en `/public`)
+- [ ] Google Business Profile verificado
+- [ ] URL Google Maps real en todos los enlaces
 
 ---
 
-## Información de despliegue
+## 🍽️ Guía de Mantenimiento para el Propietario
 
-### Configuración actual
-- Hospedado en **Vercel** ([https://bar-portalon-roa.com](https://bar-portalon-roa.com))
-- Domain: `bar-portalon-roa.com`
-- Certificado SSL: Automático (Vercel)
-- CDN global: Sí (Vercel Edge Network)
+> Esta sección es para quien mantiene el sitio **sin conocimientos técnicos avanzados**.
 
-### Archivo de configuración: `vercel.json`
-```json
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite"
-}
-```
+### ✅ Cambios Seguros — Editar Solo `restaurant.ts`
 
-### Variables de entorno (si es necesario)
-Actualmente no requiere variables de entorno. Si en el futuro se integran servicios externos:
-- Usar archivo `.env.local` (no committear a Git)
-- Configurar en panel de Vercel bajo "Settings → Environment Variables"
+| Qué Cambiar | Campo | Ubicación |
+|-------------|-------|-----------|
+| Teléfono de reservas | `contact.phone` | `src/data/restaurant.ts` |
+| Estado Jornadas Bacalao | `codDaysStatus` | `src/data/restaurant.ts` |
+| Fechas Jornadas | `codDaysConfig.dates` | `src/data/restaurant.ts` |
+| Platos en Jornadas | `codDaysConfig.featuredPlates` | `src/data/restaurant.ts` |
+| Especialidades | `specialties[]` | `src/data/restaurant.ts` |
+| Reseñas clientes | `reviews[]` | `src/data/restaurant.ts` |
+
+### 📸 Actualizar Imágenes
+
+1. Subir foto a hosting (Cloudinary, Google Drive público, Uploadcare)
+2. Copiar URL pública de la imagen
+3. Pegar URL en campo `image` en `restaurant.ts`
+
+**Tamaños recomendados**:
+- Hero principal: `2000 × 1200 px` (landscape)
+- Especialidades: `800 × 1067 px` (portrait 3:4)
+- Jornadas Bacalao: `800 × 1000 px` (portrait 4:5)
+
+### ⚠️ NO TOCAR sin ayuda técnica
+
+- ❌ Archivos `.tsx` de componentes
+- ❌ Archivos de configuración (`.json`, `.config.js`, `package.json`)
+- ❌ Carpetas `lib/`, `app/`, `assets/`
+- ❌ Solo trabajar en `src/data/restaurant.ts`
 
 ---
 
-*Documento actualizado: {{ fecha_actualización }}*  
-*Proyecto: Bar El Portalón — Sitio Web v2.0*  
-*Desarrollador: Diego Bombín Sanz*  
-*Contacto técnico: Para cambios en el código, contactar al desarrollador*  
+## 🚀 Roadmap / Próximos Pasos
+
+### 🔴 Prioridad Alta — Antes del Lanzamiento
+
+- [ ] Fotos reales del local y platos (reemplazar Unsplash)
+- [ ] Número teléfono real en `restaurant.ts`, `Navbar.tsx`, `Footer.tsx`
+- [ ] URL Google Maps verificada
+- [ ] Instagram handle real (o eliminar link)
+- [ ] Horarios revisados y confirmados
+- [ ] Aviso Legal y Política de Privacidad completadas
+
+### 🟡 Prioridad Media — Mejoras (1-3 meses)
+
+- [ ] Sistema de reservas integrado (Covermanager, TheFork, formulario)
+- [ ] Galería fotos del local y eventos
+- [ ] Sección "Plato del día" actualizable fácilmente
+- [ ] Google Reviews API integrada
+- [ ] WhatsApp Business para reservas
+- [ ] Schema.org `Restaurant` JSON-LD (SEO)
+
+### 🟢 Prioridad Baja — Evolución (6-12 meses)
+
+- [ ] Panel administración visual (Sanity CMS, Contentful)
+- [ ] Versión bilingüe español/inglés
+- [ ] Newsletter para Jornadas Bacalao
+- [ ] PWA (Progressive Web App) instalable móvil
+- [ ] Analytics (Plausible, GA4)
+- [ ] Integraciones con redes sociales (Instagram feed)
+
+---
+
+## Stack Tecnológico — Resumen
+
+| Tecnología | Versión | Propósito |
+|-----------|---------|----------|
+| React | ^19.2.4 | Framework UI + Hooks |
+| Vite | ^8.0.0 | Bundler + Dev Server (HMR instantáneo) |
+| TypeScript | ~5.9.3 | Tipado estático para seguridad |
+| Tailwind CSS | ^4.2.1 | Estilos utilitarios responsive |
+| Framer Motion | ^12.40.0 | Animaciones declarativas (whileInView) |
+| Lucide React | ^0.577.0 | Iconografía limpia SVG |
+| Supabase JS | ^2.108.1 | Backend/autenticación (opcional) |
+| ESLint | ^9.39.4 | Linting de código |
+| PostCSS | ^8.5.8 | Procesamiento CSS |
+| Sharp | ^0.34.5 | Optimización de imágenes |
+
+### ¿Por qué este stack?
+- ⚡ **Vite**: Desarrollo ultrarrápido con HMR, bundling optimizado
+- ⚛️ **React 19**: Hooks modernos, mejor rendimiento, Server Components ready
+- 🔷 **TypeScript**: Seguridad de tipos, IDE autocompletado, menos bugs
+- 🎨 **Tailwind CSS**: Mobile-first, consistencia visual, sin CSS manual
+- 🎬 **Framer Motion**: Animaciones fluidas con `whileInView` (on-scroll)
+- 📦 **100% Estático**: Cero base de datos, preparado para CMS futuro
+
+---
+
+## 📝 Componentes — Descripción Rápida
+
+| Componente | Propósito |
+|-----------|----------|
+| `Navbar.tsx` | Navegación fija + menú móvil full-screen + FABs |
+| `Hero.tsx` | Sección portada 100vh con copy emocional |
+| `ExperienceSplit.tsx` | Split visual: Bar vs. Restaurante (2 paneles) |
+| `CodDays.tsx` | Jornadas Bacalao (dinámico: COMING_SOON/ACTIVE/PAST) |
+| `Specialties.tsx` | Grid especialidades permanentes, fondo crema |
+| `Reviews.tsx` | Testimonios clientes en grid |
+| `MapSection.tsx` | Ubicación + iframe Google Maps + contacto |
+| `Footer.tsx` | Pie con columnas: marca, dirección, horario, reservas |
+| `OptimizedImage.tsx` | Imagen con lazy loading + fallback |
+| `InnerPageLayout.tsx` | Layout compartido páginas internas (Navbar + Footer) |
+| `Galeria.tsx` / `GaleriaTeaser.tsx` | Galería fotos completa + preview home |
+| `Entrevinos.tsx` / `EntrevinosTeaser.tsx` | Vinos Ribiera Duero + preview |
+| `Barra.tsx` | Página dedicada a pinchos/tapeo barra |
+| `AntiguosEventos.tsx` | Ediciones pasadas Jornadas Bacalao |
+| `PoliticaPrivacidad.tsx` | Política de Privacidad (RGPD) |
+| `AvisoLegal.tsx` | Aviso Legal |
+
+---
+
+## 📚 Recursos Útiles
+
+- [Vite Docs](https://vitejs.dev)
+- [React 19 Docs](https://react.dev)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+- [Framer Motion Docs](https://www.framer.com/motion/)
+- [Vercel Deploy Docs](https://vercel.com/docs)
+
+---
+
+## 📧 Contacto y Soporte
+
+- **Propietario**: Para cambios de contenido, edita `src/data/restaurant.ts`
+- **Desarrollador**: Diego Bombín Sanz (para cambios en código o arquitectura)
+- **Issues/Bugs**: Abre un issue en GitHub o contacta al desarrollador
+
+---
+
+*Documento actualizado: Junio 2026*  
+*Proyecto: Bar El Portalón — Sitio Web Premium v2.0*  
+*Stack: React 19 + TypeScript + Vite + Tailwind CSS*
