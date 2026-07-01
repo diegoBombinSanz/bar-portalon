@@ -76,6 +76,7 @@ export const defaultSiteConfig = {
       supportPhone: "",
       showErrorId: true,
     },
+    keepAliveLastRun: "",
   },
 } as const;
 

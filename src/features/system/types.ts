@@ -19,4 +19,5 @@ export interface SystemConfig {
   maintenanceMode: boolean;
   maintenance: MaintenanceConfig;
   errors: ErrorConfig;
+  keepAliveLastRun?: string;
 }

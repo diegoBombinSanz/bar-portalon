@@ -266,6 +266,10 @@ export default function ConfigStatusPage() {
   const [dirty, setDirty] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [keepAliveStatus, setKeepAliveStatus] = useState<"idle" | "running" | "success" | "error">("idle");
+  const [keepAliveMessage, setKeepAliveMessage] = useState<string | null>(null);
+  const [lastKeepAlive, setLastKeepAlive] = useState<string | null>(null);
+  const [keepAliveResponseTime, setKeepAliveResponseTime] = useState<string | null>(null);
 
   const loadConfig = async () => {
     setLoading(true);
@@ -280,8 +284,19 @@ export default function ConfigStatusPage() {
 
       if (error) throw error;
 
-      setConfig(safeConfig(data));
+      const safe = safeConfig(data);
+      setConfig(safe);
       setDirty(false);
+
+      const lastRun = safe.system?.keepAliveLastRun;
+      setLastKeepAlive(
+        typeof lastRun === "string" && lastRun
+          ? new Date(lastRun).toLocaleString("es-ES", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })
+          : null,
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
       setConfig(safeConfig(null));
@@ -347,6 +362,51 @@ export default function ConfigStatusPage() {
       );
     } finally {
       setSaving(false);
+    }
+  };
+
+  const runKeepAliveCheck = async () => {
+    setKeepAliveStatus("running");
+    setKeepAliveMessage(null);
+
+    try {
+      const secret = import.meta.env.VITE_CRON_SECRET?.trim();
+      const headers = new Headers();
+
+      if (secret) {
+        headers.set("x-cron-secret", secret);
+        headers.set("Authorization", `Bearer ${secret}`);
+      }
+
+      const response = await fetch("/api/system/keep-alive", {
+        headers,
+      });
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(payload.error ?? "La comprobación no pudo completarse.");
+      }
+
+      setKeepAliveStatus(payload.ok ? "success" : "error");
+      setKeepAliveResponseTime(payload.responseTime ?? null);
+      setLastKeepAlive(
+        payload.timestamp
+          ? new Date(payload.timestamp).toLocaleString("es-ES", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })
+          : null,
+      );
+      setKeepAliveMessage(
+        payload.ok
+          ? "La base de datos respondió correctamente."
+          : payload.error ?? "La comprobación devolvió un error.",
+      );
+    } catch (err) {
+      setKeepAliveStatus("error");
+      setKeepAliveMessage(
+        err instanceof Error ? err.message : "No se pudo completar la comprobación.",
+      );
     }
   };
 
@@ -664,6 +724,72 @@ export default function ConfigStatusPage() {
                   updateField("system.maintenanceMode", !config.system.maintenanceMode)
                 }
               />
+            </div>
+
+            <div className="mt-4 space-y-3 rounded-xl border border-[#EFE9DF] bg-white p-4">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-[#2A241D]">
+                    Keep Alive de Supabase
+                  </p>
+                  <p className="text-sm text-[#5F564C]">
+                    Comprobación ligera para evitar la hibernación de la base de datos.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={runKeepAliveCheck}
+                  disabled={keepAliveStatus === "running"}
+                  className="rounded-xl bg-[#2A241D] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#1b1713] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {keepAliveStatus === "running"
+                    ? "Comprobando..."
+                    : "Ejecutar comprobación"}
+                </button>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2">
+                <div className="rounded-xl border border-[#EFE9DF] bg-[#F7F4EF] p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5F564C]">
+                    Estado Base de Datos
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-[#2A241D]">
+                    {keepAliveStatus === "success"
+                      ? "Online"
+                      : keepAliveStatus === "error"
+                        ? "Offline"
+                        : "Pendiente"}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-[#EFE9DF] bg-[#F7F4EF] p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5F564C]">
+                    Último Keep Alive
+                  </p>
+                  <p className="mt-2 text-sm text-[#2A241D]">
+                    {lastKeepAlive ?? "Sin comprobaciones aún"}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-[#EFE9DF] bg-[#F7F4EF] p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5F564C]">
+                    Tiempo de respuesta
+                  </p>
+                  <p className="mt-2 text-sm text-[#2A241D]">
+                    {keepAliveResponseTime ?? "—"}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-[#EFE9DF] bg-[#F7F4EF] p-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5F564C]">
+                    Próxima ejecución
+                  </p>
+                  <p className="mt-2 text-sm text-[#2A241D]">Programada cada 12 horas</p>
+                </div>
+              </div>
+
+              {keepAliveMessage ? (
+                <p className={`text-sm ${keepAliveStatus === "success" ? "text-green-700" : "text-[#5F564C]"}`}>
+                  {keepAliveMessage}
+                </p>
+              ) : null}
             </div>
 
             {config.system.maintenanceMode ? (
