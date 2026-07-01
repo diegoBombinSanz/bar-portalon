@@ -16,6 +16,7 @@ import {
   Plus,
   RefreshCw,
   Save,
+  Settings,
   Trash2,
 } from "lucide-react";
 import { defaultSiteConfig } from "./data/siteConfig";
@@ -76,6 +77,27 @@ type EditableSiteConfig = {
     homeUrl: string;
     [key: string]: unknown;
   };
+  system: {
+    maintenanceMode: boolean;
+    maintenance: {
+      title: string;
+      subtitle: string;
+      message: string;
+      estimatedReturn: string;
+      showContactButton: boolean;
+      showPhone: boolean;
+      showMap: boolean;
+      [key: string]: unknown;
+    };
+    errors: {
+      enableFriendlyErrors: boolean;
+      supportEmail: string;
+      supportPhone: string;
+      showErrorId: boolean;
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
 };
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -92,6 +114,9 @@ function safeConfig(raw: unknown): EditableSiteConfig {
   const rawEventos = source.eventosAnteriores ?? source.eventos_anteriores;
   const eventosAnteriores = isObject(rawEventos) ? rawEventos : {};
   const meta = isObject(source.meta) ? source.meta : {};
+  const system = isObject(source.system) ? source.system : {};
+  const maintenance = isObject(system.maintenance) ? system.maintenance : {};
+  const errors = isObject(system.errors) ? system.errors : {};
   const codDaysConfig = isObject(jornadas.codDaysConfig)
     ? jornadas.codDaysConfig
     : {};
@@ -141,6 +166,18 @@ function safeConfig(raw: unknown): EditableSiteConfig {
       ...base.meta,
       ...meta,
     },
+    system: {
+      ...base.system,
+      ...system,
+      maintenance: {
+        ...base.system.maintenance,
+        ...maintenance,
+      },
+      errors: {
+        ...base.system.errors,
+        ...errors,
+      },
+    },
   };
 }
 
@@ -153,6 +190,7 @@ function toSupabasePayload(config: EditableSiteConfig) {
     jornadas: config.jornadas,
     eventos_anteriores: config.eventosAnteriores,
     meta: config.meta,
+    system: config.system,
   };
 }
 
@@ -604,6 +642,105 @@ export default function ConfigStatusPage() {
                 )
               }
             />
+          </div>
+        </SectionCard>
+
+        <SectionCard icon={Settings} title="Sistema">
+          <div className="space-y-4 rounded-xl border border-[#EFE9DF] bg-[#F7F4EF] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-[#2A241D]">
+                  Estado del sitio
+                </p>
+                <p className="text-sm text-[#5F564C]">
+                  Activar modo mantenimiento para bloquear el acceso general.
+                </p>
+              </div>
+              <ToggleButton
+                active={config.system.maintenanceMode}
+                activeLabel="Mantenimiento activo"
+                inactiveLabel="Normal"
+                onClick={() =>
+                  updateField("system.maintenanceMode", !config.system.maintenanceMode)
+                }
+              />
+            </div>
+
+            {config.system.maintenanceMode ? (
+              <div className="space-y-4 rounded-xl border border-[#EFE9DF] bg-white p-4">
+                <Field label="Título">
+                  <input
+                    className={inputClass}
+                    value={config.system.maintenance.title}
+                    onChange={(event) =>
+                      updateField("system.maintenance.title", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Subtítulo">
+                  <input
+                    className={inputClass}
+                    value={config.system.maintenance.subtitle}
+                    onChange={(event) =>
+                      updateField("system.maintenance.subtitle", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Mensaje principal">
+                  <textarea
+                    className={`${inputClass} min-h-24 resize-y`}
+                    value={config.system.maintenance.message}
+                    onChange={(event) =>
+                      updateField("system.maintenance.message", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Fecha estimada">
+                  <input
+                    className={inputClass}
+                    value={config.system.maintenance.estimatedReturn}
+                    onChange={(event) =>
+                      updateField("system.maintenance.estimatedReturn", event.target.value)
+                    }
+                  />
+                </Field>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="flex items-center justify-between rounded-xl border border-[#EFE9DF] p-3">
+                    <span className="text-sm text-[#5F564C]">Mostrar teléfono</span>
+                    <ToggleButton
+                      active={config.system.maintenance.showPhone}
+                      onClick={() =>
+                        updateField(
+                          "system.maintenance.showPhone",
+                          !config.system.maintenance.showPhone,
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between rounded-xl border border-[#EFE9DF] p-3">
+                    <span className="text-sm text-[#5F564C]">Mostrar botón llamar</span>
+                    <ToggleButton
+                      active={config.system.maintenance.showContactButton}
+                      onClick={() =>
+                        updateField(
+                          "system.maintenance.showContactButton",
+                          !config.system.maintenance.showContactButton,
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center justify-between rounded-xl border border-[#EFE9DF] p-3">
+                    <span className="text-sm text-[#5F564C]">Mostrar botón ubicación</span>
+                    <ToggleButton
+                      active={config.system.maintenance.showMap}
+                      onClick={() =>
+                        updateField("system.maintenance.showMap", !config.system.maintenance.showMap)
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </SectionCard>
 

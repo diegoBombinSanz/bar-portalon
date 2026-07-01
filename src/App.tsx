@@ -29,6 +29,9 @@ const EntrevinosPage = lazy(() => import("./pages/Entrevinos"));
 const AntiguosEventosPage = lazy(() => import("./pages/AntiguosEventos"));
 const AdminPage = lazy(() => import("./ConfigStatusPage"));
 const LoginPage = lazy(() => import("./pages/Login"));
+const Error400PageRoute = lazy(() => import("./features/system/pages/Error400Page"));
+const Error404PageRoute = lazy(() => import("./features/system/pages/Error404Page"));
+const Error500PageRoute = lazy(() => import("./features/system/pages/Error500Page"));
 
 const routeSeo: Record<string, { title: string; description: string }> = {
   "/": {
@@ -183,8 +186,7 @@ function setMeta(name: string, content: string, property = false) {
   element.content = content;
 }
 
-function useSeo(pathname: string, config: SiteConfig) {
-  console.log("useSeo called with pathname:", pathname, "and config:", config);
+function useSeo(pathname: string, config: SiteConfig, maintenanceMode: boolean) {
   useEffect(() => {
     const siteUrl = config.meta.homeUrl || "https://bar-portalon-roa.com";
     const seo = routeSeo[pathname] ?? routeSeo["/"];
@@ -209,7 +211,8 @@ function useSeo(pathname: string, config: SiteConfig) {
     setMeta("og:url", canonicalUrl, true);
     setMeta("twitter:title", title);
     setMeta("twitter:description", description);
-  }, [pathname, config.meta.homeTitle, config.meta.homeDescription]);
+    setMeta("robots", maintenanceMode ? "noindex" : "index,follow");
+  }, [pathname, config.meta.homeTitle, config.meta.homeDescription, maintenanceMode]);
 }
 
 function ExperienceFallback() {
@@ -366,7 +369,9 @@ export default function App() {
     };
   }, []);
 
-  useSeo(pathname, config);
+  const maintenanceMode = getSiteConfig().system?.maintenanceMode ?? false;
+
+  useSeo(pathname, config, maintenanceMode);
 
   if (pathname === "/politica") {
     return (
@@ -424,6 +429,22 @@ export default function App() {
     );
   }
 
+  if (pathname === "/400") {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <Error400PageRoute />
+      </Suspense>
+    );
+  }
+
+  if (pathname === "/500") {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <Error500PageRoute />
+      </Suspense>
+    );
+  }
+
   if (pathname === "/admin" || pathname === "/admin/config") {
     return (
       <Suspense fallback={<PageFallback />}>
@@ -434,5 +455,19 @@ export default function App() {
     );
   }
 
-  return <Home config={config} />;
+  if (pathname === "/404") {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <Error404PageRoute />
+      </Suspense>
+    );
+  }
+
+  return pathname === "/" ? (
+    <Home config={config} />
+  ) : (
+    <Suspense fallback={<PageFallback />}>
+      <Error404PageRoute />
+    </Suspense>
+  );
 }

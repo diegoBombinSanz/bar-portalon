@@ -50,6 +50,8 @@ function normalizeRemoteConfig(raw: any): Partial<SiteConfig> {
     eventosAnteriores: safeObject(raw.eventos_anteriores),
 
     meta: safeObject(raw.meta),
+
+    system: safeObject(raw.system),
   };
 }
 

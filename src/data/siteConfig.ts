@@ -58,6 +58,25 @@ export const defaultSiteConfig = {
       "Bar El Portalón en Roa, Burgos. Cocina tradicional, tapeo y especialidades con el mejor bacalao de temporada.",
     homeUrl: "https://bar-portalon-roa.com",
   },
+  system: {
+    maintenanceMode: false,
+    maintenance: {
+      title: "Estamos preparando algo especial",
+      subtitle: "Próximamente volveremos con una experiencia renovada",
+      message:
+        "Estamos mejorando la experiencia del sitio para ofrecerte un servicio más rápido y cuidado.",
+      estimatedReturn: "En breve",
+      showContactButton: true,
+      showPhone: true,
+      showMap: false,
+    },
+    errors: {
+      enableFriendlyErrors: true,
+      supportEmail: "",
+      supportPhone: "",
+      showErrorId: true,
+    },
+  },
 } as const;
 
 export type SiteConfig = typeof defaultSiteConfig;
@@ -94,6 +113,18 @@ export function mergeSiteConfig(
     meta: {
       ...base.meta,
       ...(override.meta ?? {}),
+    },
+    system: {
+      ...base.system,
+      ...(override.system ?? {}),
+      maintenance: {
+        ...base.system.maintenance,
+        ...(override.system?.maintenance ?? {}),
+      },
+      errors: {
+        ...base.system.errors,
+        ...(override.system?.errors ?? {}),
+      },
     },
   } as SiteConfig;
 }
