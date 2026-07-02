@@ -4,7 +4,7 @@ import { restaurantData } from "../data/restaurant";
 import type { SiteConfig } from "../data/siteConfig";
 
 const navLinks = [
-  { label: "El Portalón", href: "#hero", visible: true },
+  { label: "El Portalón de Roa", href: "#hero", visible: true },
   { label: "La Barra", href: "/barra", visible: true },
   { label: "El Restaurante", href: "#restaurante", visible: true },
   { label: "Especialidades", href: "#especialidades", visible: true },
@@ -131,7 +131,7 @@ export default function Navbar({ config }: NavbarProps) {
             onClick={(event) => handleNavClick(event, "#hero")}
             className="select-none whitespace-nowrap font-serif text-xl tracking-widest text-[#f5f5f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] sm:text-2xl"
           >
-            EL PORTALÓN
+            EL PORTALÓN DE ROA
           </a>
 
           <div className="hidden items-center gap-5 lg:flex xl:gap-8">
