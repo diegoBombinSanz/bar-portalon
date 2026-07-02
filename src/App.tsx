@@ -334,7 +334,7 @@ function Home({ config }: { config: SiteConfig }) {
         )}
       </main>
 
-      <Footer />
+      <Footer config={config} />
     </div>
   );
 }

@@ -19,9 +19,9 @@ const infoItems = [
   {
     icon: Phone,
     label: "Reservas",
-    value: "+34 947 000 000",
+    value: "+34 633 954 144",
     sub: "Lunes a Domingo",
-    href: "tel:+34947000000",
+    href: "tel:+34633954144",
     linkText: "Llamar ahora",
   },
   {

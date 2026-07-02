@@ -1,8 +1,13 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 import { restaurantData } from "../data/restaurant";
+import type { SiteConfig } from "../data/siteConfig";
 
-export default function Footer() {
+type FooterContact = {
+  config?: SiteConfig;
+};
+
+export default function Footer({ config }: FooterContact) {
   const { location, contact } = restaurantData;
 
   return (
@@ -59,7 +64,7 @@ export default function Footer() {
               </p>
             </div>
             <a
-              href={location.googleMapsUrl}
+              href={config?.contact.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center text-[10px] uppercase tracking-widest text-[#c5a059] transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
@@ -111,14 +116,14 @@ export default function Footer() {
                 className="shrink-0 text-[#c5a059]"
                 aria-hidden="true"
               />
-              <p className="font-serif text-xl">{contact.phone}</p>
+              <p className="font-serif text-xl">{config?.contact.phone}</p>
             </div>
             <p className="text-sm font-light text-[#f5f5f1]/75">
               Para garantizar tu mesa, recomendamos llamar con antelación,
               especialmente fines de semana.
             </p>
             <a
-              href="tel:+34947000000"
+              href={`tel:${config?.contact.phone}`}
               className="block min-h-11 bg-[#c5a059] px-6 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-black transition-colors hover:bg-[#b08d4a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
             >
               Llamar ahora
