@@ -8,9 +8,9 @@ export const restaurantData = {
     googleMapsUrl: "https://maps.google.com/?q=Bar+El+Portalon+Roa",
   },
   contact: {
-    phone: "+34 947 000 000",
-    whatsapp: "+34 600 000 000",
-    email: "prueba@purba.com",
+    phone: "+34 633 954 144",
+    whatsapp: "+34 633 954 144",
+    email: "diesanz2003@gmail.com",
     tripadvisor:
       "https://www.tripadvisor.es/Restaurant_Review-g2137389-d8331828-Reviews-El_Portalon_De_Roa-Roa_Province_of_Burgos_Castile_and_Leon.html",
   },
