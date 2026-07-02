@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bar-portalon-roa.com/sitemap.xml
+Sitemap: https://elportalonderoa.com/sitemap.xml

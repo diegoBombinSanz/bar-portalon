@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bar-portalon-roa.com/</loc>
+    <loc>https://elportalonderoa.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bar-portalon-roa.com/barra</loc>
+    <loc>https://elportalonderoa.com/barra</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bar-portalon-roa.com/galeria</loc>
+    <loc>https://elportalonderoa.com/galeria</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://bar-portalon-roa.com/entrevinos</loc>
+    <loc>https://elportalonderoa.com/entrevinos</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://bar-portalon-roa.com/antiguos-eventos</loc>
+    <loc>https://elportalonderoa.com/antiguos-eventos</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://bar-portalon-roa.com/aviso</loc>
+    <loc>https://elportalonderoa.com/aviso</loc>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://bar-portalon-roa.com/politica</loc>
+    <loc>https://elportalonderoa.com/politica</loc>
     <priority>0.2</priority>
   </url>
 </urlset>
