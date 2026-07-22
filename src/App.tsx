@@ -188,7 +188,7 @@ function setMeta(name: string, content: string, property = false) {
 
 function useSeo(pathname: string, config: SiteConfig, maintenanceMode: boolean) {
   useEffect(() => {
-    const siteUrl = config.meta.homeUrl || "https://bar-portalon-roa.com";
+    const siteUrl = config.meta.homeUrl || window.location.origin;
     const seo = routeSeo[pathname] ?? routeSeo["/"];
     const title = pathname === "/" ? config.meta.homeTitle || seo.title : seo.title;
     const description = pathname === "/" ? config.meta.homeDescription || seo.description : seo.description;

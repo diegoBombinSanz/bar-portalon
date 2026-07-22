@@ -56,7 +56,7 @@ export const defaultSiteConfig = {
     homeTitle: "Bar El Portalón | Restaurante en Roa, Ribera del Duero",
     homeDescription:
       "Bar El Portalón en Roa, Burgos. Cocina tradicional, tapeo y especialidades con el mejor bacalao de temporada.",
-    homeUrl: "https://bar-portalon-roa.com",
+    homeUrl: "https://elportalonderoa.com",
   },
   system: {
     maintenanceMode: false,
