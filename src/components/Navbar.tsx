@@ -129,9 +129,30 @@ export default function Navbar({ config }: NavbarProps) {
           <a
             href="#hero"
             onClick={(event) => handleNavClick(event, "#hero")}
-            className="select-none whitespace-nowrap font-serif text-xl tracking-widest text-[#f5f5f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] sm:text-2xl"
+            aria-label="El Portalón de Roa - Inicio"
+            className="flex shrink-0 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059]"
           >
-            EL PORTALÓN DE ROA
+            {/* Logo largo: escritorio y tablet */}
+            <img
+              src="/logo-largo-white-no-back.png"
+              alt="El Portalón de Roa"
+              width={320}
+              height={80}
+              className="hidden h-auto max-h-12 w-auto max-w-[220px] object-contain sm:block"
+              loading="eager"
+              decoding="async"
+            />
+
+            {/* Logo corto: móvil */}
+            <img
+              src="/logo-corto-white-no-back.png"
+              alt=""
+              width={128}
+              height={128}
+              className="block h-9 w-9 shrink-0 object-contain sm:hidden"
+              loading="eager"
+              decoding="async"
+            />
           </a>
 
           <div className="hidden items-center gap-5 lg:flex xl:gap-8">
@@ -255,7 +276,7 @@ export default function Navbar({ config }: NavbarProps) {
         </a>
 
         <a
-          href="tel:+34947000000"
+          href="tel:+34633954144"
           aria-label="Llamar para reservar"
           className="floating-action group flex items-center overflow-hidden rounded-full bg-[#c5a059] text-black shadow-2xl"
         >

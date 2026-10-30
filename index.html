@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo-corto-white-no-back.png" />
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="preconnect" href="https://images-ctfassets.unsplash.com" />
     <link rel="preload" as="image" href="/hero-lcp.jpg" fetchpriority="high" />
@@ -17,7 +17,7 @@
     <meta property="og:title" content="Bar El Portalón | Restaurante en Roa" />
     <meta
       property="og:description"
-      content="Cocina tradicional, pinchos, raciones y especialidades de bacalao en el corazón de Roa."
+      content="Descubre El Portalón, bar y restaurante en Roa (Burgos), especializado en cocina tradicional, pinchos, raciones y exquisitas elaboraciones de bacalao. Disfruta de nuestra gastronomía en un ambiente cercano, con propuestas para compartir y disfrutar de la buena cocina."
     />
     <meta property="og:url" content="https://bar-portalon-roa.com/" />
     <meta property="og:site_name" content="Bar El Portalón" />
@@ -28,8 +28,12 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Restaurant",
+        "@type": ["BarOrPub", "Restaurant"],
+        "@id": "https://bar-portalon-roa.com/#business",
         "name": "Bar El Portalón",
+        "url": "https://bar-portalon-roa.com/",
+        "telephone": "+34633954144",
+        "description": "Bar y restaurante en Roa (Burgos) con una amplia oferta gastronómica de cocina tradicional. Disfruta de pinchos fríos y calientes, raciones, especialidades de bacalao y una variada carta con propuestas para todos los gustos. Cuenta con una amplia terraza, servicio de comida para llevar y posibilidad de realizar reservas telefónicas. También ofrece menús cerrados bajo reserva, ideales para comidas y celebraciones.",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Plaza Mayor, 14",
@@ -38,11 +42,27 @@
           "postalCode": "09300",
           "addressCountry": "ES"
         },
-        "telephone": "+34947000000",
-        "servesCuisine": "Cocina tradicional",
-        "url": "https://bar-portalon-roa.com/",
+        "servesCuisine": [
+          "Cocina tradicional",
+          "Cocina española",
+          "Especialidades de bacalao",
+          "Pinchos y raciones"
+        ],
         "priceRange": "€€",
-        "openingHours": "Mo-Su 09:00-23:30"
+        "openingHours": "Mo-Su 09:00-23:30",
+        "acceptsReservations": true,
+        "amenityFeature": [
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Terraza exterior amplia",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Comida para llevar",
+            "value": true
+          }
+        ]
       }
     </script>
   </head>

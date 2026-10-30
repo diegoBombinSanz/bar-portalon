@@ -408,7 +408,7 @@ export default function EntrevinosPage({ config }: EntrevinosPageProps) {
               Visitar El Portalón
             </a>
             <a
-              href="tel:+34947000000"
+              href="tel:+34633954144"
               className="inline-flex items-center gap-3 px-8 py-4 border border-white/15 text-[#f5f5f1]/60 text-xs uppercase tracking-widest hover:border-[#c5a059]/40 hover:text-[#f5f5f1] transition-all"
             >
               Contactar la bodega

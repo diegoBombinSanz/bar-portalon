@@ -1,13 +1,20 @@
+import ReactMarkdown from "react-markdown";
+
+
 type HeroBanner = {
   visible: boolean;
   message: string;
 };
 
-type HeroProps = {
+type HeroPropsWithPhone = {
   banner?: HeroBanner;
+  numberPhone: string;
 };
 
-export default function Hero({ banner }: HeroProps) {
+
+export default function Hero({ banner, numberPhone }: HeroPropsWithPhone) {
+
+  
   return (
     <section
       id="hero"
@@ -15,21 +22,32 @@ export default function Hero({ banner }: HeroProps) {
       className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black"
     >
       <img
-        src="/hero-lcp.jpg"
+        src="/portada_opcion2.jpg"
         alt=""
         width={900}
         height={491}
         loading="eager"
         decoding="async"
         fetchPriority="high"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full object-cover object-center "
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/85" />
 
       <div className="relative z-10 max-w-4xl px-6 text-center">
         {banner?.visible ? (
-          <div className="mb-6 inline-flex rounded-full border border-[#c5a059]/30 bg-[#1a1a1a]/90 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-[#c5a059]">
-            {banner.message}
+          <div className="mb-6 rounded-full border border-[#c5a059]/30 bg-[#1a1a1a]/90 px-4 py-3 text-[11px] uppercase tracking-[0.3em] text-[#c5a059]">
+            <ReactMarkdown
+              components={{
+                p: ({ children }) => (
+                  <p className="mb-1 last:mb-0">{children}</p>
+                ),
+                strong: ({ children }) => (
+                  <strong className="font-bold">{children}</strong>
+                ),
+              }}
+            >
+              {banner.message}
+            </ReactMarkdown>
           </div>
         ) : null}
 
@@ -48,7 +66,7 @@ export default function Hero({ banner }: HeroProps) {
 
         <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
           <a
-            href="#restaurante"
+            href={numberPhone}
             className="inline-flex min-h-11 w-full items-center justify-center bg-[#c5a059] px-10 py-4 text-xs font-bold uppercase tracking-widest text-black transition-colors hover:bg-[#b08d4a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] md:w-auto"
           >
             Reservar Mesa
