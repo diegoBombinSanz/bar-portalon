@@ -251,7 +251,7 @@ export default function AntiguosEventosPage({ config }: AntiguosEventosPageProps
             próxima edición de las Jornadas del Bacalao.
           </p>
           <a
-            href="tel:+34947000000"
+            href="tel:+34633954144"
             className="inline-flex items-center gap-3 px-10 py-4 bg-[#c5a059] text-black text-xs font-bold uppercase tracking-widest hover:bg-[#d4b06a] transition-colors"
           >
             Llamar al restaurante

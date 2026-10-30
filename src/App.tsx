@@ -249,12 +249,16 @@ function Home({ config }: { config: SiteConfig }) {
   const isVisible = (id: string) =>
     config.sections.find((section) => section.id === id)?.visible ?? true;
 
+  const phone = config?.contact?.phone;
+  const phoneHref = phone.startsWith("tel:")
+    ? phone
+    : `tel:${phone.replace(/\s+/g, "")}`;
   return (
     <div className="bg-black text-[#f5f5f1] selection:bg-[#c5a059] selection:text-black">
       <Navbar config={config} />
 
       <main>
-        <Hero banner={config.banner} />
+        <Hero banner={config.banner} numberPhone={phoneHref} />
 
         {isVisible("experienceSplit") && (
           <DeferredSection

@@ -77,7 +77,7 @@ export default function CodDays({ config }: CodDaysProps) {
             </div>
 
             <a
-              href="tel:+34947000000"
+              href="tel:+34633954144"
               className="flex min-h-11 w-full items-center justify-between border border-[#c5a059] bg-transparent px-8 py-4 text-xs font-bold uppercase tracking-widest text-[#c5a059] transition-colors hover:bg-[#c5a059] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c5a059] md:w-auto"
             >
               {codDaysStatus === "ACTIVE"
