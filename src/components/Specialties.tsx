@@ -1,112 +1,186 @@
-import { useState } from "react";
-import { specialties } from "../data/specialties";
-import AllergenBadges, { type AllergenKey } from "./AllergenBadges";
 
-const INITIAL_ITEMS = 6;
+import { useMemo, useState } from "react";
+import { specialties } from "../data/specialties";
+import SpecialtyCard from "./SpecialtyCard";
+
+type SpecialtyFilter = "all" | "takeaway";
 
 export default function Specialties() {
-  const [showAll, setShowAll] = useState(false);
+  const [activeFilter, setActiveFilter] =
+    useState<SpecialtyFilter>("all");
 
-  const visibleItems = showAll
-    ? specialties
-    : specialties.slice(0, INITIAL_ITEMS);
+  const takeawayCount = useMemo(
+    () =>
+      specialties.filter(
+        (item) => "takeaway" in item && item.takeaway === true
+      ).length,
+    []
+  );
+
+  const visibleItems = useMemo(
+    () =>
+      activeFilter === "takeaway"
+        ? specialties.filter(
+            (item) => "takeaway" in item && item.takeaway === true
+          )
+        : specialties,
+    [activeFilter]
+  );
+
+  const filters: {
+    id: SpecialtyFilter;
+    label: string;
+    count: number;
+  }[] = [
+    {
+      id: "all",
+      label: "Todas",
+      count: specialties.length,
+    },
+    {
+      id: "takeaway",
+      label: "Para llevar",
+      count: takeawayCount,
+    },
+  ];
 
   return (
-    <section id="especialidades" className="overflow-hidden bg-[#F7F4EF] py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-20 text-center">
-          <span className="mb-4 block text-xs font-bold uppercase tracking-[0.3em] text-[#800020]">
-            Nuestros Imprescindibles
+    <section
+      id="especialidades"
+      className="bg-[#F7F4EF] py-16 md:py-20"
+      aria-labelledby="specialties-title"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        {/* Cabecera */}
+        <header className="mx-auto mb-10 max-w-2xl text-center md:mb-12">
+          <span className="mb-3 block text-[10px] font-bold uppercase tracking-[0.3em] text-[#9A783D] sm:text-xs">
+            El sabor de El Portalón
           </span>
 
-          <h2 className="font-serif text-4xl text-[#2A241D] md:text-6xl">
-            Sabor y Producto
+          <h2
+            id="specialties-title"
+            className="font-serif text-4xl text-[#2A241D] sm:text-5xl md:text-6xl"
+          >
+            Nuestra cocina
           </h2>
 
-          <div className="mx-auto mt-8 h-px w-24 bg-[#c5a059]" />
-        </div>
+          <div className="mx-auto my-5 h-px w-16 bg-[#c5a059]" />
 
-        <div className="mb-10 text-center">
-          <p className="text-sm uppercase tracking-[0.2em] text-[#800020]/80">
-            📦 Algunas especialidades pueden encargarse para llevar
+          <p className="text-sm leading-relaxed text-[#5F564C] sm:text-base">
+            Descubre algunas de nuestras especialidades y propuestas
+            de cocina, elaboradas con el cuidado por el producto
+            y la tradición que nos caracteriza.
           </p>
-        </div>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-          {visibleItems.map((item) => (
-            <article key={item.id} className="group">
-              <div className="relative mb-8 aspect-[3/4] overflow-hidden shadow-2xl">
-                {item.takeaway && (
-                  <div className="absolute right-4 top-4 z-20">
-                    <div className="flex h-16 w-16 flex-col items-center justify-center rounded-full border-2 border-[#c5a059] bg-[#F7F4EF]/95 shadow-xl backdrop-blur-sm">
-                      <span className="text-lg">📦</span>
-                      <span className="mt-1 text-[8px] font-bold uppercase tracking-wider text-[#800020]">
-                        Llevar
-                      </span>
-                    </div>
-                  </div>
-                )}
+        </header>
 
-                {item.image ? (
-                  <>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      width={item.width}
-                      height={item.height}
-                      loading="lazy"
-                      decoding="async"
-                      sizes="(min-width: 1024px) 30vw, (min-width: 768px) 50vw, 100vw"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/20 transition-colors duration-300 group-hover:bg-transparent" />
-                  </>
-                ) : (
-                  <div className="flex h-full items-center justify-center border border-[#c5a059]/30 bg-gradient-to-br from-[#F7F4EF] to-[#EFE8DC] p-8 text-center">
-                    <div>
-                      <div className="mb-4 text-5xl">🍽️</div>
-                      <p className="font-serif text-2xl text-[#800020]">
-                        {item.name}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
+        {/* Filtros */}
+        <div className="mb-6 border-b border-[#c5a059]/25 pb-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-              <h3 className="mb-4 font-serif text-2xl text-[#2A241D] transition-colors group-hover:text-[#800020]">
-                {item.name}
+            <div>
+              <h3 className="font-serif text-xl text-[#2A241D]">
+                Nuestras especialidades
               </h3>
 
-              <p className="mb-4 font-light leading-relaxed text-[#2A241D]/70">
-                {item.description}
+              <p className="mt-1 text-xs text-[#5F564C]/80">
+                {activeFilter === "all"
+                  ? `${specialties.length} propuestas`
+                  : `${visibleItems.length} especialidades para llevar`}
               </p>
+            </div>
 
-              <AllergenBadges
-                allergens={item.allergens as AllergenKey[]}
-                theme="light"
-              />
-            </article>
+            <div
+              className="flex flex-wrap items-center gap-2"
+              role="group"
+              aria-label="Filtrar especialidades"
+            >
+              {filters.map((filter) => {
+                const isActive = activeFilter === filter.id;
+
+                return (
+                  <button
+                    key={filter.id}
+                    type="button"
+                    onClick={() => setActiveFilter(filter.id)}
+                    aria-pressed={isActive}
+                    className={`
+                      inline-flex min-h-10 items-center gap-2
+                      rounded-full border px-4 py-2
+                      text-xs font-semibold tracking-wide
+                      transition-colors duration-200
+                      focus-visible:outline-none
+                      focus-visible:ring-2
+                      focus-visible:ring-[#c5a059]
+                      focus-visible:ring-offset-2
+                      ${
+                        isActive
+                          ? "border-[#c5a059] bg-[#c5a059] text-white"
+                          : "border-[#c5a059]/40 bg-transparent text-[#5F564C] hover:border-[#c5a059] hover:text-[#9A783D]"
+                      }
+                    `}
+                  >
+                    <span>{filter.label}</span>
+
+                    <span
+                      className={`
+                        flex h-5 min-w-5 items-center justify-center
+                        rounded-full px-1 text-[10px]
+                        ${
+                          isActive
+                            ? "bg-white/20 text-white"
+                            : "bg-[#c5a059]/15 text-[#9A783D]"
+                        }
+                      `}
+                    >
+                      {filter.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {activeFilter === "all" && takeawayCount > 0 && (
+            <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-[#9A783D]/70">
+              <span
+                className="mt-0.5 shrink-0 font-bold"
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+              <span>
+                Algunas de nuestras especialidades también
+                están disponibles para llevar. Identifícalas
+                con su distintivo.
+              </span>
+            </p>
+          )}
+        </div>
+
+        {/* Especialidades */}
+        <div
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 md:gap-4"
+          aria-live="polite"
+        >
+          {visibleItems.map((item) => (
+            <SpecialtyCard key={item.id} item={item} />
           ))}
         </div>
 
-        {specialties.length > INITIAL_ITEMS && (
-          <div className="mt-16 text-center">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="border border-[#800020] px-8 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#800020] transition-all duration-300 hover:bg-[#800020] hover:text-white"
-            >
-              {showAll
-                ? "Ver menos especialidades"
-                : "Ver todas las especialidades"}
-            </button>
-          </div>
-        )}
-
-        <div className="mt-20 text-center">
-          <p className="mx-auto max-w-2xl text-lg font-light italic text-[#2A241D]/60">
-            "No tenemos una carta cerrada, preferimos recomendarte lo mejor de
-            nuestra cocina según el producto fresco del día."
+        {/* Mensaje final */}
+        <footer className="mt-12 border-t border-[#c5a059]/25 pt-8 text-center md:mt-16">
+          <p className="mx-auto max-w-2xl font-serif text-lg italic leading-relaxed text-[#2A241D]/75 sm:text-xl">
+            No tenemos una carta cerrada. Nos gusta recomendarte
+            lo mejor de nuestra cocina según el producto fresco
+            y las propuestas de cada día.
           </p>
-        </div>
+
+          <p className="mt-3 text-xs text-[#5F564C]/75">
+            Consulta con nuestro equipo la disponibilidad de las
+            especialidades y las opciones para llevar.
+          </p>
+        </footer>
       </div>
     </section>
   );
