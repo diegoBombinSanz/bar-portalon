@@ -212,7 +212,7 @@ function useSeo(pathname: string, config: SiteConfig, maintenanceMode: boolean) 
     setMeta("twitter:title", title);
     setMeta("twitter:description", description);
     setMeta("robots", maintenanceMode ? "noindex" : "index,follow");
-  }, [pathname, config.meta.homeTitle, config.meta.homeDescription, maintenanceMode]);
+  }, [pathname, config.meta.homeTitle, config.meta.homeDescription, config.meta.homeUrl, maintenanceMode]);
 }
 
 function ExperienceFallback() {

@@ -7,51 +7,56 @@ import {
 import { fetchSiteConfig } from "./siteConfigService";
 
 /* =========================
-   🔒 GUARDAS DE SEGURIDAD
+   GUARDAS DE SEGURIDAD
 ========================= */
 
-function isObject(value: any) {
-  return value && typeof value === "object" && !Array.isArray(value);
+function isObject(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function safeArray(value: any): any[] {
-  return Array.isArray(value) ? value : [];
+function safeArray<T>(value: unknown): T[] {
+  return Array.isArray(value) ? (value as T[]) : [];
 }
 
-function safeObject(value: any): Record<string, any> {
-  return isObject(value) ? value : {};
+function safeObject<T extends object>(value: unknown): T {
+  return (isObject(value) ? value : {}) as T;
 }
 
 /* =========================
-   🧼 NORMALIZADOR SUPABASE
+   NORMALIZADOR SUPABASE
 ========================= */
 
-function normalizeRemoteConfig(raw: any): Partial<SiteConfig> {
-  if (!isObject(raw)) return {};
+function normalizeRemoteConfig(raw: unknown): Partial<SiteConfig> {
+  const source = safeObject<Record<string, unknown>>(raw);
+  const nav = safeObject<Record<string, unknown>>(source.nav);
 
   return {
-    ...raw,
+    ...source,
 
-    // 🔥 FIX CRÍTICO: sections puede venir como {} en Supabase
-    sections: safeArray(raw.sections),
+    sections: safeArray<SiteConfig["sections"][number]>(
+      source.sections,
+    ) as unknown as SiteConfig["sections"],
 
-    // nav.links puede romper UI
     nav: {
-      ...safeObject(raw.nav),
-      links: safeArray(raw?.nav?.links),
+      ...nav,
+      links: safeArray<SiteConfig["nav"]["links"][number]>(
+        nav.links,
+      ) as unknown as SiteConfig["nav"]["links"],
     },
 
-    contact: safeObject(raw.contact),
+    contact: safeObject<SiteConfig["contact"]>(source.contact),
 
-    banner: safeObject(raw.banner),
+    banner: safeObject<SiteConfig["banner"]>(source.banner),
 
-    jornadas: safeObject(raw.jornadas),
+    jornadas: safeObject<SiteConfig["jornadas"]>(source.jornadas),
 
-    eventosAnteriores: safeObject(raw.eventos_anteriores),
+    eventosAnteriores: safeObject<SiteConfig["eventosAnteriores"]>(
+      source.eventos_anteriores,
+    ),
 
-    meta: safeObject(raw.meta),
+    meta: safeObject<SiteConfig["meta"]>(source.meta),
 
-    system: safeObject(raw.system),
+    system: safeObject<SiteConfig["system"]>(source.system),
   };
 }
 

@@ -104,8 +104,43 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+function setNestedValue(
+  target: unknown,
+  keys: string[],
+  value: unknown,
+): unknown {
+  const [key, ...remainingKeys] = keys;
+
+  if (!key) {
+    return value;
+  }
+
+  if (Array.isArray(target)) {
+    const index = Number(key);
+
+    if (!Number.isInteger(index) || index < 0) {
+      return target;
+    }
+
+    const next = [...target];
+
+    next[index] = setNestedValue(next[index], remainingKeys, value);
+
+    return next;
+  }
+
+  const record = isObject(target) ? target : {};
+
+  return {
+    ...record,
+    [key]: setNestedValue(record[key], remainingKeys, value),
+  };
+}
+
 function safeConfig(raw: unknown): EditableSiteConfig {
-  const base = structuredClone(defaultSiteConfig) as unknown as EditableSiteConfig;
+  const base = structuredClone(
+    defaultSiteConfig,
+  ) as unknown as EditableSiteConfig;
   const source = isObject(raw) ? raw : {};
   const nav = isObject(source.nav) ? source.nav : {};
   const contact = isObject(source.contact) ? source.contact : {};
@@ -216,13 +251,7 @@ function SectionCard({
   );
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}) {
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block space-y-2">
       <span className="text-sm font-medium text-[#5F564C]">{label}</span>
@@ -258,6 +287,29 @@ function ToggleButton({
 const inputClass =
   "w-full rounded-xl border border-[#EFE9DF] px-3 py-2 text-sm outline-none transition focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20";
 
+async function fetchEditableConfig(): Promise<EditableSiteConfig> {
+  const { data, error } = await supabase
+    .from("site_config")
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return safeConfig(data);
+}
+
+function formatKeepAliveDate(value: unknown): string | null {
+  if (typeof value !== "string" || !value) {
+    return null;
+  }
+
+  return new Date(value).toLocaleString("es-ES", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
 export default function ConfigStatusPage() {
   const { user } = useAuth();
   const [config, setConfig] = useState<EditableSiteConfig | null>(null);
@@ -266,10 +318,14 @@ export default function ConfigStatusPage() {
   const [dirty, setDirty] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [keepAliveStatus, setKeepAliveStatus] = useState<"idle" | "running" | "success" | "error">("idle");
+  const [keepAliveStatus, setKeepAliveStatus] = useState<
+    "idle" | "running" | "success" | "error"
+  >("idle");
   const [keepAliveMessage, setKeepAliveMessage] = useState<string | null>(null);
   const [lastKeepAlive, setLastKeepAlive] = useState<string | null>(null);
-  const [keepAliveResponseTime, setKeepAliveResponseTime] = useState<string | null>(null);
+  const [keepAliveResponseTime, setKeepAliveResponseTime] = useState<
+    string | null
+  >(null);
 
   const loadConfig = async () => {
     setLoading(true);
@@ -277,26 +333,11 @@ export default function ConfigStatusPage() {
     setSuccess(false);
 
     try {
-      const { data, error } = await supabase
-        .from("site_config")
-        .select("*")
-        .single();
+      const safe = await fetchEditableConfig();
 
-      if (error) throw error;
-
-      const safe = safeConfig(data);
       setConfig(safe);
       setDirty(false);
-
-      const lastRun = safe.system?.keepAliveLastRun;
-      setLastKeepAlive(
-        typeof lastRun === "string" && lastRun
-          ? new Date(lastRun).toLocaleString("es-ES", {
-              dateStyle: "medium",
-              timeStyle: "short",
-            })
-          : null,
-      );
+      setLastKeepAlive(formatKeepAliveDate(safe.system?.keepAliveLastRun));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
       setConfig(safeConfig(null));
@@ -306,29 +347,41 @@ export default function ConfigStatusPage() {
   };
 
   useEffect(() => {
-    loadConfig();
+    let cancelled = false;
+
+    const initializeConfig = async () => {
+      try {
+        const safe = await fetchEditableConfig();
+
+        if (cancelled) return;
+
+        setConfig(safe);
+        setDirty(false);
+        setLastKeepAlive(formatKeepAliveDate(safe.system?.keepAliveLastRun));
+      } catch (err) {
+        if (cancelled) return;
+
+        setError(err instanceof Error ? err.message : "Error inesperado");
+        setConfig(safeConfig(null));
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void initializeConfig();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const updateField = (path: string, value: unknown) => {
     setConfig((prev) => {
       if (!prev) return prev;
 
-      const clone = structuredClone(prev) as Record<string, any>;
-      const keys = path.split(".");
-      let ref = clone;
-
-      for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i];
-
-        if (!isObject(ref[key]) && !Array.isArray(ref[key])) {
-          ref[key] = /^\d+$/.test(keys[i + 1]) ? [] : {};
-        }
-
-        ref = ref[key];
-      }
-
-      ref[keys[keys.length - 1]] = value;
-      return clone as EditableSiteConfig;
+      return setNestedValue(prev, path.split("."), value) as EditableSiteConfig;
     });
 
     setDirty(true);
@@ -384,7 +437,9 @@ export default function ConfigStatusPage() {
       const payload = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(payload.error ?? "La comprobación no pudo completarse.");
+        throw new Error(
+          payload.error ?? "La comprobación no pudo completarse.",
+        );
       }
 
       setKeepAliveStatus(payload.ok ? "success" : "error");
@@ -400,12 +455,14 @@ export default function ConfigStatusPage() {
       setKeepAliveMessage(
         payload.ok
           ? "La base de datos respondió correctamente."
-          : payload.error ?? "La comprobación devolvió un error.",
+          : (payload.error ?? "La comprobación devolvió un error."),
       );
     } catch (err) {
       setKeepAliveStatus("error");
       setKeepAliveMessage(
-        err instanceof Error ? err.message : "No se pudo completar la comprobación.",
+        err instanceof Error
+          ? err.message
+          : "No se pudo completar la comprobación.",
       );
     }
   };
@@ -548,7 +605,10 @@ export default function ConfigStatusPage() {
                     className={inputClass}
                     value={link.label}
                     onChange={(event) =>
-                      updateField(`nav.links.${index}.label`, event.target.value)
+                      updateField(
+                        `nav.links.${index}.label`,
+                        event.target.value,
+                      )
                     }
                   />
                 </Field>
@@ -721,7 +781,10 @@ export default function ConfigStatusPage() {
                 activeLabel="Mantenimiento activo"
                 inactiveLabel="Normal"
                 onClick={() =>
-                  updateField("system.maintenanceMode", !config.system.maintenanceMode)
+                  updateField(
+                    "system.maintenanceMode",
+                    !config.system.maintenanceMode,
+                  )
                 }
               />
             </div>
@@ -733,7 +796,8 @@ export default function ConfigStatusPage() {
                     Keep Alive de Supabase
                   </p>
                   <p className="text-sm text-[#5F564C]">
-                    Comprobación ligera para evitar la hibernación de la base de datos.
+                    Comprobación ligera para evitar la hibernación de la base de
+                    datos.
                   </p>
                 </div>
                 <button
@@ -781,12 +845,16 @@ export default function ConfigStatusPage() {
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#5F564C]">
                     Próxima ejecución
                   </p>
-                  <p className="mt-2 text-sm text-[#2A241D]">Programada cada 12 horas</p>
+                  <p className="mt-2 text-sm text-[#2A241D]">
+                    Programada cada 12 horas
+                  </p>
                 </div>
               </div>
 
               {keepAliveMessage ? (
-                <p className={`text-sm ${keepAliveStatus === "success" ? "text-green-700" : "text-[#5F564C]"}`}>
+                <p
+                  className={`text-sm ${keepAliveStatus === "success" ? "text-green-700" : "text-[#5F564C]"}`}
+                >
                   {keepAliveMessage}
                 </p>
               ) : null}
@@ -799,7 +867,10 @@ export default function ConfigStatusPage() {
                     className={inputClass}
                     value={config.system.maintenance.title}
                     onChange={(event) =>
-                      updateField("system.maintenance.title", event.target.value)
+                      updateField(
+                        "system.maintenance.title",
+                        event.target.value,
+                      )
                     }
                   />
                 </Field>
@@ -808,7 +879,10 @@ export default function ConfigStatusPage() {
                     className={inputClass}
                     value={config.system.maintenance.subtitle}
                     onChange={(event) =>
-                      updateField("system.maintenance.subtitle", event.target.value)
+                      updateField(
+                        "system.maintenance.subtitle",
+                        event.target.value,
+                      )
                     }
                   />
                 </Field>
@@ -817,7 +891,10 @@ export default function ConfigStatusPage() {
                     className={`${inputClass} min-h-24 resize-y`}
                     value={config.system.maintenance.message}
                     onChange={(event) =>
-                      updateField("system.maintenance.message", event.target.value)
+                      updateField(
+                        "system.maintenance.message",
+                        event.target.value,
+                      )
                     }
                   />
                 </Field>
@@ -826,13 +903,18 @@ export default function ConfigStatusPage() {
                     className={inputClass}
                     value={config.system.maintenance.estimatedReturn}
                     onChange={(event) =>
-                      updateField("system.maintenance.estimatedReturn", event.target.value)
+                      updateField(
+                        "system.maintenance.estimatedReturn",
+                        event.target.value,
+                      )
                     }
                   />
                 </Field>
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="flex items-center justify-between rounded-xl border border-[#EFE9DF] p-3">
-                    <span className="text-sm text-[#5F564C]">Mostrar teléfono</span>
+                    <span className="text-sm text-[#5F564C]">
+                      Mostrar teléfono
+                    </span>
                     <ToggleButton
                       active={config.system.maintenance.showPhone}
                       onClick={() =>
@@ -844,7 +926,9 @@ export default function ConfigStatusPage() {
                     />
                   </div>
                   <div className="flex items-center justify-between rounded-xl border border-[#EFE9DF] p-3">
-                    <span className="text-sm text-[#5F564C]">Mostrar botón llamar</span>
+                    <span className="text-sm text-[#5F564C]">
+                      Mostrar botón llamar
+                    </span>
                     <ToggleButton
                       active={config.system.maintenance.showContactButton}
                       onClick={() =>
@@ -856,11 +940,16 @@ export default function ConfigStatusPage() {
                     />
                   </div>
                   <div className="flex items-center justify-between rounded-xl border border-[#EFE9DF] p-3">
-                    <span className="text-sm text-[#5F564C]">Mostrar botón ubicación</span>
+                    <span className="text-sm text-[#5F564C]">
+                      Mostrar botón ubicación
+                    </span>
                     <ToggleButton
                       active={config.system.maintenance.showMap}
                       onClick={() =>
-                        updateField("system.maintenance.showMap", !config.system.maintenance.showMap)
+                        updateField(
+                          "system.maintenance.showMap",
+                          !config.system.maintenance.showMap,
+                        )
                       }
                     />
                   </div>
