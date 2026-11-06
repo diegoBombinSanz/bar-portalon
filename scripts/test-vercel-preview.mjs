@@ -87,7 +87,13 @@ if (![401, 500, 503].includes(apiResponse.status)) {
   throw new Error(`API keep-alive: status inesperado ${apiResponse.status} sin credenciales`);
 }
 if (!apiResponse.headers.get("content-type")?.includes("application/json")) {
-  throw new Error("API keep-alive no devolvió JSON; podría estar recibiendo el HTML de la SPA");
+  const contentType = apiResponse.headers.get("content-type") ?? "(ausente)";
+  const responsePreview = (await apiResponse.clone().text())
+    .slice(0, 240)
+    .replace(/\s+/g, " ");
+  throw new Error(
+    `API keep-alive: HTTP ${apiResponse.status}, Content-Type ${contentType}; respuesta: ${JSON.stringify(responsePreview)}`,
+  );
 }
 console.log(`OK /api/system/keep-alive -> ${apiResponse.status} JSON`);
 
