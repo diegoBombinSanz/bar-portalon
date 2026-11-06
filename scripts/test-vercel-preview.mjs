@@ -1,16 +1,28 @@
 const baseUrl = process.env.PREVIEW_URL?.replace(/\/$/, "");
+const protectionBypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
 if (!baseUrl) {
   throw new Error("Define PREVIEW_URL con la URL del deployment Preview de Vercel");
 }
 
 async function request(path, redirect = "manual") {
-  return fetch(new URL(path, `${baseUrl}/`), { redirect });
+  const headers = protectionBypassSecret
+    ? { "x-vercel-protection-bypass": protectionBypassSecret }
+    : undefined;
+  return fetch(new URL(path, `${baseUrl}/`), { redirect, headers });
 }
 
 async function expectStatus(path, status) {
   const response = await request(path);
   if (response.status !== status) {
+    if (
+      response.status === 302 &&
+      response.headers.get("location")?.includes("vercel.com/sso-api")
+    ) {
+      throw new Error(
+        `El Preview está protegido por Vercel Authentication. Define VERCEL_AUTOMATION_BYPASS_SECRET con el secreto de Protection Bypass for Automation y vuelve a ejecutar el test.`,
+      );
+    }
     throw new Error(`${path}: esperado HTTP ${status}, recibido ${response.status}`);
   }
   console.log(`OK ${path} -> ${status}`);
@@ -36,7 +48,7 @@ for (const path of publicPaths.slice(1)) {
   const response = await expectStatus(`${path}/`, 308);
   const target = response.headers.get("location");
   if (!target) throw new Error(`${path}/ devolvió 308 sin Location`);
-  const finalResponse = await fetch(new URL(target, `${baseUrl}/`));
+  const finalResponse = await request(target);
   if (finalResponse.status !== 200) {
     throw new Error(`${path}/ termina en HTTP ${finalResponse.status}, esperado 200`);
   }
@@ -55,7 +67,7 @@ for (const path of ["/404/", "/una-ruta-inventada/"]) {
   const redirect = await expectStatus(path, 308);
   const target = redirect.headers.get("location");
   if (!target) throw new Error(`${path} devolvió 308 sin Location`);
-  const finalResponse = await fetch(new URL(target, `${baseUrl}/`));
+  const finalResponse = await request(target);
   if (finalResponse.status !== 404) {
     throw new Error(`${path} termina en HTTP ${finalResponse.status}, esperado 404`);
   }
