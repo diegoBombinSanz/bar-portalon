@@ -1,0 +1,15 @@
+{
+  "home": { "path": "/", "httpStatus": 200 },
+  "bar": { "path": "/barra", "httpStatus": 200 },
+  "gallery": { "path": "/galeria", "httpStatus": 200 },
+  "wines": { "path": "/entrevinos", "httpStatus": 200 },
+  "pastEvents": { "path": "/antiguos-eventos", "httpStatus": 200 },
+  "legal": { "path": "/aviso", "httpStatus": 200 },
+  "privacy": { "path": "/politica", "httpStatus": 200 },
+  "login": { "path": "/login", "httpStatus": 200 },
+  "admin": { "path": "/admin", "httpStatus": 200 },
+  "adminConfig": { "path": "/admin/config", "httpStatus": 200 },
+  "badRequestView": { "path": "/400", "httpStatus": 200 },
+  "serverErrorView": { "path": "/500", "httpStatus": 200 },
+  "notFound": { "path": "/404", "httpStatus": 404 }
+}

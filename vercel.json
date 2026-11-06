@@ -1,7 +1,51 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/barra",
+      "destination": "/"
+    },
+    {
+      "source": "/galeria",
+      "destination": "/"
+    },
+    {
+      "source": "/entrevinos",
+      "destination": "/"
+    },
+    {
+      "source": "/antiguos-eventos",
+      "destination": "/"
+    },
+    {
+      "source": "/aviso",
+      "destination": "/"
+    },
+    {
+      "source": "/politica",
+      "destination": "/"
+    },
+    {
+      "source": "/login",
+      "destination": "/"
+    },
+    {
+      "source": "/admin",
+      "destination": "/"
+    },
+    {
+      "source": "/admin/config",
+      "destination": "/"
+    },
+    {
+      "source": "/400",
+      "destination": "/"
+    },
+    {
+      "source": "/500",
+      "destination": "/"
+    }
   ],
   "crons": []
 }

@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import { type SiteConfig } from "./data/siteConfig";
+import routeManifest from "./data/routeManifest.json";
 import { getSiteConfig } from "./app/api/site-config/route";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -34,48 +35,48 @@ const Error404PageRoute = lazy(() => import("./features/system/pages/Error404Pag
 const Error500PageRoute = lazy(() => import("./features/system/pages/Error500Page"));
 
 const routeSeo: Record<string, { title: string; description: string }> = {
-  "/": {
+  [routeManifest.home.path]: {
     title: "Bar El Portalón | Restaurante en Roa, Ribera del Duero",
     description:
       "Bar El Portalón en Roa, Burgos. Cocina tradicional, tapeo, bacalao y producto de temporada en la Ribera del Duero.",
   },
-  "/barra": {
+  [routeManifest.bar.path]: {
     title: "La Barra | Bar El Portalón en Roa",
     description:
       "Pinchos, raciones y ambiente de barra en Bar El Portalón, Plaza Mayor de Roa.",
   },
-  "/galeria": {
+  [routeManifest.gallery.path]: {
     title: "Galería | Bar El Portalón",
     description:
       "Imágenes del local, la barra, especialidades y ambiente de Bar El Portalón en Roa.",
   },
-  "/entrevinos": {
+  [routeManifest.wines.path]: {
     title: "Entrevinos de Roa | Bar El Portalón",
     description:
       "Descubre Entrevinos de Roa, vinos de Ribera del Duero disponibles en Bar El Portalón.",
   },
-  "/antiguos-eventos": {
+  [routeManifest.pastEvents.path]: {
     title: "Ediciones anteriores de las Jornadas del Bacalao | Bar El Portalón",
     description:
       "Historia de las Jornadas del Bacalao de Bar El Portalón: ediciones pasadas, platos y tradición.",
   },
-  "/politica": {
+  [routeManifest.privacy.path]: {
     title: "Política de privacidad | Bar El Portalón",
     description: "Política de privacidad de Bar El Portalón.",
   },
-  "/aviso": {
+  [routeManifest.legal.path]: {
     title: "Aviso legal | Bar El Portalón",
     description: "Aviso legal de Bar El Portalón.",
   },
-  "/admin": {
+  [routeManifest.admin.path]: {
     title: "Panel de administración | Bar El Portalón",
     description: "Acceso al panel de administración de Bar El Portalón.",
   },
-  "/admin/config": {
+  [routeManifest.adminConfig.path]: {
     title: "Panel de configuracion | Bar El Portalon",
     description: "Panel protegido de configuracion de Bar El Portalon.",
   },
-  "/login": {
+  [routeManifest.login.path]: {
     title: "Acceso admin | Bar El Portalon",
     description: "Login para el panel de administracion de Bar El Portalon.",
   },
@@ -377,7 +378,7 @@ export default function App() {
 
   useSeo(pathname, config, maintenanceMode);
 
-  if (pathname === "/politica") {
+  if (pathname === routeManifest.privacy.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <PrivacyPage config={config} />
@@ -385,7 +386,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/aviso") {
+  if (pathname === routeManifest.legal.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <AvisoLegal config={config} />
@@ -393,7 +394,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/barra") {
+  if (pathname === routeManifest.bar.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <BarraPage config={config} />
@@ -401,7 +402,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/galeria") {
+  if (pathname === routeManifest.gallery.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <GaleriaPage config={config} />
@@ -409,7 +410,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/entrevinos") {
+  if (pathname === routeManifest.wines.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <EntrevinosPage config={config} />
@@ -417,7 +418,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/antiguos-eventos") {
+  if (pathname === routeManifest.pastEvents.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <AntiguosEventosPage config={config} />
@@ -425,7 +426,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/login") {
+  if (pathname === routeManifest.login.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <LoginPage />
@@ -433,7 +434,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/400") {
+  if (pathname === routeManifest.badRequestView.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <Error400PageRoute />
@@ -441,7 +442,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/500") {
+  if (pathname === routeManifest.serverErrorView.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <Error500PageRoute />
@@ -449,7 +450,10 @@ export default function App() {
     );
   }
 
-  if (pathname === "/admin" || pathname === "/admin/config") {
+  if (
+    pathname === routeManifest.admin.path ||
+    pathname === routeManifest.adminConfig.path
+  ) {
     return (
       <Suspense fallback={<PageFallback />}>
         <ProtectedRoute>
@@ -459,7 +463,7 @@ export default function App() {
     );
   }
 
-  if (pathname === "/404") {
+  if (pathname === routeManifest.notFound.path) {
     return (
       <Suspense fallback={<PageFallback />}>
         <Error404PageRoute />
@@ -467,7 +471,7 @@ export default function App() {
     );
   }
 
-  return pathname === "/" ? (
+  return pathname === routeManifest.home.path ? (
     <Home config={config} />
   ) : (
     <Suspense fallback={<PageFallback />}>

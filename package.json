@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run routes:check && tsc -b && vite build && node scripts/generate-vercel-404.mjs",
+    "routes:sync": "node scripts/sync-vercel-routes.mjs --write",
+    "routes:check": "node scripts/sync-vercel-routes.mjs --check",
+    "test:vercel-preview": "node scripts/test-vercel-preview.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
