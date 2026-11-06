@@ -47,13 +47,29 @@ const generatedConfig = {
 };
 const generatedText = `${JSON.stringify(generatedConfig, null, 2)}\n`;
 
+const normalizeJson = (value) => {
+  if (Array.isArray(value)) {
+    return value.map(normalizeJson);
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, normalizeJson(value[key])]),
+    );
+  }
+  return value;
+};
+
 if (mode === "--write") {
   await writeFile(vercelConfigPath, generatedText, "utf8");
   process.stdout.write("vercel.json actualizado desde routeManifest.json\n");
 } else {
-  const existingText = await readFile(vercelConfigPath, "utf8");
-  if (existingText !== generatedText) {
-    throw new Error("vercel.json no está sincronizado. Ejecuta npm run routes:sync y confirma el archivo generado.");
+  if (
+    JSON.stringify(normalizeJson(existingConfig)) !==
+    JSON.stringify(normalizeJson(generatedConfig))
+  ) {
+    throw new Error("El contenido de vercel.json no coincide con las rutas esperadas. Ejecuta npm run routes:sync y confirma el archivo generado.");
   }
   process.stdout.write("Rutas Vercel sincronizadas con routeManifest.json\n");
 }
