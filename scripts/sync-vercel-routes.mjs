@@ -32,17 +32,42 @@ if (manifest.home?.path !== "/" || manifest.home.httpStatus !== 200) {
   throw new Error("La ruta home debe existir en / y responder 200");
 }
 if (manifest.notFound?.path !== "/404" || manifest.notFound.httpStatus !== 404) {
-  throw new Error("/404 debe permanecer sin rewrite y devolver HTTP 404");
+  throw new Error("/404 debe tener HTTP 404 y coincidir con la ruta especial de error");
 }
 
-const rewrites = Object.values(manifest)
-  .filter(({ path: routePath, httpStatus }) => routePath !== "/" && httpStatus === 200)
-  .map(({ path: routePath }) => ({ source: routePath, destination: "/" }));
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const appRoutes = Object.values(manifest).filter(
+  ({ path: routePath, httpStatus }) => routePath !== "/" && httpStatus === 200,
+);
+const notFoundRoute = manifest.notFound;
+
+const routes = [
+  {
+    src: `^${escapeRegex(notFoundRoute.path)}$`,
+    status: 404,
+    dest: "/404.html",
+  },
+  {
+    src: `^${escapeRegex(notFoundRoute.path)}/$`,
+    status: 308,
+    headers: { Location: notFoundRoute.path },
+  },
+  { handle: "filesystem" },
+  {
+    src: "^/(?!api(?:/|$))(.+)/$",
+    status: 308,
+    headers: { Location: "/$1" },
+  },
+  ...appRoutes.map(({ path: routePath }) => ({
+    src: `^${escapeRegex(routePath)}$`,
+    dest: "/index.html",
+  })),
+  { src: "^/.*$", status: 404, dest: "/404.html" },
+];
 
 const generatedConfig = {
   $schema: "https://openapi.vercel.sh/vercel.json",
-  trailingSlash: false,
-  rewrites,
+  routes,
   crons: existingConfig.crons ?? [],
 };
 const generatedText = `${JSON.stringify(generatedConfig, null, 2)}\n`;

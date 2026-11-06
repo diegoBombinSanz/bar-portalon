@@ -1,50 +1,76 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "trailingSlash": false,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/barra",
-      "destination": "/"
+      "src": "^/404$",
+      "status": 404,
+      "dest": "/404.html"
     },
     {
-      "source": "/galeria",
-      "destination": "/"
+      "src": "^/404/$",
+      "status": 308,
+      "headers": {
+        "Location": "/404"
+      }
     },
     {
-      "source": "/entrevinos",
-      "destination": "/"
+      "handle": "filesystem"
     },
     {
-      "source": "/antiguos-eventos",
-      "destination": "/"
+      "src": "^/(?!api(?:/|$))(.+)/$",
+      "status": 308,
+      "headers": {
+        "Location": "/$1"
+      }
     },
     {
-      "source": "/aviso",
-      "destination": "/"
+      "src": "^/barra$",
+      "dest": "/index.html"
     },
     {
-      "source": "/politica",
-      "destination": "/"
+      "src": "^/galeria$",
+      "dest": "/index.html"
     },
     {
-      "source": "/login",
-      "destination": "/"
+      "src": "^/entrevinos$",
+      "dest": "/index.html"
     },
     {
-      "source": "/admin",
-      "destination": "/"
+      "src": "^/antiguos-eventos$",
+      "dest": "/index.html"
     },
     {
-      "source": "/admin/config",
-      "destination": "/"
+      "src": "^/aviso$",
+      "dest": "/index.html"
     },
     {
-      "source": "/400",
-      "destination": "/"
+      "src": "^/politica$",
+      "dest": "/index.html"
     },
     {
-      "source": "/500",
-      "destination": "/"
+      "src": "^/login$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/admin$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/admin/config$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/400$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/500$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/.*$",
+      "status": 404,
+      "dest": "/404.html"
     }
   ],
   "crons": []
